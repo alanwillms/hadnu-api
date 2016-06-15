@@ -48,6 +48,7 @@ Rails.application.configure do
   # Allow any origin
   config.action_dispatch.default_headers.merge!({
     'Access-Control-Allow-Origin' => '*',
-    'Access-Control-Request-Method' => '*'
+    'Access-Control-Request-Method' => '*',
+    'Access-Control-Expose-Headers' => 'X-Total, X-Per-Page, X-Page'
   })
 end
