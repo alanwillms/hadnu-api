@@ -1,6 +1,5 @@
 class DiscussionsController < ApplicationController
   def index
-    @discussions = Discussion.all
-    render json: @discussions
+    paginate json: Discussion.all
   end
 end
