@@ -45,10 +45,11 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Allow any origin
+  # Allow any Origin
   config.action_dispatch.default_headers.merge!({
     'Access-Control-Allow-Origin' => '*',
     'Access-Control-Request-Method' => '*',
-    'Access-Control-Expose-Headers' => 'X-Total, X-Per-Page, X-Page'
+    'Access-Control-Allow-Headers' => 'Content-Type, X-Total, X-Per-Page, X-Page',
+    'Access-Control-Expose-Headers' => 'Content-Type, X-Total, X-Per-Page, X-Page'
   })
 end
