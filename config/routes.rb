@@ -6,8 +6,8 @@ Rails.application.routes.draw do
         'Content-Type' => 'text/plain',
         'Access-Control-Allow-Origin' => '*',
         'Access-Control-Request-Method' => '*',
-        'Access-Control-Allow-Headers' => 'Content-Type, X-Total, X-Per-Page, X-Page',
-        'Access-Control-Expose-Headers' => 'X-Total, X-Per-Page, X-Page, Content-Type'
+        'Access-Control-Allow-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page',
+        'Access-Control-Expose-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page'
       },
       []
     ]

@@ -49,7 +49,7 @@ Rails.application.configure do
   config.action_dispatch.default_headers.merge!({
     'Access-Control-Allow-Origin' => '*',
     'Access-Control-Request-Method' => '*',
-    'Access-Control-Allow-Headers' => 'Content-Type, X-Total, X-Per-Page, X-Page',
-    'Access-Control-Expose-Headers' => 'Content-Type, X-Total, X-Per-Page, X-Page'
+    'Access-Control-Allow-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page',
+    'Access-Control-Expose-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page'
   })
 end
