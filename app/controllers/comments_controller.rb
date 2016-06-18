@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_discussion
 
   def index
-    paginate json: @discussion.comments.recent_first
+    paginate json: @discussion.comments.old_first
   end
 
   private

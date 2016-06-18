@@ -2,7 +2,7 @@ class Comment < ApplicationRecord
   belongs_to :discussion
   belongs_to :user
 
-  def self.recent_first
-    order('created_at desc')
+  def self.old_first
+    order('created_at asc')
   end
 end
