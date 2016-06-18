@@ -17,4 +17,6 @@ Rails.application.routes.draw do
   resources :discussions, only: [:index, :show] do
     resources :comments, only: :index
   end
+
+  resources :users, only: :show
 end
