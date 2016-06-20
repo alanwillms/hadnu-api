@@ -5,15 +5,14 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: 5
   timeout: 5000
 
 development:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: hadnu_development
-  pool: 5
   username: postgres
   password: postgres
 
@@ -22,8 +21,10 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: hadnu_test
+  username: postgres
+  password: postgres
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: hadnu
