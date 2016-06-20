@@ -7,10 +7,19 @@ class CommentForm
   end
 
   def save
-    @comment.save
+    Comment.transaction do
+      comment.save!
+      comment.discussion.last_user = comment.user
+      comment.discussion.commented_at = comment.created_at
+      comment.discussion.comments_counter = comment.discussion.comments.count
+      comment.discussion.save!
+    end
+    true
+  rescue ActiveRecord::RecordInvalid => exception
+    false
   end
 
   def errors
-    @comment.errors
+    comment.errors
   end
 end
