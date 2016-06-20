@@ -1,4 +1,6 @@
 class CommentForm
+  attr_reader :comment
+
   def initialize(discussion, user, params)
     @comment = discussion.comments.new(params)
     @comment.user = user
