@@ -9,8 +9,7 @@ describe UserTokenController do
       end
 
       it 'returns JWT token' do
-        parsed_body = JSON.parse(response.body)
-        expect(parsed_body).to have_key('jwt')
+        expect(json_response).to have_key('jwt')
       end
 
       it 'has a 200 status' do

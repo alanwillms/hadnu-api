@@ -1,15 +1,34 @@
 require 'rails_helper'
 
 describe CommentsController do
-  let(:valid_params) do
-    discussion = create(:discussion)
-    params = {
-      discussion_id: discussion.id,
-      comment: {comment: 'My great comment'}
-    }
+  describe '#index' do
+    let(:discussion) { create(:discussion) }
+
+    it 'lists comments belonging to a given discussion' do
+      comment = create(:comment, discussion: discussion)
+      get :index, params: {discussion_id: discussion.id}
+      expect(json_response.first).to include({
+        'id' => comment.id,
+        'comment' => comment.comment
+      })
+    end
+
+    it 'does not list comments belonging to another discussion' do
+      comment_from_other_discussion = create(:comment)
+      get :index, params: {discussion_id: discussion.id}
+      expect(json_response).to be_empty
+    end
   end
 
   describe '#create' do
+    let(:valid_params) do
+      discussion = create(:discussion)
+      params = {
+        discussion_id: discussion.id,
+        comment: {comment: 'My great comment'}
+      }
+    end
+
     context 'with valid data' do
       before(:each) do
         authenticate
@@ -25,11 +44,10 @@ describe CommentsController do
       end
 
       it 'outputs comment data' do
-        parsed_body = JSON.parse(response.body)
         comment_data = {
           'comment' => valid_params[:comment][:comment],
         }
-        expect(parsed_body).to include(comment_data)
+        expect(json_response).to include(comment_data)
       end
     end
 
@@ -54,9 +72,8 @@ describe CommentsController do
       end
 
       it 'outputs errors' do
-        parsed_body = JSON.parse(response.body)
         errors_data = {"comment" => ["can't be blank"]}
-        expect(parsed_body).to include(errors_data)
+        expect(json_response).to include(errors_data)
       end
     end
 

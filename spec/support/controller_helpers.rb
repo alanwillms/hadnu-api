@@ -10,6 +10,10 @@ module ControllerHelpers
     allow(knock).to receive(:entity_for).and_return(user)
     user
   end
+
+  def json_response
+    JSON.parse(response.body)
+  end
 end
 
 RSpec.configure do |config|
