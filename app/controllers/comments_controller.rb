@@ -10,8 +10,10 @@ class CommentsController < ApplicationController
     comment = @discussion.comments.new(comment_params)
     comment.user = current_user
 
+    # comment = CommentForm.new(@discussion, current_user, comment_params)
+
     if comment.save
-      render json: comment, status: :created, location: @comment
+      render json: comment, status: :created #, location: @comment
     else
       render json: comment.errors, status: :unprocessable_entity
     end
