@@ -9,6 +9,10 @@ class User < ApplicationRecord
 
   def self.from_token_request(request)
     login = request.params["auth"] && request.params["auth"]["login"]
-    self.find_by login: login
+    active.find_by login: login
+  end
+
+  def self.active
+    where(blocked: false, email_confirmed: true)
   end
 end

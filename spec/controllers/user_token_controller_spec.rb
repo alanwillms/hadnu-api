@@ -19,6 +19,18 @@ describe UserTokenController do
     end
 
     context 'with invalid credentials' do
+      it 'has a 404 status for unconfirmed account' do
+        user = create(:user, email_confirmed: false)
+        post :create, params: {auth: {login: user.login, password: 'password'}}
+        expect(response.status).to be(404)
+      end
+
+      it 'has a 404 status for blocked account' do
+        user = create(:user, blocked: true)
+        post :create, params: {auth: {login: user.login, password: 'password'}}
+        expect(response.status).to be(404)
+      end
+
       it 'has a 404 status for invalid username' do
         post :create, params: {}
         expect(response.status).to be(404)
