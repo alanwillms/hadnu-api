@@ -12,11 +12,11 @@ Rails.application.routes.draw do
       []
     ]
   }
+
   post 'user_token' => 'user_token#create'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :subjects, only: :index
+  resources :users, only: :show
   resources :discussions, only: [:index, :show, :create] do
     resources :comments, only: [:index, :create]
   end
-
-  resources :users, only: :show
 end
