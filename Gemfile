@@ -30,11 +30,16 @@ gem 'api-pagination'
 # JWT Authentication
 gem 'knock'
 
+# Oauth2 Authentication with Facebook via Signed Request + Oauth Token
+# (Omniauth requires sessions, so it has been discarded)
+gem 'koala'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'dotenv-rails'
 end
 
 group :development do

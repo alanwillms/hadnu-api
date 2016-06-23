@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # Options requests
   match '*path', via: [:options], to: lambda { |_|
     [
       204,
@@ -13,7 +14,10 @@ Rails.application.routes.draw do
     ]
   }
 
+  # Authentication
+  post 'auth/:provider/callback' => 'omniauth#create'
   post 'user_token' => 'user_token#create'
+
   resources :subjects, only: :index
   resources :users, only: :show
   resources :discussions, only: [:index, :show, :create] do

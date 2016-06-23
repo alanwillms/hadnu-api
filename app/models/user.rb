@@ -15,4 +15,14 @@ class User < ApplicationRecord
   def self.active
     where(blocked: false, email_confirmed: true)
   end
+
+  def self.from_facebook(profile)
+    where(facebook_id: profile['id']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
+      user.facebook_id = profile['id']
+      user.name = profile['name']
+      user.login = profile['name']
+      user.email = profile['email']
+      user.save!
+    end
+  end
 end
