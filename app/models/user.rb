@@ -25,4 +25,14 @@ class User < ApplicationRecord
       user.save!
     end
   end
+
+  def self.from_google(profile)
+    where(google_id: profile['sub']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
+      user.google_id = profile['sub']
+      user.name = profile['name']
+      user.login = profile['name']
+      user.email = profile['email']
+      user.save!
+    end
+  end
 end
