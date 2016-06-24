@@ -3,7 +3,7 @@ class DiscussionsController < ApplicationController
   before_action :authenticate_user, only: [:create]
 
   def index
-    paginate json: Discussion.recent_first.all
+    paginate json: discussions.recent_first.all
   end
 
   def show
@@ -21,6 +21,14 @@ class DiscussionsController < ApplicationController
   end
 
   private
+
+  def discussions
+    if params[:subject_id]
+      Subject.find(params[:subject_id]).discussions
+    else
+      Discussion
+    end
+  end
 
   def set_discussion
     @discussion = Discussion.find(params[:id])

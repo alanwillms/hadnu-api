@@ -18,8 +18,13 @@ Rails.application.routes.draw do
   post 'auth/:provider/callback' => 'omniauth#create'
   post 'user_token' => 'user_token#create'
 
-  resources :subjects, only: :index
+  # Regular routes
   resources :users, only: :show
+
+  resources :subjects, only: [:show, :index] do
+    resources :discussions, only: :index
+  end
+
   resources :discussions, only: [:index, :show, :create] do
     resources :comments, only: [:index, :create]
   end
