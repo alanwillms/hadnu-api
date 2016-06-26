@@ -21,6 +21,11 @@ Rails.application.routes.draw do
   # Regular routes
   resources :users, only: :show
 
+
+  resources :categories, only: :index do
+    resource :banner
+  end
+
   resources :subjects, only: [:show, :index] do
     resources :discussions, only: :index
   end

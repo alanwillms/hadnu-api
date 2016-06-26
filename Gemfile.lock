@@ -186,6 +186,7 @@ DEPENDENCIES
   knock
   koala
   listen (~> 3.0.5)
+  mime-types
   pg
   puma (~> 3.0)
   rails (>= 5.0.0.rc1, < 5.1)
@@ -195,4 +196,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.12.3
+   1.12.5
