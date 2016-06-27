@@ -3,7 +3,7 @@ class SectionsController < ApplicationController
   before_action :set_section, only: :show
 
   def show
-    render json: @section
+    render json: @section, serializer: Sections::ShowSerializer
   end
 
   private

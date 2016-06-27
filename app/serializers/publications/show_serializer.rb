@@ -3,6 +3,7 @@ class Publications::ShowSerializer < PublicationSerializer
     :pdf_url, :root_section_id, :related
 
   has_many :authors
+  has_many :sections
 
   def root_section_id
     object.root_section.id if object.root_section
