@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   # Regular routes
   resources :users, only: :show
+  resources :recent_sections, only: :index
 
   resources :authors, only: [:index, :show] do
     resource :photo, only: :show
