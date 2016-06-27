@@ -6,7 +6,7 @@ class PublicationsController < ApplicationController
   end
 
   def show
-    render json: @publication
+    render json: @publication, serializer: Publications::ShowSerializer
   end
 
   private
