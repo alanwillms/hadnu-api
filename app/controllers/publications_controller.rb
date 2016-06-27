@@ -8,6 +8,8 @@ class PublicationsController < ApplicationController
   def publications
     if params[:category_id]
       Category.find(params[:category_id]).publications
+    elsif params[:author_id]
+      Author.find(params[:author_id]).publications
     else
       Publication
     end

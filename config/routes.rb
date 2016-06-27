@@ -21,8 +21,9 @@ Rails.application.routes.draw do
   # Regular routes
   resources :users, only: :show
 
-  resources :authors, only: :index do
+  resources :authors, only: [:index, :show] do
     resource :photo, only: :show
+    resources :publications, only: :index
   end
 
   resources :publications, only: :index do
