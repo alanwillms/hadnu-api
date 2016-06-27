@@ -26,9 +26,10 @@ Rails.application.routes.draw do
     resources :publications, only: :index
   end
 
-  resources :publications, only: :index do
+  resources :publications, only: [:index, :show] do
     resource :banner, only: :show
     resource :pdf, only: :show
+    resources :sections, only: [:show]
   end
 
   resources :categories, only: [:index, :show] do
