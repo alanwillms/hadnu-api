@@ -22,12 +22,13 @@ Rails.application.routes.draw do
   resources :users, only: :show
 
   resources :publications, only: :index do
-    resource :banner
-    resource :pdf
+    resource :banner, only: :show
+    resource :pdf, only: :show
   end
 
-  resources :categories, only: :index do
-    resource :banner
+  resources :categories, only: [:index, :show] do
+    resource :banner, only: :show
+    resources :publications, only: :index
   end
 
   resources :subjects, only: [:show, :index] do
