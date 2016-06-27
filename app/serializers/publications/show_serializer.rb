@@ -2,6 +2,8 @@ class Publications::ShowSerializer < PublicationSerializer
   attributes :original_title, :created_at, :hits, :copyright_notice,
     :pdf_url, :root_section_id, :related
 
+  has_many :authors
+
   def root_section_id
     object.root_section.id if object.root_section
   end
