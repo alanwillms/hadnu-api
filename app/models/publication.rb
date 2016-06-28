@@ -10,4 +10,8 @@ class Publication < ApplicationRecord
   def self.recent_first
     order(created_at: :desc)
   end
+
+  def self.featured
+    where(featured: true)
+  end
 end
