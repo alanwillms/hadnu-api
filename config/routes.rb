@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   resources :featured_publications, only: :index
   resources :recent_sections, only: :index
 
+  resources :user_registrations, only: :create
+
   resources :authors, only: [:index, :show] do
     resource :photo, only: :show
     resources :publications, only: :index

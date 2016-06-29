@@ -3,6 +3,16 @@ require 'digest/sha1'
 class User < ApplicationRecord
   has_many :discussions
 
+  validates :name, presence: true
+  validates :login, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
+  validates :encrypted_password, presence: true
+
+  def password=(value)
+    generate_salt unless self.salt
+    self.encrypted_password = value ? Digest::SHA1.hexdigest(value + self.salt) : nil
+  end
+
   def authenticate(password)
     self.encrypted_password == Digest::SHA1.hexdigest(password + self.salt)
   end
@@ -34,5 +44,11 @@ class User < ApplicationRecord
       user.email = profile['email']
       user.save!
     end
+  end
+
+  private
+
+  def generate_salt
+    self.salt = SecureRandom.uuid
   end
 end

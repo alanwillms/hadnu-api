@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204152144) do
+ActiveRecord::Schema.define(version: 20160629140150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,32 +140,17 @@ ActiveRecord::Schema.define(version: 20151204152144) do
     t.index ["course_id", "prerequisite_id"], name: "idx_courses_prerequisites_course_prerequisite", unique: true, using: :btree
   end
 
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
-  end
-
   create_table "discussions", force: :cascade do |t|
-    t.string   "title",            limit: 255
-    t.integer  "user_id",                                               null: false
-    t.integer  "hits",                         default: 0,              null: false
-    t.integer  "comments_counter",             default: 1,              null: false
+    t.string   "title",        limit: 255
+    t.integer  "user_id",                                           null: false
+    t.integer  "hits",                     default: 0,              null: false
+    t.integer  "comments",                 default: 1,              null: false
     t.integer  "last_user_id"
-    t.boolean  "closed",                       default: false,          null: false
-    t.datetime "created_at",                   default: -> { "now()" }, null: false
-    t.datetime "updated_at",                   default: -> { "now()" }, null: false
-    t.integer  "subject_id",                                            null: false
-    t.datetime "commented_at",                 default: -> { "now()" }, null: false
+    t.boolean  "closed",                   default: false,          null: false
+    t.datetime "created_at",               default: -> { "now()" }, null: false
+    t.datetime "updated_at",               default: -> { "now()" }, null: false
+    t.integer  "subject_id",                                        null: false
+    t.datetime "commented_at",             default: -> { "now()" }, null: false
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -282,7 +267,7 @@ ActiveRecord::Schema.define(version: 20151204152144) do
     t.string   "login",                  limit: 255,                          null: false
     t.string   "email",                  limit: 255,                          null: false
     t.string   "encrypted_password",     limit: 255,                          null: false
-    t.string   "salt",                   limit: 13,                           null: false
+    t.string   "salt",                   limit: 36,                           null: false
     t.boolean  "email_confirmed",                    default: false,          null: false
     t.boolean  "blocked",                            default: false,          null: false
     t.datetime "created_at",                         default: -> { "now()" }, null: false
@@ -291,6 +276,7 @@ ActiveRecord::Schema.define(version: 20151204152144) do
     t.string   "last_login_ip",          limit: 255
     t.string   "confirmation_code",      limit: 13
     t.string   "password_recovery_code", limit: 13
+    t.string   "phpbb_password",         limit: 255
     t.string   "registration_ip",        limit: 255,                          null: false
     t.string   "google_id",              limit: 255
     t.string   "facebook_id",            limit: 255
