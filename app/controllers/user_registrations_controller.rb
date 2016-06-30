@@ -1,5 +1,6 @@
 class UserRegistrationsController < ApplicationController
   def create
+    skip_authorization
     data = user_registration_params
     data[:registration_ip] = request.remote_ip
     model = UserSignUpForm.new(data)

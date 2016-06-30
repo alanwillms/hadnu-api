@@ -2,6 +2,7 @@ class AuthorsController < ApplicationController
   before_action :set_author, only: :show
 
   def index
+    authorize Author
     if params[:all]
       render json: authors
     else
@@ -10,6 +11,7 @@ class AuthorsController < ApplicationController
   end
 
   def show
+    authorize @author
     render json: @author
   end
 
@@ -17,13 +19,13 @@ class AuthorsController < ApplicationController
 
   def authors
     if params[:random].to_s === '1'
-      Author.random_order.all
+      policy_scope(Author).random_order.all
     else
-      Author.order(:pen_name).all
+      policy_scope(Author).order(:pen_name).all
     end
   end
 
   def set_author
-    @author = Author.find(params[:id])
+    @author = policy_scope(Author).find(params[:id])
   end
 end

@@ -3,15 +3,18 @@ class DiscussionsController < ApplicationController
   before_action :authenticate_user, only: [:create]
 
   def index
+    authorize Discussion
     paginate json: discussions.recent_first.all
   end
 
   def show
+    authorize @discussion
     render json: @discussion
   end
 
   def create
     form = DiscussionForm.new(current_user, new_discussion_params)
+    authorize form.discussion
 
     if form.save
       render json: form.discussion, status: :created, location: form.discussion
@@ -24,14 +27,14 @@ class DiscussionsController < ApplicationController
 
   def discussions
     if params[:subject_id]
-      Subject.find(params[:subject_id]).discussions
+      policy_scope(Subject.find(params[:subject_id]).discussions)
     else
-      Discussion
+      policy_scope(Discussion)
     end
   end
 
   def set_discussion
-    @discussion = Discussion.find(params[:id])
+    @discussion = policy_scope(Discussion).find(params[:id])
   end
 
   def new_discussion_params

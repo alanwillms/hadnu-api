@@ -2,6 +2,7 @@ require 'mime/types'
 
 class BannersController < ApplicationController
   def show
+    authorize :banner, :show?
     show_category_banner if params[:category_id]
     show_publication_banner if params[:publication_id]
   end

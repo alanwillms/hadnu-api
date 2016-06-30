@@ -2,11 +2,16 @@ require 'digest/sha1'
 
 class User < ApplicationRecord
   has_many :discussions
+  has_many :roles, class_name: 'RoleUser'
 
   validates :name, presence: true
   validates :login, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+
+  def admin?
+    roles.any? { |role| role.role_name == 'owner' }
+  end
 
   def password=(value)
     generate_salt unless self.salt

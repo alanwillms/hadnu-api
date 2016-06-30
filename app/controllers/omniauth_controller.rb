@@ -2,6 +2,7 @@ require 'net/http'
 
 class OmniauthController < ApplicationController
   def create
+    skip_authorization
     user = nil
 
     if params[:provider] == 'facebook'

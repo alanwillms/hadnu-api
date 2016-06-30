@@ -104,6 +104,8 @@ GEM
     pg (0.18.4)
     pkg-config (1.1.7)
     puma (3.4.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.0.rc1)
       json
     rack-test (0.6.3)
@@ -189,6 +191,7 @@ DEPENDENCIES
   mime-types
   pg
   puma (~> 3.0)
+  pundit
   rails (>= 5.0.0.rc1, < 5.1)
   rspec-rails
   spring

@@ -1,5 +1,6 @@
 class FeaturedPublicationsController < ApplicationController
   def index
-    render json: Publication.featured.recent_first.all
+    authorize Publication
+    render json: policy_scope(Publication).featured.recent_first.all
   end
 end

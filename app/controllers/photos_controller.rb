@@ -1,5 +1,6 @@
 class PhotosController < ApplicationController
   def show
+    authorize :photo, :show?
     show_author_photo if params[:author_id]
   end
 

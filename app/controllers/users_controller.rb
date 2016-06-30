@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user
 
   def show
+    authorize @user
     render json: @user
   end
 

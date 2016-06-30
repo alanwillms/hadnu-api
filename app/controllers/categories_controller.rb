@@ -2,16 +2,18 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: :show
 
   def index
-    paginate json: Category.order(:name).all
+    authorize Category
+    paginate json: policy_scope(Category).order(:name).all
   end
 
   def show
+    authorize @category
     render json: @category
   end
 
   private
 
   def set_category
-    @category = Category.find(params[:id])
+    @category = policy_scope(Category).find(params[:id])
   end
 end

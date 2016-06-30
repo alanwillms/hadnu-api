@@ -2,6 +2,7 @@ require 'mime/types'
 
 class PdfsController < ApplicationController
   def show
+    authorize :pdf, :show?
     show_publication_pdf if params[:publication_id]
   end
 

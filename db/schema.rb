@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629140150) do
+ActiveRecord::Schema.define(version: 20160629183732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,16 +141,16 @@ ActiveRecord::Schema.define(version: 20160629140150) do
   end
 
   create_table "discussions", force: :cascade do |t|
-    t.string   "title",        limit: 255
-    t.integer  "user_id",                                           null: false
-    t.integer  "hits",                     default: 0,              null: false
-    t.integer  "comments",                 default: 1,              null: false
+    t.string   "title",            limit: 255
+    t.integer  "user_id",                                               null: false
+    t.integer  "hits",                         default: 0,              null: false
+    t.integer  "comments_counter",             default: 1,              null: false
     t.integer  "last_user_id"
-    t.boolean  "closed",                   default: false,          null: false
-    t.datetime "created_at",               default: -> { "now()" }, null: false
-    t.datetime "updated_at",               default: -> { "now()" }, null: false
-    t.integer  "subject_id",                                        null: false
-    t.datetime "commented_at",             default: -> { "now()" }, null: false
+    t.boolean  "closed",                       default: false,          null: false
+    t.datetime "created_at",                   default: -> { "now()" }, null: false
+    t.datetime "updated_at",                   default: -> { "now()" }, null: false
+    t.integer  "subject_id",                                            null: false
+    t.datetime "commented_at",                 default: -> { "now()" }, null: false
   end
 
   create_table "enrollments", force: :cascade do |t|

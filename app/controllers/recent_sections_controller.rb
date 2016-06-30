@@ -1,5 +1,6 @@
 class RecentSectionsController < ApplicationController
   def index
-    paginate json: Section.recent, each_serializer: RecentSectionSerializer
+    authorize Section
+    paginate json: policy_scope(Section).recent, each_serializer: RecentSectionSerializer
   end
 end

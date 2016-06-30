@@ -3,16 +3,17 @@ class SectionsController < ApplicationController
   before_action :set_section, only: :show
 
   def show
+    authorize @section
     render json: @section, serializer: Sections::ShowSerializer
   end
 
   private
 
   def set_publication
-    @publication = Publication.find(params[:publication_id])
+    @publication = policy_scope(Publication).find(params[:publication_id])
   end
 
   def set_section
-    @section = Section.find(params[:id])
+    @section = policy_scope(Section).find(params[:id])
   end
 end

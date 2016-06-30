@@ -3,11 +3,13 @@ class CommentsController < ApplicationController
   before_action :authenticate_user, only: [:create]
 
   def index
-    paginate json: @discussion.comments.old_first
+    authorize Comment
+    paginate json: policy_scope(@discussion.comments).old_first
   end
 
   def create
     form = CommentForm.new(@discussion, current_user, comment_params)
+    authorize form.comment
 
     if form.save
       render json: form.comment, status: :created

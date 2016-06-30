@@ -14,7 +14,7 @@ class Publications::ShowSerializer < PublicationSerializer
   end
 
   def related
-    Publication.order('RANDOM()').limit(10).map do |publication|
+    PublicationPolicy::Scope.new(current_user, Publication).resolve.order('RANDOM()').limit(10).map do |publication|
       PublicationSerializer.new(publication)
     end
   end

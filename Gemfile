@@ -37,6 +37,9 @@ gem 'koala'
 # Mime Types
 gem 'mime-types'
 
+# Authorization policies
+gem 'pundit'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
