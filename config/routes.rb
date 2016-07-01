@@ -33,7 +33,9 @@ Rails.application.routes.draw do
   resources :publications, only: [:index, :show] do
     resource :banner, only: :show
     resource :pdf, only: :show
-    resources :sections, only: [:show]
+    resources :sections, only: [:show] do
+      resources :images, only: [:show]
+    end
   end
 
   resources :categories, only: [:index, :show] do
