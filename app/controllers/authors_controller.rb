@@ -18,7 +18,7 @@ class AuthorsController < ApplicationController
   private
 
   def authors
-    if params[:random].to_s === '1'
+    if params[:random].to_s == '1'
       policy_scope(Author).random_order.all
     else
       policy_scope(Author).order(:pen_name).all

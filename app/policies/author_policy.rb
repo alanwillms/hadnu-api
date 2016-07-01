@@ -16,9 +16,7 @@ class AuthorPolicy < ApplicationPolicy
           SELECT author_id
           FROM authors_pseudonyms_publications
           JOIN publications ON publications.id = publication_id
-          WHERE
-            published = TRUE
-            AND blocked = FALSE
+          WHERE published = TRUE AND blocked = FALSE
         )")
       end
     end

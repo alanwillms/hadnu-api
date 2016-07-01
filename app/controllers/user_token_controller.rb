@@ -1,3 +1,4 @@
 class UserTokenController < Knock::AuthTokenController
-  skip_authorization
+  include Pundit
+  before_action :skip_authorization
 end

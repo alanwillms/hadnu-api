@@ -2,7 +2,7 @@ class Sections::ShowSerializer < SectionSerializer
   include Rails.application.routes.url_helpers
 
   attributes :text, :seo_keywords, :seo_description, :published_at, :next,
-    :previous
+             :previous
 
   def previous
     object.previous ? SectionSerializer.new(object.previous) : nil
@@ -13,14 +13,15 @@ class Sections::ShowSerializer < SectionSerializer
   end
 
   def text
+    return nil unless object.text
     text = object.text
-    if text
-      base_url = publication_section_url(object.publication, object) + '/images/'
-      text = text.gsub('<livrourl>/', base_url)
-      text = text.gsub('<livrourl>', base_url)
-      text = text.gsub(/\/library\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
-      text = text.gsub(/http\:\/\/hadnu\.org\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
-    end
+    base_url = publication_section_url(object.publication, object) + '/images/'
+    text = text.gsub('images/symbols/', 'static/images/symbols/')
+    text = text.gsub('images/layout/', 'static/images/layout/')
+    text = text.gsub('<livrourl>/', base_url)
+    text = text.gsub('<livrourl>', base_url)
+    text = text.gsub(/\/library\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
+    text = text.gsub(/http\:\/\/hadnu\.org\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
     text
   end
 end
