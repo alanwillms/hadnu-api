@@ -22,6 +22,7 @@ class Sections::ShowSerializer < SectionSerializer
     text = text.gsub('<livrourl>', base_url)
     text = text.gsub(/\/library\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
     text = text.gsub(/http\:\/\/hadnu\.org\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
+    text = text.gsub(/\/sections\-images\/view\?section\_id\=\d+\&amp\;file\=\//, base_url)
     text
   end
 end
