@@ -42,5 +42,8 @@ module HadnuApi
         )
       end
     end
+
+    # Rate Limiting and Throttling
+    config.middleware.use Rack::Attack
   end
 end
