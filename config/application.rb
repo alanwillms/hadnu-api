@@ -1,16 +1,16 @@
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "action_view/railtie"
-require "action_cable/engine"
-# require "sprockets/railtie"
-require "rails/test_unit/railtie"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'action_view/railtie'
+require 'action_cable/engine'
+# require 'sprockets/railtie'
+require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,7 +18,7 @@ Bundler.require(*Rails.groups)
 
 module HadnuApi
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
+    # Settings in config/environments/* take precedence over those here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
@@ -29,5 +29,18 @@ module HadnuApi
 
     # Add forms directory to the path
     config.autoload_paths += Dir[Rails.root.join('app', 'forms', '{*/}')]
+
+    # CORS
+    config.middleware.insert_before 0, 'Rack::Cors' do
+      allow do
+        origins 'www.hadnu.org', 'hadnu.org'
+        resource(
+          '*',
+          headers: :any,
+          methods: [:get, :post, :delete, :put, :patch, :options, :head],
+          expose: ['Authorization', 'Content-Type', 'X-Total', 'X-Per-Page', 'X-Page']
+        )
+      end
+    end
   end
 end

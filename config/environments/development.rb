@@ -1,5 +1,5 @@
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+  # Settings here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -47,11 +47,16 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Allow any Origin
-  config.action_dispatch.default_headers.merge!({
-    'Access-Control-Allow-Origin' => '*',
-    'Access-Control-Request-Method' => '*',
-    'Access-Control-Allow-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page',
-    'Access-Control-Expose-Headers' => 'Authorization, Content-Type, X-Total, X-Per-Page, X-Page'
-  })
+  # CORS
+  config.middleware.insert_before 0, 'Rack::Cors' do
+    allow do
+      origins '*'
+      resource(
+        '*',
+        headers: :any,
+        methods: [:get, :post, :delete, :put, :patch, :options, :head],
+        expose: ['Authorization', 'Content-Type', 'X-Total', 'X-Per-Page', 'X-Page']
+      )
+    end
+  end
 end
