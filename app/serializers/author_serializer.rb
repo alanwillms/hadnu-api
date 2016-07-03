@@ -1,9 +1,11 @@
 class AuthorSerializer < ActiveModel::Serializer
-  include Rails.application.routes.url_helpers
+  attributes :id, :pen_name, :photo_url, :photo_thumb_url
 
-  attributes :id, :pen_name, :photo_url
+  def photo_thumb_url
+    object.photo.url(:thumb) if object.photo.exists?
+  end
 
   def photo_url
-    author_photo_url object if object.photo_file
+    object.photo.url(:card) if object.photo.exists?
   end
 end

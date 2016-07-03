@@ -59,4 +59,7 @@ Rails.application.configure do
       )
     end
   end
+
+  # Assets path
+  config.action_controller.asset_host = "http://localhost:3000/"
 end

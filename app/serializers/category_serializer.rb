@@ -1,9 +1,9 @@
 class CategorySerializer < ActiveModel::Serializer
-  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::AssetTagHelper
 
   attributes :id, :name, :description, :banner_url
 
   def banner_url
-    category_banner_url object if object.banner_file
+    object.banner.url(:card) if object.banner.exists?
   end
 end

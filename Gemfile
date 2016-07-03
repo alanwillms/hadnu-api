@@ -47,6 +47,9 @@ gem 'mime-types'
 # Authorization policies
 gem 'pundit'
 
+# CKEditor uploads back-end
+gem 'paperclip'
+
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

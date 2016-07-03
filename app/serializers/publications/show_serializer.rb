@@ -10,7 +10,7 @@ class Publications::ShowSerializer < PublicationSerializer
   end
 
   def pdf_url
-    publication_pdf_url object if object.pdf_file
+    object.pdf.url if object.pdf.exists?
   end
 
   def related

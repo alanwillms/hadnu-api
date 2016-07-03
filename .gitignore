@@ -22,3 +22,6 @@
 
 # Environment variables
 .env
+
+# Uploads
+/public/system

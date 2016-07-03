@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629183732) do
+ActiveRecord::Schema.define(version: 20160703180920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,15 +34,19 @@ ActiveRecord::Schema.define(version: 20160629183732) do
   end
 
   create_table "authors", force: :cascade do |t|
-    t.string   "pen_name",       limit: 255,                          null: false
-    t.string   "real_name",      limit: 255
+    t.string   "pen_name",           limit: 255,                          null: false
+    t.string   "real_name",          limit: 255
     t.text     "description"
-    t.string   "photo_file",     limit: 255
+    t.string   "photo_file",         limit: 255
     t.date     "born_on"
     t.date     "passed_away_on"
-    t.datetime "created_at",                 default: -> { "now()" }, null: false
+    t.datetime "created_at",                     default: -> { "now()" }, null: false
     t.datetime "updated_at"
-    t.integer  "user_id",                                             null: false
+    t.integer  "user_id",                                                 null: false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   create_table "authors_pseudonyms_publications", force: :cascade do |t|
@@ -67,12 +70,16 @@ ActiveRecord::Schema.define(version: 20160629183732) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",        limit: 255,                          null: false
+    t.string   "name",                limit: 255,                          null: false
     t.text     "description"
-    t.string   "banner_file", limit: 255
-    t.integer  "hits",                    default: 0,              null: false
-    t.datetime "created_at",              default: -> { "now()" }, null: false
-    t.datetime "updated_at",              default: -> { "now()" }, null: false
+    t.string   "banner_file",         limit: 255
+    t.integer  "hits",                            default: 0,              null: false
+    t.datetime "created_at",                      default: -> { "now()" }, null: false
+    t.datetime "updated_at",                      default: -> { "now()" }, null: false
+    t.string   "banner_file_name"
+    t.string   "banner_content_type"
+    t.integer  "banner_file_size"
+    t.datetime "banner_updated_at"
   end
 
   create_table "categories_publications", force: :cascade do |t|
@@ -203,19 +210,27 @@ ActiveRecord::Schema.define(version: 20160629183732) do
   end
 
   create_table "publications", force: :cascade do |t|
-    t.string   "title",            limit: 255,                  null: false
-    t.string   "original_title",   limit: 255
+    t.string   "title",               limit: 255,                  null: false
+    t.string   "original_title",      limit: 255
     t.text     "description"
-    t.datetime "created_at",                                    null: false
+    t.datetime "created_at",                                       null: false
     t.datetime "updated_at"
-    t.boolean  "blocked",                       default: false, null: false
-    t.integer  "hits",                          default: 0,     null: false
-    t.string   "copyright_notice", limit: 1024
-    t.string   "banner_file",      limit: 255
-    t.boolean  "featured",                      default: false, null: false
-    t.string   "pdf_file",         limit: 255
+    t.boolean  "blocked",                          default: false, null: false
+    t.integer  "hits",                             default: 0,     null: false
+    t.string   "copyright_notice",    limit: 1024
+    t.string   "banner_file",         limit: 255
+    t.boolean  "featured",                         default: false, null: false
+    t.string   "pdf_file",            limit: 255
     t.integer  "user_id"
-    t.boolean  "published",                     default: true,  null: false
+    t.boolean  "published",                        default: true,  null: false
+    t.string   "banner_file_name"
+    t.string   "banner_content_type"
+    t.integer  "banner_file_size"
+    t.datetime "banner_updated_at"
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
   end
 
   create_table "roles_users", force: :cascade do |t|
