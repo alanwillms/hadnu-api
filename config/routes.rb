@@ -26,13 +26,10 @@ Rails.application.routes.draw do
   resources :user_registrations, only: :create
 
   resources :authors, only: [:index, :show] do
-    resource :photo, only: :show
     resources :publications, only: :index
   end
 
   resources :publications, only: [:index, :show] do
-    resource :banner, only: :show
-    resource :pdf, only: :show
     resources :sections, only: [:show] do
       resources :images, only: [:show]
     end
