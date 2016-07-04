@@ -45,5 +45,9 @@ module HadnuApi
 
     # Rate Limiting and Throttling
     config.middleware.use Rack::Attack
+
+    # I18n
+    config.i18n.default_locale = 'pt-BR'
+    config.i18n.available_locales = ['pt-BR', :en]
   end
 end

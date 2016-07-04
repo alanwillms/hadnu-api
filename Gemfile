@@ -50,6 +50,12 @@ gem 'pundit'
 # CKEditor uploads back-end
 gem 'paperclip'
 
+# ReCaptcha validation
+gem 'recaptcha'
+
+# I18n
+gem 'rails-i18n', '~> 5.0.0'
+
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

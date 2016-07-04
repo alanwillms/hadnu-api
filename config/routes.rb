@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
-  # Authentication
+  # Common
   post 'auth/:provider/callback' => 'omniauth#create'
   post 'user_token' => 'user_token#create'
-
-  # Regular routes
   resources :users, only: :show
+  resources :user_registrations, only: :create
+
+  # Library
   resources :featured_publications, only: :index
   resources :recent_sections, only: :index
-
-  resources :user_registrations, only: :create
 
   resources :authors, only: [:index, :show] do
     resources :publications, only: :index
@@ -24,6 +23,7 @@ Rails.application.routes.draw do
     resources :publications, only: :index
   end
 
+  # Forum
   resources :subjects, only: [:show, :index] do
     resources :discussions, only: :index
   end
