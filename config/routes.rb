@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post 'user_token' => 'user_token#create'
   resources :users, only: :show
   resources :user_registrations, only: :create
+  resource :user_password, only: :create
 
   # Library
   resources :featured_publications, only: :index
