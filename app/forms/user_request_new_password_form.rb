@@ -1,4 +1,4 @@
-class UserPasswordForm
+class UserRequestNewPasswordForm
   include ActiveModel::Model
   include ActiveModel::Validations
 

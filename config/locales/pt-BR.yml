@@ -3,3 +3,7 @@ pt-BR:
     errors:
       verification_failed: 'A verificação do reCAPTCHA falhou, por favor tente novamente.'
       recaptcha_unreachable: 'Ops, ocorreu um erro ao validar o seu código. Por favor, tente novamente.'
+  activerecord:
+    attributes:
+      user_reset_password_form:
+        password: Senha
