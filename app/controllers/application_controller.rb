@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  etag { current_user&.id }
+
   include ActionController::Serialization
   include Knock::Authenticable
   include Pundit
