@@ -1,5 +1,5 @@
 class AuthorSerializer < ActiveModel::Serializer
-  attributes :id, :pen_name, :photo_url, :photo_thumb_url
+  attributes :id, :pen_name, :real_name, :photo_url, :photo_thumb_url
 
   def photo_thumb_url
     object.photo.url(:thumb) if object.photo.exists?
