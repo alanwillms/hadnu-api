@@ -7,10 +7,10 @@ describe DiscussionsController do
     it 'lists discussions' do
       discussion = create(:discussion)
       get :index
-      expect(json_response.first).to include({
+      expect(json_response.first).to include(
         'id' => discussion.id,
         'title' => discussion.title
-      })
+      )
     end
   end
 
@@ -45,9 +45,9 @@ describe DiscussionsController do
       end
 
       it 'outputs discussion data' do
-        expect(json_response).to include({
-          'title' => valid_params[:discussion][:title],
-        })
+        expect(json_response).to include(
+          'title' => valid_params[:discussion][:title]
+        )
       end
     end
 
@@ -76,7 +76,7 @@ describe DiscussionsController do
       end
 
       it 'outputs errors' do
-        expect(json_response).to include({"title" => ["can't be blank"]})
+        expect(json_response).to include('title' => ["can't be blank"])
       end
     end
 
@@ -105,7 +105,7 @@ describe DiscussionsController do
       end
 
       it 'outputs errors' do
-        expect(json_response).to include({"comment" => ["can't be blank"]})
+        expect(json_response).to include('comment' => ["can't be blank"])
       end
     end
 
@@ -114,6 +114,17 @@ describe DiscussionsController do
         post :create, params: valid_params
         expect(response.status).to eq(401)
       end
+    end
+  end
+
+  describe '#show' do
+    it 'display discussion' do
+      discussion = create(:discussion)
+      get :show, params: { id: discussion.id }
+      expect(json_response).to include(
+        'id' => discussion.id,
+        'title' => discussion.title
+      )
     end
   end
 end
