@@ -7,7 +7,7 @@ class UserRequestNewPasswordForm
   validates :email, presence: true
 
   def save
-    validate
+    validate && user
   end
 
   def user
