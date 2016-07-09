@@ -12,6 +12,18 @@ describe DiscussionsController do
         'title' => discussion.title
       )
     end
+
+    it 'lists discussions by subject' do
+      create(:discussion)
+      create(:discussion)
+      subject = create(:subject)
+      discussion = create(:discussion, subject: subject)
+      get :index, params: { subject_id: subject.id }
+      expect(json_response.first).to include(
+        'id' => discussion.id,
+        'title' => discussion.title
+      )
+    end
   end
 
   describe '#create' do
