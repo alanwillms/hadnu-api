@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
 
   def index
     authorize Category
-    paginate json: policy_scope(Category).order(:name).all
+    paginate json: scope.order(:name).all
   end
 
   def show
@@ -14,6 +14,10 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = policy_scope(Category).find(params[:id])
+    @category = scope.find(params[:id])
+  end
+
+  def scope
+    policy_scope(Category)
   end
 end
