@@ -8,6 +8,7 @@ class User < ApplicationRecord
   validates :login, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+  validates :registration_ip, presence: true
 
   def admin?
     roles.any? { |role| role.role_name == 'owner' }
@@ -35,22 +36,30 @@ class User < ApplicationRecord
     where(blocked: false, email_confirmed: true)
   end
 
-  def self.from_facebook(profile)
+  def self.from_facebook(profile, request)
     where(facebook_id: profile['id']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
       user.facebook_id = profile['id']
       user.name = profile['name']
       user.login = profile['name']
       user.email = profile['email']
+      if user.new_record?
+        user.password = SecureRandom.uuid
+        user.registration_ip = request.remote_ip
+      end
       user.save!
     end
   end
 
-  def self.from_google(profile)
+  def self.from_google(profile, request)
     where(google_id: profile['sub']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
       user.google_id = profile['sub']
       user.name = profile['name']
       user.login = profile['name']
       user.email = profile['email']
+      if user.new_record?
+        user.password = SecureRandom.uuid
+        user.registration_ip = request.remote_ip
+      end
       user.save!
     end
   end
