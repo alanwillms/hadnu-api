@@ -4,13 +4,14 @@ class ImagesController < ApplicationController
 
   def show
     skip_authorization
-    unless @publication && @section
-      raise ActiveRecord::RecordNotFound
-    end
     file_name = params[:id].split('/').last.split('\\').last + '.' + params[:format]
     file_path = ENV['HADNU_SECTIONS_IMAGES_DIRECTORY'] + "#{@publication.id}/#{@section.id}/#{file_name}"
-    mime_type = MIME::Types.type_for(file_name).first.content_type
-    send_file file_path, type: mime_type, disposition: 'inline'
+    begin
+      mime_type = MIME::Types.type_for(file_name).first.content_type
+      send_file file_path, type: mime_type, disposition: 'inline'
+    rescue
+      head 404
+    end
   end
 
   private
