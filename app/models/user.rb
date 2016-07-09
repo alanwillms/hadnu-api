@@ -27,6 +27,10 @@ class User < ApplicationRecord
     active.find_by login: login
   end
 
+  def self.from_token_payload(payload)
+    active.find_by id: payload['sub']
+  end
+
   def self.active
     where(blocked: false, email_confirmed: true)
   end

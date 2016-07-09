@@ -25,3 +25,6 @@
 
 # Uploads
 /public/system
+
+# Code coverage
+coverage

@@ -3,11 +3,7 @@ class AuthorsController < ApplicationController
 
   def index
     authorize Author
-    if params[:all]
-      render json: authors
-    else
-      paginate json: authors
-    end
+    render json: authors.all
   end
 
   def show
@@ -19,13 +15,17 @@ class AuthorsController < ApplicationController
 
   def authors
     if params[:random].to_s == '1'
-      policy_scope(Author).random_order.all
+      scope.random_order
     else
-      policy_scope(Author).order(:pen_name).all
+      scope.order(:pen_name)
     end
   end
 
   def set_author
-    @author = policy_scope(Author).find(params[:id])
+    @author = scope.find(params[:id])
+  end
+
+  def scope
+    policy_scope(Author)
   end
 end
