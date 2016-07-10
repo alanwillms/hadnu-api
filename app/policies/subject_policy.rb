@@ -7,9 +7,15 @@ class SubjectPolicy < ApplicationPolicy
     true
   end
 
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def create?
+    admin_user?
+  end
+
+  def update?
+    admin_user?
+  end
+
+  def destroy?
+    admin_user?
   end
 end
