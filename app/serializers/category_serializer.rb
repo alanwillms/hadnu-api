@@ -1,6 +1,4 @@
 class CategorySerializer < ActiveModel::Serializer
-  include ActionView::Helpers::AssetTagHelper
-
   attributes :id, :name, :description, :banner_url
 
   def banner_url
