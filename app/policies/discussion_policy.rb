@@ -8,12 +8,14 @@ class DiscussionPolicy < ApplicationPolicy
   end
 
   def create?
-    !!user
+    authenticated_user?
   end
 
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def update?
+    admin_user?
+  end
+
+  def destroy?
+    admin_user?
   end
 end
