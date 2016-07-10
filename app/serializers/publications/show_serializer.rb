@@ -1,6 +1,6 @@
 class Publications::ShowSerializer < PublicationSerializer
   attributes :original_title, :hits, :copyright_notice, :pdf_url,
-    :root_section_id, :related
+             :root_section_id, :related
 
   has_many :authors
   has_many :sections
@@ -14,7 +14,8 @@ class Publications::ShowSerializer < PublicationSerializer
   end
 
   def related
-    PublicationPolicy::Scope.new(current_user, Publication).resolve.order('RANDOM()').limit(10).map do |publication|
+    scope = PublicationPolicy::Scope.new(current_user, Publication).resolve
+    scope.random_order.limit(10).map do |publication|
       PublicationSerializer.new(publication)
     end
   end

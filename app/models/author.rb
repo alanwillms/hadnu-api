@@ -7,8 +7,4 @@ class Author < ApplicationRecord
 
   validates_attachment_content_type :photo, content_type: %r{\Aimage\/.*\Z}
   validates :pen_name, presence: true
-
-  def self.random_order
-    order('RANDOM()')
-  end
 end
