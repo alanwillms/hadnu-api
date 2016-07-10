@@ -3,13 +3,19 @@ class CommentPolicy < ApplicationPolicy
     true
   end
 
-  def create?
-    !!user
+  def show?
+    true
   end
 
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def create?
+    authenticated_user?
+  end
+
+  def update?
+    admin_user?
+  end
+
+  def destroy?
+    admin_user?
   end
 end
