@@ -3,21 +3,25 @@ class PublicationPolicy < ApplicationPolicy
     true
   end
 
+  def show?
+    (record.published && !record.blocked) || admin_user?
+  end
+
   def create?
-    false
+    admin_user?
   end
 
   def update?
-    false
+    admin_user?
   end
 
-  def show?
-    (record.published && !record.blocked) || (user && user.admin?)
+  def destroy?
+    admin_user?
   end
 
   class Scope < Scope
     def resolve
-      if user && user.admin?
+      if admin_user?
         scope.all
       else
         scope.where(published: true, blocked: false)
