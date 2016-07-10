@@ -3,21 +3,25 @@ class CategoryPolicy < ApplicationPolicy
     true
   end
 
-  def create?
-    false
-  end
-
-  def update?
-    false
-  end
-
   def show?
     true
   end
 
+  def create?
+    admin_user?
+  end
+
+  def update?
+    admin_user?
+  end
+
+  def destroy?
+    admin_user?
+  end
+
   class Scope < Scope
     def resolve
-      if user && user.admin?
+      if admin_user?
         scope.all
       else
         scope.where("id IN (

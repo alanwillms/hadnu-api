@@ -21,7 +21,7 @@ class AuthorPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user && user.admin?
+      if admin_user?
         scope.all
       else
         scope.where("id IN (
