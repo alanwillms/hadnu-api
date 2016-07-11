@@ -21,6 +21,7 @@ class PublicationsController < ApplicationController
     else
       Publication
     end
+    scope.random_order if params[:order] == 'random'
     policy_scope scope
   end
 

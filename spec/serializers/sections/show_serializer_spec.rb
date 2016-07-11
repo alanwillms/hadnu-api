@@ -18,4 +18,17 @@ describe Sections::ShowSerializer do
       'text' => record.text
     )
   end
+
+  it 'replace images tokens in the text' do
+    original_text = '<livrourl>'
+    record = create(:section, text: original_text)
+    fixed_text = [
+      'http://localhost:3000/publications/',
+      record.publication_id.to_s,
+      '/sections/',
+      record.id.to_s,
+      '/images/'
+    ].join
+    expect(serialize(record)['text']).to eq(fixed_text)
+  end
 end
