@@ -7,3 +7,6 @@ pt-BR:
     attributes:
       user_reset_password_form:
         password: Senha
+    errors:
+      messages:
+        must_belong_to_author: 'deve pertencer ao autor'
