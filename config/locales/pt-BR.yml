@@ -10,3 +10,4 @@ pt-BR:
     errors:
       messages:
         must_belong_to_author: 'deve pertencer ao autor'
+        wait_one_minute: 'por favor aguarde um minuto antes de postar o próximo comentário'

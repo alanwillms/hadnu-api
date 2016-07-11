@@ -3,3 +3,4 @@ en:
     errors:
       messages:
         must_belong_to_author: 'must belong to the author'
+        wait_one_minute: 'please wait one minute before posting another comment'

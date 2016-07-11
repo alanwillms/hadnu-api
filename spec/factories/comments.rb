@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :comment do
     discussion
     user
-    comment 'My great comment'
+    comment { Faker::Hipster.sentence }
   end
 end
