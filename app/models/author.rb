@@ -9,7 +9,9 @@ class Author < ApplicationRecord
 
   validates :user, presence: true
   validates :pen_name,
-            presence: true, length: { maximum: 255 }, uniqueness: true
+            presence: true,
+            length: { maximum: 255 },
+            uniqueness: { case_sensitive: false }
   validates :real_name, length: { maximum: 255 }
   validates :description, length: { maximum: 2000 }
   validates :born_on, date: true, allow_nil: true

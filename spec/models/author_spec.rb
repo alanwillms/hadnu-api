@@ -10,7 +10,7 @@ describe Author do
 
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:pen_name) }
-    it { should validate_uniqueness_of(:pen_name) }
+    it { should validate_uniqueness_of(:pen_name).case_insensitive }
     it { should validate_length_of(:pen_name).is_at_most(255) }
     it { should validate_length_of(:real_name).is_at_most(255) }
     it { should validate_length_of(:description).is_at_most(2000) }

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AuthorPseudonymPublication do
   context 'validations' do
-    before { build(:author_pseudonym_publication) }
+    before { create(:author_pseudonym_publication) }
 
     it { should belong_to(:author) }
     it { should belong_to(:pseudonym) }
@@ -10,6 +10,7 @@ describe AuthorPseudonymPublication do
     it { should validate_presence_of(:author) }
     it { should validate_presence_of(:pseudonym) }
     it { should validate_presence_of(:publication) }
+    it { should validate_uniqueness_of(:pseudonym).scoped_to(:publication_id) }
 
     it 'validates that its pseudonym belong to its author' do
       author = create(:author)

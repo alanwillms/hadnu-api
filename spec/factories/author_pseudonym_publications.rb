@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :author_pseudonym_publication do
-    author
     pseudonym
+    author { pseudonym.author }
     publication
   end
 end

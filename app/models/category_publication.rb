@@ -3,4 +3,7 @@ class CategoryPublication < ApplicationRecord
 
   belongs_to :category
   belongs_to :publication
+
+  validates :category, presence: true, uniqueness: { scope: :publication_id }
+  validates :publication, presence: true
 end

@@ -6,7 +6,7 @@ class AuthorPseudonymPublication < ApplicationRecord
   belongs_to :publication
 
   validates :author, presence: true
-  validates :pseudonym, presence: true
+  validates :pseudonym, presence: true, uniqueness: { scope: :publication_id }
   validates :publication, presence: true
   validate :pseudonym_must_belong_to_author
 
