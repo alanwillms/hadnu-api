@@ -19,7 +19,9 @@ FactoryGirl.define do
         pseudonym = create(:pseudonym, author: author)
         create(
           :author_pseudonym_publication,
-          author: author, publication: create(:publication, blocked: true), pseudonym: pseudonym
+          author: author,
+          publication: create(:publication, blocked: true),
+          pseudonym: pseudonym
         )
       end
     end
@@ -29,7 +31,9 @@ FactoryGirl.define do
         pseudonym = create(:pseudonym, author: author)
         create(
           :author_pseudonym_publication,
-          author: author, publication: create(:publication, published: false), pseudonym: pseudonym
+          author: author,
+          publication: create(:publication, published: false),
+          pseudonym: pseudonym
         )
       end
     end

@@ -1,10 +1,19 @@
 class Author < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :publications, join_table: :authors_pseudonyms_publications
+  has_and_belongs_to_many :publications,
+                          join_table: :authors_pseudonyms_publications
+  has_many :pseudonyms
   has_attached_file :photo,
                     styles: { card: '630x354#', thumb: '100x100>' },
                     default_url: '/images/missing/author/:style.jpg'
 
+  validates :user, presence: true
+  validates :pen_name,
+            presence: true, length: { maximum: 255 }, uniqueness: true
+  validates :real_name, length: { maximum: 255 }
+  validates :description, length: { maximum: 2000 }
+  validates :born_on, date: true, allow_nil: true
+  validates :passed_away_on, date: true, allow_nil: true
   validates_attachment_content_type :photo, content_type: %r{\Aimage\/.*\Z}
-  validates :pen_name, presence: true
+  validates_attachment_size :photo, less_than: 2.megabytes
 end

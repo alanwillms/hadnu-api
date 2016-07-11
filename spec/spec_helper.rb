@@ -3,6 +3,7 @@ SimpleCov.start 'rails'
 
 require 'support/factory_girl'
 require 'support/controller_helpers'
+require 'paperclip/matchers'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -21,4 +22,6 @@ RSpec.configure do |config|
   end
 
   config.order = :random
+
+  config.include Paperclip::Shoulda::Matchers
 end
