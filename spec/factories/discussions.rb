@@ -7,6 +7,6 @@ FactoryGirl.define do
     user
     last_user { user }
     subject
-    commented_at { created_at }
+    commented_at { Time.now }
   end
 end
