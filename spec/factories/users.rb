@@ -7,7 +7,7 @@ FactoryGirl.define do
     login { Faker::Internet.user_name(nil, []) }
     email { Faker::Internet.safe_email }
     salt 'salt'
-    encrypted_password { Digest::SHA1.hexdigest('password' + salt) }
+    encrypted_password { Digest::SHA1.hexdigest('password' + salt.to_s) }
     email_confirmed true
     blocked false
     registration_ip { Faker::Internet.ip_v4_address }

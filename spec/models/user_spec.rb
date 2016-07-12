@@ -53,4 +53,171 @@ describe User do
     it { should_not allow_value('John').for(:login) }
     it { should_not allow_value('93john').for(:login) }
   end
+
+  describe '#admin?' do
+    it 'returns true if the user has a role named owner' do
+      user = create(:user)
+      create(:role_user, user: user, role_name: 'owner')
+      expect(user.admin?).to be(true)
+    end
+
+    it 'returns false if the user has another kind of role' do
+      user = create(:user)
+      create(:role_user, user: user, role_name: 'editor')
+      expect(user.admin?).to be(false)
+    end
+
+    it 'returns false if the user has no role' do
+      expect(create(:user).admin?).to be(false)
+    end
+  end
+
+  describe '#password=' do
+    it 'generates a salt if the salt is nil' do
+      user = build(:user, salt: nil)
+      user.password = 'foo'
+      expect(user.salt).not_to be_nil
+    end
+
+    it 'stores the encrypted_password' do
+      user = build(:user, encrypted_password: nil)
+      user.password = 'foo'
+      expect(user.encrypted_password).not_to be_nil
+    end
+  end
+
+  describe '#authenticate' do
+    it 'returns true if the encrypted_password matches the value' do
+      user = build(:user)
+      user.password = 'pikachu'
+      expect(user.authenticate('pikachu')).to be(true)
+    end
+
+    it 'returns false if the encrypted_password does not match the value' do
+      user = build(:user)
+      user.password = 'pikachu'
+      expect(user.authenticate('meowth')).to be(false)
+    end
+  end
+
+  describe '.from_token_request' do
+    it 'finds record by login based on params[auth][login]' do
+      user = create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => { 'login' => user.login }
+      )
+      expect(User.from_token_request(request)).to eq(user)
+    end
+
+    it 'returns nil if cannot find by params[auth][login]' do
+      create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => { 'login' => 'invalid' }
+      )
+      expect(User.from_token_request(request)).to be_nil
+    end
+
+    it 'returns nil if there is no params[auth][login]' do
+      create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => {}
+      )
+      expect(User.from_token_request(request)).to be_nil
+    end
+
+    it 'returns nil if there is no params[auth]' do
+      create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return({})
+      expect(User.from_token_request(request)).to be_nil
+    end
+  end
+
+  describe '.from_token_payload' do
+    it 'finds user by id with JWT payload[sub]' do
+      user = create(:user)
+      expect(User.from_token_payload('sub' => user.id)).to eq(user)
+    end
+
+    it 'returns nil with invalid JWT payload[sub]' do
+      create(:user)
+      expect(User.from_token_payload('sub' => 0)).to be_nil
+    end
+
+    it 'returns nil with invalid JWT payload' do
+      create(:user)
+      expect(User.from_token_payload({})).to be_nil
+    end
+  end
+
+  describe '.from_facebook' do
+    let(:profile) do
+      {
+        'id' => 42,
+        'name' => 'Douglas Adams',
+        'email' => 'douglas.adams@adams.com'
+      }
+    end
+
+    let(:request) do
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:remote_ip).and_return('127.0.0.1')
+      request
+    end
+
+    it 'finds user by facebook_id if it matches' do
+      user = create(:user, facebook_id: profile['id'])
+      expect(User.from_facebook(profile, request)).to eq(user)
+    end
+
+    it 'finds user by email if it matches' do
+      user = create(:user, email: profile['email'])
+      expect(User.from_facebook(profile, request)).to eq(user)
+    end
+
+    it 'creates a new user if email and facebook_id don\'t match' do
+      expect(User.from_facebook(profile, request)).to be_a(User)
+    end
+
+    it 'creates user login based on the email address' do
+      expect(User.from_facebook(profile, request).login).to eq('douglasadams')
+    end
+  end
+
+  describe '.from_google' do
+    let(:profile) do
+      {
+        'sub' => 42,
+        'name' => 'Douglas Adams',
+        'email' => 'douglas.adams@adams.com'
+      }
+    end
+
+    let(:request) do
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:remote_ip).and_return('127.0.0.1')
+      request
+    end
+
+    it 'finds user by google_id if it matches' do
+      user = create(:user, google_id: profile['sub'])
+      expect(User.from_google(profile, request)).to eq(user)
+    end
+
+    it 'finds user by email if it matches' do
+      user = create(:user, email: profile['email'])
+      expect(User.from_google(profile, request)).to eq(user)
+    end
+
+    it 'creates a new user if email and google_id don\'t match' do
+      expect(User.from_google(profile, request)).to be_a(User)
+    end
+
+    it 'creates user login based on the email address' do
+      expect(User.from_google(profile, request).login).to eq('douglasadams')
+    end
+  end
 end
