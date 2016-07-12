@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :section do
     title { Faker::Book.title }
     publication
+    user
 
     factory :blocked_section do
       publication { create(:publication, blocked: true) }
