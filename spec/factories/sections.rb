@@ -10,5 +10,10 @@ FactoryGirl.define do
     factory :unpublished_section do
       publication { create(:publication, published: false) }
     end
+
+    factory :root_section do
+      root_id nil
+      parent_id nil
+    end
   end
 end
