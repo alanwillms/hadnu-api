@@ -45,7 +45,7 @@ describe UserRegistrationsController do
 
       it 'renders errors' do
         expect(json_response).to include(
-          'login' => ['can\'t be blank']
+          'login' => ['can\'t be blank', 'is invalid']
         )
       end
     end

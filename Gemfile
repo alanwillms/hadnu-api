@@ -58,6 +58,8 @@ gem 'rails-i18n', '~> 5.0.0'
 
 # Validators
 gem 'date_validator'
+gem 'email_validator', require: 'email_validator/strict'
+gem 'activemodel-ipaddr_validator'
 
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
