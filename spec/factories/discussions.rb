@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :discussion do
-    title 'Who was born first?'
+    title { Faker::Hipster.sentence(3) }
     hits 0
     comments_counter 0
     closed false

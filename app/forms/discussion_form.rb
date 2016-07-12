@@ -7,6 +7,7 @@ class DiscussionForm
     @discussion = Discussion.new(params)
     @discussion.user = user
     @discussion.last_user = user
+    @discussion.commented_at = Time.now
   end
 
   def save
