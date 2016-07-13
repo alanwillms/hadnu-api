@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :publication do
     user
-    title { Faker::Book.title }
+    sequence(:title) { |n| "#{Faker::Book.title} #{n}" }
     blocked false
     published true
   end

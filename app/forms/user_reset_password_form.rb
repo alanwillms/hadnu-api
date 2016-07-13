@@ -13,7 +13,10 @@ class UserResetPasswordForm
       errors.add(:token, 'Token expired or invalid')
       return false
     end
-    validate
+    return false unless validate
+    user.password = password
+    user.password_recovery_code = nil
+    user.save
   end
 
   def user
