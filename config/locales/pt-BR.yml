@@ -13,5 +13,5 @@ pt-BR:
         wait_one_minute: 'por favor aguarde um minuto antes de postar o próximo comentário'
   email:
     confirm_email:
-      subject: Confirme a sua conta no Hadnu
+      subject: Ative a sua conta do Hadnu
       instructions: 'Para acessar a área interna do Hadnu, é necessário confirmar o seu endereço de e-mail. Para isso, clique sobre o link abaixo:'

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :users, only: :show
   resources :user_registrations, only: :create
   resource :user_password, only: [:create, :update]
+  resource :user_confirmation, only: :create
 
   # Library
   resources :featured_publications, only: :index

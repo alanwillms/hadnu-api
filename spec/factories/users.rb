@@ -4,8 +4,8 @@ require 'faker'
 FactoryGirl.define do
   factory :user do
     name { Faker::Name.name }
-    login { Faker::Internet.user_name(nil, []) }
-    email { Faker::Internet.safe_email }
+    sequence(:login) { |n| Faker::Internet.user_name(nil, []) + n.to_s }
+    sequence(:email) { |n| "#{n}#{Faker::Internet.safe_email}" }
     salt 'salt'
     encrypted_password { Digest::SHA1.hexdigest('password' + salt.to_s) }
     email_confirmed true

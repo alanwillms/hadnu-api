@@ -48,7 +48,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # CORS
-  config.middleware.insert_before 0, 'Rack::Cors' do
+  config.middleware.insert_before 0, Rack::Cors do
     allow do
       origins '*'
       resource(
@@ -61,5 +61,5 @@ Rails.application.configure do
   end
 
   # Assets path
-  config.action_controller.asset_host = "http://localhost:3000/"
+  config.action_controller.asset_host = 'http://localhost:3000/'
 end

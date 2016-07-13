@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :category do
-    name { Faker::Hipster.word.capitalize }
+    sequence(:name) { |n| "#{Faker::Hipster.word.capitalize} #{n}" }
     description { Faker::Hipster.sentence }
 
     factory :category_with_publications do
