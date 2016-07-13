@@ -10,7 +10,7 @@ describe CommentForm do
   describe '#save' do
     context 'with valid data' do
       let(:comment_form) do
-        params = {comment: 'Valid comment'}
+        params = { comment: 'Valid comment' }
         CommentForm.new(discussion, user, params)
       end
 
@@ -33,11 +33,25 @@ describe CommentForm do
       it 'returns true' do
         expect(comment_form.save).to be true
       end
+
+      it 'does not allow a new comment for 1 minute for the user' do
+        comment_form.save
+        form = CommentForm.new(discussion, user, comment: 'Another comment now')
+        expect(form.save).to be(false)
+        expect(form.errors.messages).to eq(
+          comment: ['please wait one minute before posting another comment']
+        )
+      end
+
+      it 'allow a new comment after the user waits 1 minute' do
+        create(:comment, user: user, created_at: 1.minute.ago)
+        expect(comment_form.save).to be(true)
+      end
     end
 
     context 'with invalid data' do
       let(:comment_form) do
-        params = {comment: nil}
+        params = { comment: nil }
         CommentForm.new(discussion, user, params)
       end
 

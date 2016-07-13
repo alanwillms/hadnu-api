@@ -15,24 +15,6 @@ describe Comment do
       should validate_uniqueness_of(:comment)
         .scoped_to(:discussion_id)
     end
-
-    # @TODO Move to comment form and discussion form
-    # it 'does not allow a new comment for 1 minute for the user' do
-    #   user = create(:user)
-    #   create(:comment, user: user)
-    #   comment = build(:comment, user: user)
-    #   expect(comment.save).to be(false)
-    #   expect(comment.errors.messages).to eq(
-    #     comment: ['please wait one minute before posting another comment']
-    #   )
-    # end
-    #
-    # it 'allow a new comment after the user waits 1 minute' do
-    #   user = create(:user)
-    #   create(:comment, user: user, created_at: 1.minute.ago)
-    #   comment = build(:comment, user: user)
-    #   expect(comment.save).to be(true)
-    # end
   end
 
   describe '.old_first' do
