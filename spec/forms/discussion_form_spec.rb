@@ -52,6 +52,19 @@ describe DiscussionForm do
       it 'returns true' do
         expect(discussion_form.save).to be true
       end
+
+      it 'does not allow a new discussion for 15 minutes for the user' do
+        create(:discussion, user: user)
+        expect(discussion_form.save).to be(false)
+        expect(discussion_form.errors.messages).to eq(
+          title: ['please wait 15 minutes before posting another discussion']
+        )
+      end
+
+      it 'allow a new comment after the user waits 15 minutes' do
+        create(:discussion, user: user, created_at: 15.minutes.ago)
+        expect(discussion_form.save).to be(true)
+      end
     end
 
     context 'with invalid discussion data' do

@@ -13,15 +13,13 @@ class DiscussionForm
   def save
     save!
     true
-  rescue ActiveRecord::RecordInvalid => exception
+  rescue ActiveRecord::RecordInvalid
     false
   end
 
   def save!
-    Discussion.transaction do
-      discussion.save!
-      comment_form.save!
-    end
+    check_if_user_waited_15_minutes
+    save_discussion_and_first_comment
   end
 
   def errors
@@ -30,7 +28,9 @@ class DiscussionForm
       discussion.errors.each { |attribute, error| errors.add(attribute, error) }
     end
     if comment_form.errors
-      comment_form.errors.each { |attribute, error| errors.add(attribute, error) }
+      comment_form.errors.each do |attribute, error|
+        errors.add(attribute, error)
+      end
     end
     errors
   end
@@ -38,6 +38,32 @@ class DiscussionForm
   private
 
   def comment_form
-    @comment_form ||= CommentForm.new(discussion, discussion.user, {comment: @comment_body})
+    @comment_form ||= CommentForm.new(
+      discussion,
+      discussion.user,
+      comment: @comment_body
+    )
+  end
+
+  def save_discussion_and_first_comment
+    Discussion.transaction do
+      discussion.save!
+      comment_form.save!
+    end
+  end
+
+  def check_if_user_waited_15_minutes
+    if created_discussion_more_recently_than_15_minutes?
+      message = I18n.t('activerecord.errors.messages.wait_15_minutes')
+      discussion.errors.add(:title, message)
+      raise ActiveRecord::RecordInvalid
+    end
+  end
+
+  def created_discussion_more_recently_than_15_minutes?
+    Discussion
+      .where(user_id: discussion.user.id)
+      .where('created_at > ?', 15.minutes.ago)
+      .count > 0
   end
 end
