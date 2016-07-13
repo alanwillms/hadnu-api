@@ -15,7 +15,8 @@ describe Publications::ShowSerializer do
       'pdf_url' => nil,
       'root_section_id' => nil,
       'authors' => [],
-      'sections' => []
+      'sections' => [],
+      'categories' => []
     )
   end
 end

@@ -4,6 +4,7 @@ class Publications::ShowSerializer < PublicationSerializer
 
   has_many :authors
   has_many :sections
+  has_many :categories
 
   def root_section_id
     object.root_section.id if object.root_section
