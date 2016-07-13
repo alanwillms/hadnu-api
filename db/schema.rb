@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160703180920) do
+ActiveRecord::Schema.define(version: 20160712233414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -289,8 +289,8 @@ ActiveRecord::Schema.define(version: 20160703180920) do
     t.datetime "updated_at"
     t.datetime "last_login_at"
     t.string   "last_login_ip",          limit: 255
-    t.string   "confirmation_code",      limit: 13
-    t.string   "password_recovery_code", limit: 13
+    t.string   "confirmation_code",      limit: 36
+    t.string   "password_recovery_code", limit: 36
     t.string   "phpbb_password",         limit: 255
     t.string   "registration_ip",        limit: 255,                          null: false
     t.string   "google_id",              limit: 255

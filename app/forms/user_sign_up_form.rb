@@ -6,7 +6,10 @@ class UserSignUpForm
   end
 
   def save
-    user.save
+    user.confirmation_code ||= SecureRandom.uuid
+    return false unless user.save
+    UserMailer.registration_confirmation(user).deliver_now
+    true
   end
 
   def errors

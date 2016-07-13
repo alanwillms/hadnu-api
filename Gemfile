@@ -81,6 +81,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker'
   gem 'shoulda-matchers'
+  gem 'email_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

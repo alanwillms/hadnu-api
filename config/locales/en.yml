@@ -4,3 +4,7 @@ en:
       messages:
         must_belong_to_author: 'must belong to the author'
         wait_one_minute: 'please wait one minute before posting another comment'
+  email:
+    confirm_email:
+      subject: Confirm your Hadnu account
+      instructions: In order to access Hadnu private pages, it is necessary to confirm your e-mail address. Please click the link bellow to confirm your account:'

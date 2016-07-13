@@ -4,6 +4,8 @@ SimpleCov.start 'rails'
 require 'support/factory_girl'
 require 'support/controller_helpers'
 require 'paperclip/matchers'
+require 'email_spec'
+require 'email_spec/rspec'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
