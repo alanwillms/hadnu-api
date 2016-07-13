@@ -7,4 +7,7 @@ en:
   email:
     confirm_email:
       subject: Confirm your Hadnu account
-      instructions: In order to access Hadnu private pages, it is necessary to confirm your e-mail address. Please click the link bellow to confirm your account:'
+      instructions: "In order to access Hadnu private pages, it is necessary to confirm your e-mail address. Please click the link bellow to confirm your account:"
+    reset_password:
+      subject: Hadnu password reset
+      instructions: "Click the link bellow to change your password. This link will only be valid for one change. If you did not request to change your password, please ignore this messsage."

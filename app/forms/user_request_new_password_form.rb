@@ -4,10 +4,14 @@ class UserRequestNewPasswordForm
 
   attr_accessor :email
 
-  validates :email, presence: true
+  validates :email, presence: true, email: true
 
   def save
-    validate && user
+    return false unless validate && user
+    user.password_recovery_code ||= SecureRandom.uuid
+    return false unless user.save
+    UserMailer.reset_password(user).deliver_now
+    true
   end
 
   def user

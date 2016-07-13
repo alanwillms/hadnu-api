@@ -7,4 +7,13 @@ class UserMailer < ApplicationMailer
     ].join
     mail to: user.email, subject: I18n.t('email.confirm_email.subject')
   end
+
+  def reset_password(user)
+    @name = user.name
+    @reset_password_url = [
+      ENV['HADNU_PASSWORD_RESET_URL'],
+      user.password_recovery_code
+    ].join
+    mail to: user.email, subject: I18n.t('email.reset_password.subject')
+  end
 end

@@ -14,4 +14,7 @@ pt-BR:
   email:
     confirm_email:
       subject: Ative a sua conta do Hadnu
-      instructions: 'Para acessar a área interna do Hadnu, é necessário confirmar o seu endereço de e-mail. Para isso, clique sobre o link abaixo:'
+      instructions: "Para acessar a área interna do Hadnu, é necessário confirmar o seu endereço de e-mail. Para isso, clique sobre o link abaixo:"
+    reset_password:
+      subject: Recuperar senha do Hadnu
+      instructions: "Clique no link abaixo para alterar a sua senha. Esse link só valerá para uma mudança. Caso você não tenha solicitado a recuperação da sua senha, por favor ignore esta mensagem."
