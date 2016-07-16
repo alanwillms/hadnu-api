@@ -36,7 +36,7 @@ module HadnuApi
     # CORS
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'www.hadnu.org', 'hadnu.org'
+        origins ENV['HADNU_CORS_ORIGINS'].split(',')
         resource(
           '*',
           headers: :any,
