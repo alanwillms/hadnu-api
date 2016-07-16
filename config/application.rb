@@ -30,6 +30,9 @@ module HadnuApi
     # Add forms directory to the path
     config.autoload_paths += Dir[Rails.root.join('app', 'forms', '{*/}')]
 
+    # Routes default host and port
+    Rails.application.routes.default_url_options[:host] = ENV['HADNU_DEFAULT_URL_HOST']
+
     # CORS
     config.middleware.insert_before 0, Rack::Cors do
       allow do
