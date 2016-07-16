@@ -61,12 +61,14 @@ gem 'date_validator'
 gem 'email_validator', require: 'email_validator/strict'
 gem 'activemodel-ipaddr_validator'
 
+# Environment variables
+gem 'dotenv-rails'
+
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'dotenv-rails'
 end
 
 group :development do
