@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 describe UserRequestNewPasswordForm do
+  describe '#validate' do
+    let(:form) { described_class.new(email: 'ghost@example.org') }
+
+    it 'returns false for unused email' do
+      expect(form.validate).to be(false)
+    end
+
+    it 'adds error message for unused email' do
+      form.validate
+      expect(form.errors.messages).to eq(
+        email: [I18n.t('activerecord.errors.messages.unused_email')]
+      )
+    end
+  end
+
   describe '#save' do
     let(:user) { create(:user, email: 'john@doe.com') }
     let(:form) { described_class.new(email: user.email) }

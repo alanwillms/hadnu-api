@@ -17,6 +17,29 @@ describe UserPasswordsController do
       end
     end
 
+    context 'without data' do
+      def create
+        post :create, params: { user_password: { email: '' } }
+      end
+
+      it 'has a 422 status' do
+        create
+        expect(response.status).to be(422)
+      end
+
+      it 'renders error for empty email' do
+        create
+        expect(json_response).to eq(
+          'email' => ["can't be blank", 'is invalid']
+        )
+      end
+
+      it 'does not trigger recaptcha validation' do
+        expect(controller).not_to receive(:verify_recaptcha)
+        create
+      end
+    end
+
     context 'with invalid user' do
       before :each do
         post :create, params: { user_password: { email: 'invalid@site.com' } }
@@ -26,8 +49,10 @@ describe UserPasswordsController do
         expect(response.status).to be(422)
       end
 
-      it 'renders errors' do
-        expect(response.body).to eq('{}')
+      it 'renders error for invalid user email' do
+        expect(json_response).to eq(
+          'email' => ['email not registered']
+        )
       end
     end
   end

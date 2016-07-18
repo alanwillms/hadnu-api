@@ -12,6 +12,7 @@ pt-BR:
         must_belong_to_author: 'deve pertencer ao autor'
         wait_one_minute: 'por favor aguarde um minuto antes de postar o próximo comentário'
         wait_15_minutes: 'por favor aguarde 15 minutos antes de postar uma nova discussão'
+        unused_email: 'não há uma conta com este endereço de e-mail'
   email:
     confirm_email:
       subject: Ative a sua conta do Hadnu

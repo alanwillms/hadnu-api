@@ -5,6 +5,7 @@ en:
         must_belong_to_author: 'must belong to the author'
         wait_one_minute: 'please wait one minute before posting another comment'
         wait_15_minutes: 'please wait 15 minutes before posting another discussion'
+        unused_email: 'email not registered'
   email:
     confirm_email:
       subject: Confirm your Hadnu account
