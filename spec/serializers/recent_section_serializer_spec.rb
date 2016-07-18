@@ -3,9 +3,10 @@ require 'rails_helper'
 describe RecentSectionSerializer do
   it 'serialize expected fields' do
     publication = create(:publication, title: 'Frankenstein')
-    record = create(:section, publication: publication)
+    record = create(:section, title: 'Frankenstein', publication: publication)
     expect(serialize(record)).to eq(
       'id' => record.id,
+      'slug' => "#{record.id}-frankenstein",
       'title' => record.title,
       'seo_description' => record.seo_description,
       'published_at' => nil,
