@@ -5,20 +5,22 @@ class UserRegistrationsController < ApplicationController
 
   def create
     skip_authorization
-    data = user_registration_params
-    data[:registration_ip] = request.remote_ip
-    model = UserSignUpForm.new(data)
+    form = UserSignUpForm.new(user_registration_params)
+    valid = form.validate && verify_recaptcha(model: form, attribute: :captcha)
 
-    if verify_recaptcha(model: model.user, attribute: :captcha) && model.save
-      render json: model.user, status: :created
+    if valid && form.save
+      render json: form.user, status: :created
     else
-      render json: model.errors, status: :unprocessable_entity
+      render json: form.errors, status: :unprocessable_entity
     end
   end
 
   private
 
   def user_registration_params
-    params.require(:user_registration).permit(:captcha, :name, :login, :password, :email)
+    user_data = params.require(:user_registration)
+                      .permit(:captcha, :name, :login, :password, :email)
+    user_data[:registration_ip] = request.remote_ip
+    user_data
   end
 end

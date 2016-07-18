@@ -13,7 +13,7 @@ describe UserSignUpForm do
     end
 
     it 'delegates to user.save' do
-      form = described_class.new({})
+      form = described_class.new(user_params)
       expect(form.user).to receive(:save).once
       form.save
     end
@@ -38,10 +38,13 @@ describe UserSignUpForm do
     it 'capture user validation errors' do
       form = described_class.new({})
       form.save
-      user_errors = form.user.errors.messages.dup
-      user_errors[:password] = user_errors[:encrypted_password]
-      user_errors.delete(:encrypted_password)
-      expect(form.errors.messages).to eq(user_errors)
+      expect(form.errors.messages).to eq(
+        email: ["can't be blank", 'is invalid'],
+        login: ["can't be blank", 'is invalid'],
+        name: ["can't be blank"],
+        password: ["can't be blank"],
+        registration_ip: ["can't be blank", 'is invalid format.']
+      )
     end
   end
 end
