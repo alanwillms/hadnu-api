@@ -1,31 +1,37 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: :show
-
   def index
     authorize Author
-    render json: authors.all
+    render json: authors.all if stale? etag: index_etag
   end
 
   def show
-    authorize @author
-    render json: @author
+    authorize author
+    render json: author if stale? etag: show_etag
   end
 
   private
 
-  def authors
-    if params[:random].to_s == '1'
-      scope.random_order
-    else
-      scope.order(:pen_name)
-    end
+  def index_etag
+    authors.maximum(:updated_at).to_s + ',' + authors.count.to_s
   end
 
-  def set_author
-    @author = scope.find(params[:id])
+  def show_etag
+    [
+      author.updated_at.to_s,
+      policy_scope(author.publications).count.to_s,
+      policy_scope(author.publications).maximum(:updated_at)
+    ].join(',')
   end
 
   def scope
     policy_scope(Author)
+  end
+
+  def authors
+    scope.order(:pen_name)
+  end
+
+  def author
+    @author ||= scope.find(params[:id])
   end
 end

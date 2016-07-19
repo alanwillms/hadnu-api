@@ -64,7 +64,8 @@ class User < ApplicationRecord
   end
 
   def self.from_token_payload(payload)
-    active.find_by id: payload['sub']
+    logger.fatal payload.inspect
+    active.find_by id: (payload['sub'] || payload[:sub])
   end
 
   def self.active

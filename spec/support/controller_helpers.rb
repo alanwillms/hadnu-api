@@ -1,7 +1,7 @@
 module ControllerHelpers
   def authenticate(user = nil)
     request.headers['authorization'] = 'Bearer JWTTOKEN'
-    knock = double("Knock")
+    knock = double('Knock')
     user = create(:user) unless user
     yield user if block_given?
     allow(knock).to receive(:current_user).and_return(user)
@@ -13,6 +13,11 @@ module ControllerHelpers
 
   def json_response
     JSON.parse(response.body)
+  end
+
+  def set_request_etag_headers
+    request.headers['HTTP_IF_NONE_MATCH'] = response.headers['ETag']
+    request.headers['HTTP_IF_MODIFIED_SINCE'] = response.headers['Last-Modified']
   end
 end
 

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :pseudonym do
-    name 'Aleister Crowley'
+    name { Faker::Name.name }
     author
     user
   end
