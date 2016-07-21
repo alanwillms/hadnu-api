@@ -6,26 +6,60 @@ describe CommentsController do
 
     it 'lists comments belonging to a given discussion' do
       comment = create(:comment, discussion: discussion)
-      get :index, params: {discussion_id: discussion.id}
-      expect(json_response.first).to include({
+      get :index, params: { discussion_id: discussion.id }
+      expect(json_response.first).to include(
         'id' => comment.id,
         'comment' => comment.comment
-      })
+      )
     end
 
     it 'does not list comments belonging to another discussion' do
-      comment_from_other_discussion = create(:comment)
-      get :index, params: {discussion_id: discussion.id}
+      # from another discussion
+      create(:comment)
+      get :index, params: { discussion_id: discussion.id }
       expect(json_response).to be_empty
+    end
+
+    it 'has a 200 status' do
+      get :index, params: { discussion_id: discussion.id }
+      expect(response.status).to be(200)
+    end
+
+    context 'cache' do
+      let(:comment) do
+        create(:comment, discussion: discussion, updated_at: 1.hour.ago)
+      end
+
+      before(:each) do
+        comment
+        get :index, params: { discussion_id: discussion.id }
+        set_request_etag_headers
+      end
+
+      it 'has a 304 status' do
+        get :index, params: { discussion_id: discussion.id }
+        expect(response.status).to be(304)
+      end
+
+      it 'expires if a comment gets updated' do
+        comment.touch
+        get :index, params: { discussion_id: discussion.id }
+        expect(response.status).to be(200)
+      end
+
+      it 'expires if a new comment is created' do
+        create(:comment, discussion: discussion)
+        get :index, params: { discussion_id: discussion.id }
+        expect(response.status).to be(200)
+      end
     end
   end
 
   describe '#create' do
     let(:valid_params) do
-      discussion = create(:discussion)
-      params = {
-        discussion_id: discussion.id,
-        comment: {comment: 'My great comment'}
+      {
+        discussion_id: create(:discussion).id,
+        comment: { comment: 'My great comment' }
       }
     end
 
@@ -45,7 +79,7 @@ describe CommentsController do
 
       it 'outputs comment data' do
         comment_data = {
-          'comment' => valid_params[:comment][:comment],
+          'comment' => valid_params[:comment][:comment]
         }
         expect(json_response).to include(comment_data)
       end
@@ -72,7 +106,7 @@ describe CommentsController do
       end
 
       it 'outputs errors' do
-        errors_data = {"comment" => ["can't be blank"]}
+        errors_data = { 'comment' => ["can't be blank"] }
         expect(json_response).to include(errors_data)
       end
     end

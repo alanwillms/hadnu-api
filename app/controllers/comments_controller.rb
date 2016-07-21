@@ -1,15 +1,15 @@
 class CommentsController < ApplicationController
-  before_action :set_discussion
-  before_action :authenticate_user, only: [:create]
+  before_action :authenticate_user, only: :create
 
   def index
     authorize Comment
-    paginate json: policy_scope(@discussion.comments).old_first
+    paginate json: comments.old_first if stale? etag: index_etag
   end
 
   def create
-    form = CommentForm.new(@discussion, current_user, comment_params)
+    form = CommentForm.new(discussion, current_user, comment_params)
     authorize form.comment
+    expires_now
 
     if form.save
       render json: form.comment, status: :created
@@ -20,8 +20,20 @@ class CommentsController < ApplicationController
 
   private
 
-  def set_discussion
-    @discussion = Discussion.find(params[:discussion_id])
+  def index_etag
+    [
+      comments.maximum(:updated_at).to_s,
+      comments.count.to_s,
+      request[:page].to_s
+    ].join(',')
+  end
+
+  def discussion
+    @discussion ||= Discussion.find(params[:discussion_id])
+  end
+
+  def comments
+    policy_scope(discussion.comments)
   end
 
   def comment_params
