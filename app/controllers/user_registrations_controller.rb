@@ -5,6 +5,7 @@ class UserRegistrationsController < ApplicationController
 
   def create
     skip_authorization
+    expires_now
     form = UserSignUpForm.new(user_registration_params)
     valid = form.validate && verify_recaptcha(model: form, attribute: :captcha)
 

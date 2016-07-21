@@ -15,6 +15,7 @@ class DiscussionsController < ApplicationController
   def create
     form = DiscussionForm.new(current_user, new_discussion_params)
     authorize form.discussion
+    expires_now
 
     if form.save
       render json: form.discussion, status: :created, location: form.discussion

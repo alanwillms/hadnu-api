@@ -1,6 +1,7 @@
 class UserConfirmationsController < ApplicationController
   def create
     skip_authorization
+    expires_now
     token = user_confirmation_params[:token]
     user = token.to_s.empty? ? nil : User.find_by(confirmation_code: token)
     if user

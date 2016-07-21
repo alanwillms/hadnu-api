@@ -3,6 +3,7 @@ require 'net/http'
 class OmniauthController < ApplicationController
   def create
     skip_authorization
+    expires_now
     begin
       user = get_user(params[:provider])
       render json: user_token(user), status: :created
