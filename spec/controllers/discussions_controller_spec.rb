@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe DiscussionsController do
   describe '#index' do
-    let(:discussion) { create(:discussion) }
-
     it 'lists discussions' do
       discussion = create(:discussion)
       get :index
@@ -23,6 +21,40 @@ describe DiscussionsController do
         'id' => discussion.id,
         'title' => discussion.title
       )
+    end
+
+    it 'has a 200 status' do
+      get :index
+      expect(response.status).to be(200)
+    end
+
+    context 'cache' do
+      let(:discussion) do
+        create(:discussion, updated_at: 1.hour.ago)
+      end
+
+      before(:each) do
+        discussion
+        get :index
+        set_request_etag_headers
+      end
+
+      it 'has a 304 status' do
+        get :index
+        expect(response.status).to be(304)
+      end
+
+      it 'expires if a discussion gets updated' do
+        discussion.touch
+        get :index
+        expect(response.status).to be(200)
+      end
+
+      it 'expires if a new discussion is created' do
+        create(:discussion)
+        get :index
+        expect(response.status).to be(200)
+      end
     end
   end
 
@@ -137,6 +169,34 @@ describe DiscussionsController do
         'id' => discussion.id,
         'title' => discussion.title
       )
+    end
+
+    it 'has a 200 status' do
+      discussion = create(:discussion)
+      get :show, params: { id: discussion.id }
+      expect(response.status).to be(200)
+    end
+
+    context 'cache' do
+      let(:discussion) { create(:discussion, updated_at: 1.hour.ago) }
+
+      before(:each) do
+        get :show, params: { id: discussion.id }
+        set_request_etag_headers
+      end
+
+      it 'has a 304 status' do
+        get :show, params: { id: discussion.id }
+        expect(response.status).to be(304)
+      end
+
+      it 'expires if gets updated' do
+        # Removes controller class cache
+        controller.instance_variable_set(:@discussion, nil)
+        discussion.touch
+        get :show, params: { id: discussion.id }
+        expect(response.status).to be(200)
+      end
     end
   end
 end

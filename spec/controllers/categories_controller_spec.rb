@@ -91,7 +91,7 @@ describe CategoriesController do
         expect(response.status).to be(200)
       end
 
-      it 'expires if a new publication is created written by him or her' do
+      it 'expires if a new publication is created within it' do
         create(:category_publication, category: category)
         get :show, params: { id: category.id }
         expect(response.status).to be(200)

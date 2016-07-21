@@ -1,15 +1,14 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show]
-  before_action :authenticate_user, only: [:create]
+  before_action :authenticate_user, only: :create
 
   def index
     authorize Discussion
-    paginate json: discussions.recent_first.all
+    paginate json: discussions.recent_first.all if stale? etag: index_etag
   end
 
   def show
-    authorize @discussion
-    render json: @discussion
+    authorize discussion
+    render json: discussion if stale? etag: show_etag
   end
 
   def create
@@ -26,6 +25,18 @@ class DiscussionsController < ApplicationController
 
   private
 
+  def index_etag
+    [
+      discussions.maximum(:updated_at).to_s,
+      discussions.count.to_s,
+      request[:page].to_s
+    ].join(',')
+  end
+
+  def show_etag
+    discussion.updated_at.to_s
+  end
+
   def discussions
     if params[:subject_id]
       policy_scope(Subject.find(params[:subject_id]).discussions)
@@ -34,8 +45,8 @@ class DiscussionsController < ApplicationController
     end
   end
 
-  def set_discussion
-    @discussion = policy_scope(Discussion).find(params[:id])
+  def discussion
+    @discussion ||= policy_scope(Discussion).find(params[:id])
   end
 
   def new_discussion_params
