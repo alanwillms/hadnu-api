@@ -12,7 +12,11 @@ class CategoriesController < ApplicationController
   private
 
   def index_etag
-    scope.maximum(:updated_at).to_s + ',' + scope.count.to_s
+    [
+      scope.maximum(:updated_at).to_s,
+      scope.count.to_s,
+      request[:page].to_s
+    ].join(',')
   end
 
   def show_etag
