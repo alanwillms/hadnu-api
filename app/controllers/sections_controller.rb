@@ -1,19 +1,27 @@
 class SectionsController < ApplicationController
-  before_action :set_publication, only: :show
-  before_action :set_section, only: :show
-
   def show
-    authorize @section
-    render json: @section, serializer: Sections::ShowSerializer
+    authorize section
+    if stale? etag: show_etag
+      render json: section, serializer: Sections::ShowSerializer
+    end
   end
 
   private
 
-  def set_publication
-    @publication = policy_scope(Publication).find(params[:publication_id])
+  def show_etag
+    [
+      section.updated_at.to_s,
+      publication.updated_at.to_s,
+      publication.sections.count.to_s,
+      publication.sections.maximum(:updated_at).to_s
+    ].join(',')
   end
 
-  def set_section
-    @section = policy_scope(Section).find(params[:id])
+  def publication
+    @publication ||= policy_scope(Publication).find(params[:publication_id])
+  end
+
+  def section
+    @section ||= policy_scope(publication.sections).find(params[:id])
   end
 end
