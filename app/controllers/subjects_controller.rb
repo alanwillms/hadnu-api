@@ -1,19 +1,33 @@
 class SubjectsController < ApplicationController
-  before_action :set_subject, only: :show
-
   def index
     authorize Subject
-    paginate json: Subject.order(:name).all
+    paginate json: subjects.all if stale? etag: index_etag
   end
 
   def show
-    authorize @subject
-    render json: @subject
+    authorize subject
+    render json: subject if stale? etag: show_etag
   end
 
   private
 
-  def set_subject
-    @subject = Subject.find(params[:id])
+  def index_etag
+    [
+      subjects.maximum(:updated_at).to_s,
+      subjects.count.to_s,
+      request[:page].to_s
+    ].join(',')
+  end
+
+  def show_etag
+    subject.updated_at.to_s
+  end
+
+  def subjects
+    Subject.order(:name)
+  end
+
+  def subject
+    @subject ||= Subject.find(params[:id])
   end
 end
