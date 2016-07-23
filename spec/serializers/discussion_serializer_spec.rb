@@ -14,6 +14,7 @@ describe DiscussionSerializer do
       'hits' => record.hits,
       'comments_counter' => record.comments_counter,
       'commented_at' => record.commented_at.to_json[1..-2],
+      'closed' => record.closed,
       'user' => {
         'id' => record.user.id,
         'login' => record.user.login,
