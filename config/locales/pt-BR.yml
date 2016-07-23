@@ -13,6 +13,7 @@ pt-BR:
         wait_one_minute: 'por favor aguarde um minuto antes de postar o próximo comentário'
         wait_15_minutes: 'por favor aguarde 15 minutos antes de postar uma nova discussão'
         unused_email: 'não há uma conta com este endereço de e-mail'
+        discussion_closed: 'você não pode postar um novo comentário em uma discussão encerrada'
   email:
     confirm_email:
       subject: Ative a sua conta do Hadnu

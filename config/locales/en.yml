@@ -6,6 +6,7 @@ en:
         wait_one_minute: 'please wait one minute before posting another comment'
         wait_15_minutes: 'please wait 15 minutes before posting another discussion'
         unused_email: 'email not registered'
+        discussion_closed: 'you cannot post a new comment in a closed discussion'
   email:
     confirm_email:
       subject: Confirm your Hadnu account

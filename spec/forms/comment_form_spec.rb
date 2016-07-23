@@ -47,6 +47,15 @@ describe CommentForm do
         create(:comment, user: user, created_at: 1.minute.ago)
         expect(comment_form.save).to be(true)
       end
+
+      it 'does not allow a new comment for a closed discussion' do
+        discussion.closed = true
+        discussion.save
+        expect(comment_form.save).to be(false)
+        expect(comment_form.errors.messages).to eq(
+          comment: ['you cannot post a new comment in a closed discussion']
+        )
+      end
     end
 
     context 'with invalid data' do

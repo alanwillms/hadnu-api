@@ -14,6 +14,7 @@ class CommentForm
   end
 
   def save!
+    check_if_discussion_is_open
     check_if_user_waited_one_minute
     save_comment_and_update_discussion
   end
@@ -31,6 +32,14 @@ class CommentForm
       comment.discussion.commented_at = comment.created_at
       comment.discussion.comments_counter = comment.discussion.comments.count
       comment.discussion.save!
+    end
+  end
+
+  def check_if_discussion_is_open
+    if comment.discussion.closed
+      message = I18n.t('activerecord.errors.messages.discussion_closed')
+      comment.errors.add(:comment, message)
+      raise ActiveRecord::RecordInvalid
     end
   end
 
