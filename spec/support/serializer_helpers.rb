@@ -4,7 +4,10 @@ module SerializerHelpers
   end
 
   def serialization(record)
-    serializer = described_class.new(record)
+    serializer = described_class.new(
+      record,
+      scope: build(:user), scope_name: :current_user
+    )
     ActiveModelSerializers::Adapter.create(serializer)
   end
 end

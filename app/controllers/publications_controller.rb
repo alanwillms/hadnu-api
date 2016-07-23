@@ -33,7 +33,6 @@ class PublicationsController < ApplicationController
 
   def publications
     scope = unfiltered_publications
-    scope.random_order if params[:order] == 'random'
     policy_scope scope
   end
 

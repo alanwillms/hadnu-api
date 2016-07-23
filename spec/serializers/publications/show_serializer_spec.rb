@@ -17,7 +17,21 @@ describe Publications::ShowSerializer do
       'root_section_id' => nil,
       'authors' => [],
       'sections' => [],
-      'categories' => []
+      'categories' => [],
+      'related' => []
+    )
+  end
+
+  it 'display random related publications' do
+    record = create(:publication)
+    another = create(:publication, title: 'Another Book')
+    expect(serialize(record)['related'].first).to eq(
+      'id' => another.id,
+      'slug' => "#{another.id}-another-book",
+      'title' => another.title,
+      'description' => another.description,
+      'created_at' => another.created_at.to_json[1..-2],
+      'banner_url' => nil
     )
   end
 end

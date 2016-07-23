@@ -11,15 +11,6 @@ describe PublicationsController do
       )
     end
 
-    it 'lists by random order' do
-      publication = create(:publication, published: true, blocked: false)
-      get :index, params: { order: 'random' }
-      expect(json_response.first).to include(
-        'id' => publication.id,
-        'title' => publication.title
-      )
-    end
-
     it 'lists publications by author' do
       create(:author_with_publications)
       author = create(:author_with_publications)

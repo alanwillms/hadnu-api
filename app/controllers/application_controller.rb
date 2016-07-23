@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   include Knock::Authenticable
   include Pundit
   after_action :verify_authorized
+  serialization_scope :current_user
 
   # For some reason, Knock::Authenticable method sometimes fail to set the user
   def current_user
