@@ -158,7 +158,8 @@ describe User do
       {
         'id' => 42,
         'name' => 'Douglas Adams',
-        'email' => 'douglas.adams@adams.com'
+        'email' => 'douglas.adams@adams.com',
+        'verified' => true
       }
     end
 
@@ -185,6 +186,11 @@ describe User do
     it 'creates user login based on the email address' do
       expect(User.from_facebook(profile, request).login).to eq('douglasadams')
     end
+
+    it 'raises an exception if the user is not verified' do
+      profile['verified'] = false
+      expect { User.from_facebook(profile, request) }.to raise_error
+    end
   end
 
   describe '.from_google' do
@@ -192,7 +198,8 @@ describe User do
       {
         'sub' => 42,
         'name' => 'Douglas Adams',
-        'email' => 'douglas.adams@adams.com'
+        'email' => 'douglas.adams@adams.com',
+        'email_verified' => true
       }
     end
 
@@ -218,6 +225,11 @@ describe User do
 
     it 'creates user login based on the email address' do
       expect(User.from_google(profile, request).login).to eq('douglasadams')
+    end
+
+    it 'raises an exception if the user is not verified' do
+      profile['email_verified'] = false
+      expect { User.from_google(profile, request) }.to raise_error
     end
   end
 end

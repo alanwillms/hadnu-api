@@ -73,10 +73,11 @@ class User < ApplicationRecord
   end
 
   def self.from_facebook(profile, request)
+    raise StandardError unless profile['verified']
     where(facebook_id: profile['id']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
       user.facebook_id = profile['id']
       user.name = profile['name']
-      user.login = profile['email'].split('@').first.downcase.gsub(/[^a-z0-9\_]/, '')
+      user.login = login_from_email(profile['email'])
       user.email = profile['email']
       if user.new_record?
         user.password = SecureRandom.uuid
@@ -87,10 +88,11 @@ class User < ApplicationRecord
   end
 
   def self.from_google(profile, request)
+    raise StandardError unless profile['email_verified']
     where(google_id: profile['sub']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
       user.google_id = profile['sub']
       user.name = profile['name']
-      user.login = profile['email'].split('@').first.downcase.gsub(/[^a-z0-9\_]/, '')
+      user.login = login_from_email(profile['email'])
       user.email = profile['email']
       if user.new_record?
         user.password = SecureRandom.uuid
@@ -104,5 +106,9 @@ class User < ApplicationRecord
 
   def generate_salt
     self.salt = SecureRandom.uuid
+  end
+
+  def self.login_from_email(email)
+    email.split('@').first.downcase.gsub(/[^a-z0-9\_]/, '')
   end
 end

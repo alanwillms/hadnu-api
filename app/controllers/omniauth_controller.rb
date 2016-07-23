@@ -32,7 +32,7 @@ class OmniauthController < ApplicationController
     )
     profile = graph.get_object(
       'me',
-      { fields: 'id,name,email' },
+      { fields: 'id,name,email,verified' },
       api_version: 'v2.6'
     )
     User.from_facebook(profile, request)

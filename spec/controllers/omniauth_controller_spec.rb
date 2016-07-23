@@ -16,7 +16,8 @@ describe OmniauthController do
           allow(graph).to receive(:get_object).and_return(
             'id' => 12_345_678,
             'email' => 'john@doe.com',
-            'name' => 'John Doe'
+            'name' => 'John Doe',
+            'verified' => true
           )
           allow(Koala::Facebook::API).to receive(:new).and_return(graph)
           post :create, params: payload
@@ -46,7 +47,8 @@ describe OmniauthController do
             JSON.generate(
               'id' => 12_345_678,
               'email' => 'john@doe.com',
-              'name' => 'John Doe'
+              'name' => 'John Doe',
+              'email_verified' => true
             )
           )
           post :create, params: payload
