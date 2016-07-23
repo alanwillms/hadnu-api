@@ -187,8 +187,18 @@ describe User do
       expect(User.from_facebook(profile, request).login).to eq('douglasadams')
     end
 
-    it 'raises an exception if the user is not verified' do
+    it 'raises an exception if the user is not verified by Facebook' do
       profile['verified'] = false
+      expect { User.from_facebook(profile, request) }.to raise_error
+    end
+
+    it 'raises an exception if the user exists but is blocked' do
+      create(:user, email: profile['email'], blocked: true)
+      expect { User.from_facebook(profile, request) }.to raise_error
+    end
+
+    it 'raises an exception if the user exists but is not confirmed' do
+      create(:user, email: profile['email'], email_confirmed: false)
       expect { User.from_facebook(profile, request) }.to raise_error
     end
   end
@@ -227,8 +237,18 @@ describe User do
       expect(User.from_google(profile, request).login).to eq('douglasadams')
     end
 
-    it 'raises an exception if the user is not verified' do
+    it 'raises an exception if the user is not verified by Google' do
       profile['email_verified'] = false
+      expect { User.from_google(profile, request) }.to raise_error
+    end
+
+    it 'raises an exception if the user exists but is blocked' do
+      create(:user, email: profile['email'], blocked: true)
+      expect { User.from_google(profile, request) }.to raise_error
+    end
+
+    it 'raises an exception if the user exists but is not confirmed' do
+      create(:user, email: profile['email'], email_confirmed: false)
       expect { User.from_google(profile, request) }.to raise_error
     end
   end

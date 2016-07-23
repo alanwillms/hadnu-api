@@ -75,6 +75,8 @@ class User < ApplicationRecord
   def self.from_facebook(profile, request)
     raise StandardError unless profile['verified']
     where(facebook_id: profile['id']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
+      raise StandardError if user.blocked
+      raise StandardError unless user.new_record? || user.email_confirmed
       user.facebook_id = profile['id']
       user.name = profile['name']
       user.login = login_from_email(profile['email'])
@@ -90,6 +92,8 @@ class User < ApplicationRecord
   def self.from_google(profile, request)
     raise StandardError unless profile['email_verified']
     where(google_id: profile['sub']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
+      raise StandardError if user.blocked
+      raise StandardError unless user.new_record? || user.email_confirmed
       user.google_id = profile['sub']
       user.name = profile['name']
       user.login = login_from_email(profile['email'])
