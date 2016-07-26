@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # Common
-  post 'auth/:provider/callback' => 'omniauth#create'
+  resource :omniauth_registrations, only: :create
+  resource :omniauth_sessions, only: :create
   post 'user_token' => 'user_token#create'
   resources :users, only: :show
   resources :user_registrations, only: :create

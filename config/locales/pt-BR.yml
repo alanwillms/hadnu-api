@@ -14,6 +14,14 @@ pt-BR:
         wait_15_minutes: 'por favor aguarde 15 minutos antes de postar uma nova discussão'
         unused_email: 'não há uma conta com este endereço de e-mail'
         discussion_closed: 'você não pode postar um novo comentário em uma discussão encerrada'
+        duplicated_user: 'já existe uma conta vinculada a essa rede social ou a este e-mail'
+  omniauth:
+    errors:
+      blocked_user: 'ocorreu um erro, por favor tente novamente'
+      unverified_user: 'por favor cheque o seu e-mail e confirme sua conta'
+      invalid_token: 'ocorreu um erro, por favor tente novamente'
+      unverified_omniauth: 'você precisa confirmar a sua conta antes de utilizá-la aqui'
+      invalid_provider: 'ocorreu um erro, por favor tente novamente'
   email:
     confirm_email:
       subject: Ative a sua conta do Hadnu

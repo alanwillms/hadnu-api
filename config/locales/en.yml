@@ -7,6 +7,14 @@ en:
         wait_15_minutes: 'please wait 15 minutes before posting another discussion'
         unused_email: 'email not registered'
         discussion_closed: 'you cannot post a new comment in a closed discussion'
+  omniauth:
+    errors:
+      blocked_user: 'something went wrong, please try again later'
+      unverified_user: 'please check your email and confirm your account'
+      invalid_token: 'something went wrong, please try again later'
+      unverified_omniauth: 'you must confirm your account before using it here'
+      invalid_provider: 'something went wrong, please try again later'
+      duplicated_user: 'there is an existing account associated with this social media or e-mail address'
   email:
     confirm_email:
       subject: Confirm your Hadnu account

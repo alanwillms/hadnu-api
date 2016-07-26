@@ -72,47 +72,9 @@ class User < ApplicationRecord
     where(blocked: false, email_confirmed: true)
   end
 
-  def self.from_facebook(profile, request)
-    raise StandardError unless profile['verified']
-    where(facebook_id: profile['id']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
-      raise StandardError if user.blocked
-      raise StandardError unless user.new_record? || user.email_confirmed
-      user.facebook_id = profile['id']
-      user.name = profile['name']
-      user.login = login_from_email(profile['email'])
-      user.email = profile['email']
-      if user.new_record?
-        user.password = SecureRandom.uuid
-        user.registration_ip = request.remote_ip
-      end
-      user.save!
-    end
-  end
-
-  def self.from_google(profile, request)
-    raise StandardError unless profile['email_verified']
-    where(google_id: profile['sub']).or(where(email: profile['email'])).first_or_initialize.tap do |user|
-      raise StandardError if user.blocked
-      raise StandardError unless user.new_record? || user.email_confirmed
-      user.google_id = profile['sub']
-      user.name = profile['name']
-      user.login = login_from_email(profile['email'])
-      user.email = profile['email']
-      if user.new_record?
-        user.password = SecureRandom.uuid
-        user.registration_ip = request.remote_ip
-      end
-      user.save!
-    end
-  end
-
   private
 
   def generate_salt
     self.salt = SecureRandom.uuid
-  end
-
-  def self.login_from_email(email)
-    email.split('@').first.downcase.gsub(/[^a-z0-9\_]/, '')
   end
 end

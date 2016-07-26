@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
 
   # For some reason, Knock::Authenticable method sometimes fail to set the user
   def current_user
+    return nil unless token
     @current_user ||= Knock::AuthToken.new(token: token).entity_for(User)
   end
 
