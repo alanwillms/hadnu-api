@@ -6,7 +6,8 @@ describe DiscussionSerializer do
   end
 
   it 'serialize expected fields' do
-    record = create(:discussion, title: 'Happy Açaí!')
+    subject = create(:subject, name: 'Subject')
+    record = create(:discussion, title: 'Happy Açaí!', subject: subject)
     expect(serialize(record)).to eq(
       'id' => record.id,
       'slug' => "#{record.id}-happy-acai",
@@ -27,9 +28,12 @@ describe DiscussionSerializer do
       },
       'subject' => {
         'id' => record.subject.id,
+        'slug' => "#{record.subject.id}-subject",
         'name' => record.subject.name,
         'label_background_color' => record.subject.label_background_color,
-        'label_text_color' => record.subject.label_text_color
+        'label_text_color' => record.subject.label_text_color,
+        'discussions_counter' => 1,
+        'comments_counter' => 0
       }
     )
   end

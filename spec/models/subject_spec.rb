@@ -5,6 +5,7 @@ describe Subject do
     before { create(:subject) }
 
     it { should have_many(:discussions) }
+    it { should have_many(:comments) }
 
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:label_background_color) }
