@@ -9,7 +9,7 @@ class DiscussionsController < ApplicationController
   def show
     authorize discussion
     if stale? etag: show_etag
-      Discussion.where(id: discussion.id).update_all('hits = hits + 1')
+      discussion.hit!
       render json: discussion
     end
   end

@@ -31,6 +31,12 @@ class Publication < ApplicationRecord
     sections.where(parent_id: nil).first
   end
 
+  def hit!
+    self.class.where(id: id).update_all('hits = hits + 1')
+    self.hits += 1
+    self
+  end
+
   def self.recent_first
     order(created_at: :desc)
   end

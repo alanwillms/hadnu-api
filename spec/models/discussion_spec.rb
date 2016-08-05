@@ -42,4 +42,11 @@ describe Discussion do
       expect(titles).to eq(%w(third second first))
     end
   end
+
+  describe '#hit!' do
+    it 'increments the hit counter' do
+      discussion = create(:discussion, hits: 99)
+      expect { discussion.hit! }.to change { discussion.hits }.to(100)
+    end
+  end
 end

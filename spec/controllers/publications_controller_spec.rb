@@ -87,6 +87,18 @@ describe PublicationsController do
       )
     end
 
+    it 'increments the hit counter' do
+      publication = create(
+        :publication,
+        published: true,
+        blocked: false,
+        hits: 99
+      )
+      get :show, params: { id: publication.id }
+      publication.reload
+      expect(publication.hits).to eq(100)
+    end
+
     context 'cache' do
       let(:publication) do
         create(:publication, updated_at: 1.hour.ago)

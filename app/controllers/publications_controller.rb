@@ -7,6 +7,7 @@ class PublicationsController < ApplicationController
   def show
     authorize publication
     if stale? etag: show_etag
+      publication.hit!
       render json: publication, serializer: Publications::ShowSerializer
     end
   end

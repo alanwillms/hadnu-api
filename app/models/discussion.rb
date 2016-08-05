@@ -20,6 +20,12 @@ class Discussion < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :closed, inclusion: { in: [true, false] }
 
+  def hit!
+    self.class.where(id: id).update_all('hits = hits + 1')
+    self.hits += 1
+    self
+  end
+
   def self.recent_first
     order('commented_at desc')
   end

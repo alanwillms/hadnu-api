@@ -105,4 +105,11 @@ describe Publication do
       expect(Publication.featured.all.map(&:title)).to eq(%w(featured))
     end
   end
+
+  describe '#hit!' do
+    it 'increments the hit counter' do
+      publication = create(:publication, hits: 99)
+      expect { publication.hit! }.to change { publication.hits }.to(100)
+    end
+  end
 end
