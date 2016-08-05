@@ -177,6 +177,13 @@ describe DiscussionsController do
       expect(response.status).to be(200)
     end
 
+    it 'increments the hit counter' do
+      discussion = create(:discussion, hits: 99)
+      get :show, params: { id: discussion.id }
+      discussion.reload
+      expect(discussion.hits).to eq(100)
+    end
+
     context 'cache' do
       let(:discussion) { create(:discussion, updated_at: 1.hour.ago) }
 
