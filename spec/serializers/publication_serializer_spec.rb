@@ -9,7 +9,10 @@ describe PublicationSerializer do
       'title' => record.title,
       'description' => record.description,
       'created_at' => record.created_at.to_json[1..-2],
-      'banner_url' => nil
+      'banner_url' => nil,
+      'facebook_preview_url' => nil,
+      'google_preview_url' => nil,
+      'twitter_preview_url' => nil
     )
   end
 end

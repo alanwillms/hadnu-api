@@ -6,7 +6,12 @@ class Publication < ApplicationRecord
   has_and_belongs_to_many :categories
   has_many :sections
   has_attached_file :banner,
-                    styles: { card: '630x354#' },
+                    styles: {
+                      card: '630x354#',
+                      facebook: '1200x630#',
+                      google: '180x120#',
+                      twitter: '280x150#'
+                    },
                     default_url: '/images/:style/missing.png'
   has_attached_file :pdf
 

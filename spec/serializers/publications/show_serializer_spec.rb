@@ -13,6 +13,9 @@ describe Publications::ShowSerializer do
       'hits' => record.hits,
       'original_title' => record.original_title,
       'banner_url' => nil,
+      'facebook_preview_url' => nil,
+      'google_preview_url' => nil,
+      'twitter_preview_url' => nil,
       'pdf_url' => nil,
       'root_section_id' => nil,
       'authors' => [],
@@ -31,7 +34,10 @@ describe Publications::ShowSerializer do
       'title' => another.title,
       'description' => another.description,
       'created_at' => another.created_at.to_json[1..-2],
-      'banner_url' => nil
+      'banner_url' => nil,
+      'facebook_preview_url' => nil,
+      'google_preview_url' => nil,
+      'twitter_preview_url' => nil
     )
   end
 end
