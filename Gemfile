@@ -64,6 +64,9 @@ gem 'activemodel-ipaddr_validator'
 # Environment variables
 gem 'dotenv-rails'
 
+# SMTP messages
+gem 'mailgun_rails'
+
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
