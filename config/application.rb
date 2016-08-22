@@ -54,10 +54,15 @@ module HadnuApi
     config.i18n.available_locales = ['pt-BR', :en]
 
     # SMTP messages
-    config.action_mailer.delivery_method = :mailgun
-    config.action_mailer.mailgun_settings = {
-      api_key: ENV['HADNU_MAILGUN_API_KEY'],
-      domain: ENV['HADNU_MAILGUN_DOMAIN']
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      user_name: ENV['HADNU_SMTP_USERNAME'],
+      password: ENV['HADNU_SMTP_PASSWORD'],
+      domain: ENV['HADNU_SMTP_DOMAIN'],
+      address: ENV['HADNU_SMTP_ADDRESS'],
+      port: ENV['HADNU_SMTP_PORT'].to_i,
+      authentication: :plain,
+      enable_starttls_auto: true
     }
   end
 end
