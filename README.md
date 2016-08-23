@@ -1,24 +1,31 @@
-# README
+# Hadnu
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Hadnu is a library and discussion forum application.
 
-Things you may want to cover:
+This is the 5th major refactoring of Hadnu.
 
-* Ruby version
+* Version 1: vanilla HTML
+* Version 2: Zend Framework 1
+* Version 3: Yii Framework 1.1
+* Version 4: Yii Framework 2
+* Version 5: Ruby on Rails (back-end) + Vue.js (front-end)
 
-* System dependencies
+## Requirements
 
-* Configuration
+* Ruby 2.3+
+* PostgreSQL
 
-* Database creation
+## Deployment
 
-* Database initialization
+Create a PostgreSQL database.
 
-* How to run the test suite
+Copy `.env.example` to `.env` and configure it or add its variables to your
+webserver (Nginx, Apache, etc.) and shell environment.
 
-* Services (job queues, cache servers, search engines, etc.)
+Run `bundle` to install gem dependencies.
 
-* Deployment instructions
+Run `bundle exec rails db:migrate` to run database migrations.
 
-* ...
+## Testing
+
+After installing, run `bundle exec rspec`.
