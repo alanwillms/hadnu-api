@@ -2,10 +2,25 @@ require 'rails_helper'
 
 describe UserTokenController do
   describe '#create' do
-    context 'with valid credentials' do
+    context 'with valid login credentials' do
       before(:each) do
         user = create(:user)
         post :create, params: {auth: {login: user.login, password: 'password'}}
+      end
+
+      it 'returns JWT token' do
+        expect(json_response).to have_key('jwt')
+      end
+
+      it 'has a 200 status' do
+        expect(response.status).to be(201)
+      end
+    end
+
+    context 'with valid email credentials' do
+      before(:each) do
+        user = create(:user)
+        post :create, params: {auth: {login: user.email, password: 'password'}}
       end
 
       it 'returns JWT token' do

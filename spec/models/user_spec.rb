@@ -110,6 +110,15 @@ describe User do
       expect(User.from_token_request(request)).to eq(user)
     end
 
+    it 'finds record by email based on params[auth][login]' do
+      user = create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => { 'login' => user.email }
+      )
+      expect(User.from_token_request(request)).to eq(user)
+    end
+
     it 'returns nil if cannot find by params[auth][login]' do
       create(:user)
       request = instance_double(ActionDispatch::Request)

@@ -59,12 +59,12 @@ class User < ApplicationRecord
   end
 
   def self.from_token_request(request)
-    login = request.params['auth'] && request.params['auth']['login']
-    active.find_by login: login
+    return nil unless request.params['auth'] && request.params['auth']['login']
+    credential = request.params['auth']['login']
+    active.where(['login = ? OR email = ?', credential, credential]).first
   end
 
   def self.from_token_payload(payload)
-    logger.fatal payload.inspect
     active.find_by id: (payload['sub'] || payload[:sub])
   end
 
