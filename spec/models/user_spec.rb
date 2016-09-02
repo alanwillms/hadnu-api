@@ -54,6 +54,13 @@ describe User do
     it { should_not allow_value('93john').for(:login) }
   end
 
+  describe '#downcase_fields' do
+    it 'downcase email on saving' do
+      user = create(:user, email: 'DOWNCASE@EXAMPLE.COM')
+      expect(user.email).to eq('downcase@example.com')
+    end
+  end
+
   describe '#admin?' do
     it 'returns true if the user has a role named owner' do
       user = create(:user)
@@ -110,11 +117,29 @@ describe User do
       expect(User.from_token_request(request)).to eq(user)
     end
 
+    it 'finds record by login independent of characters case' do
+      user = create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => { 'login' => user.login.upcase }
+      )
+      expect(User.from_token_request(request)).to eq(user)
+    end
+
     it 'finds record by email based on params[auth][login]' do
       user = create(:user)
       request = instance_double(ActionDispatch::Request)
       allow(request).to receive(:params).and_return(
         'auth' => { 'login' => user.email }
+      )
+      expect(User.from_token_request(request)).to eq(user)
+    end
+
+    it 'finds record by email independent of characters case' do
+      user = create(:user)
+      request = instance_double(ActionDispatch::Request)
+      allow(request).to receive(:params).and_return(
+        'auth' => { 'login' => user.email.upcase }
       )
       expect(User.from_token_request(request)).to eq(user)
     end

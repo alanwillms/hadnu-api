@@ -45,6 +45,8 @@ class User < ApplicationRecord
             length: { maximum: 255 }
   validates :last_login_at, date: { allow_nil: true }
 
+  before_save :downcase_fields
+
   def admin?
     roles.any? { |role| role.role_name == 'owner' }
   end
@@ -60,7 +62,7 @@ class User < ApplicationRecord
 
   def self.from_token_request(request)
     return nil unless request.params['auth'] && request.params['auth']['login']
-    credential = request.params['auth']['login']
+    credential = request.params['auth']['login'].downcase
     active.where(['login = ? OR email = ?', credential, credential]).first
   end
 
@@ -76,5 +78,10 @@ class User < ApplicationRecord
 
   def generate_salt
     self.salt = SecureRandom.uuid
+  end
+
+  def downcase_fields
+    login.downcase!
+    email.downcase!
   end
 end
