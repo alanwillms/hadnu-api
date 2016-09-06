@@ -1,7 +1,7 @@
 require 'digest/sha1'
 
 class User < ApplicationRecord
-  LOGIN_FORMAT = /\A[a-z]{1}[a-z0-9\_]*\z/
+  LOGIN_FORMAT = /\A[a-z]{1}[a-z0-9\_ ]*[a-z0-9]{1}\z/
 
   has_many :authors
   has_many :pseudonyms

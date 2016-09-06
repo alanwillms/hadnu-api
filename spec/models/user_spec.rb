@@ -48,10 +48,13 @@ describe User do
     it { should allow_value('john@doe.com').for(:email) }
     it { should_not allow_value('foobar').for(:email) }
     it { should allow_value('john_doe').for(:login) }
+    it { should allow_value('john doe').for(:login) }
     it { should allow_value('john93').for(:login) }
     it { should_not allow_value('John Doe').for(:login) }
     it { should_not allow_value('John').for(:login) }
     it { should_not allow_value('93john').for(:login) }
+    it { should_not allow_value(' john').for(:login) }
+    it { should_not allow_value('john ').for(:login) }
   end
 
   describe '#downcase_fields' do
