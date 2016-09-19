@@ -82,6 +82,17 @@ describe User do
     end
   end
 
+  describe '#to_token_payload' do
+    it 'returns sub and acl' do
+      user = create(:user)
+      create(:role_user, user: user, role_name: 'owner')
+      expect(user.to_token_payload).to eq(
+        sub: user.id,
+        acl: 'owner'
+      )
+    end
+  end
+
   describe '#password=' do
     it 'generates a salt if the salt is nil' do
       user = build(:user, salt: nil)

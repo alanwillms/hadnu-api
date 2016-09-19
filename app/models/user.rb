@@ -60,6 +60,10 @@ class User < ApplicationRecord
     encrypted_password == Digest::SHA1.hexdigest(password + salt)
   end
 
+  def to_token_payload
+    { sub: id, acl: roles.first&.role_name }
+  end
+
   def self.from_token_request(request)
     return nil unless request.params['auth'] && request.params['auth']['login']
     credential = request.params['auth']['login'].downcase
