@@ -118,4 +118,85 @@ describe AuthorsController do
       end
     end
   end
+
+  describe '#create' do
+    let(:valid_params) do
+      {
+        author: {
+          pen_name: 'Stephen King',
+          real_name: 'Stephen Edwin King',
+          description: 'Stephen King is an American author of horror books.',
+          born_on: '1947-09-21'
+        }
+      }
+    end
+
+    context 'with valid data' do
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        post :create, params: valid_params
+      end
+
+      it 'returns a 201 status' do
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates a new author' do
+        expect(Author.count).to eq(1)
+      end
+
+      it 'outputs author data' do
+        expect(json_response).to include(
+          'pen_name' => valid_params[:author][:pen_name],
+          'real_name' => valid_params[:author][:real_name]
+        )
+      end
+    end
+
+    context 'with invalid data' do
+      let(:invalid_params) do
+        params = valid_params
+        params[:author][:pen_name] = nil
+        params
+      end
+
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        post :create, params: invalid_params
+      end
+
+      it 'returns a 422 status' do
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not create an author' do
+        expect(Author.count).to eq(0)
+      end
+
+      it 'outputs errors' do
+        errors_data = { 'pen_name' => ["can't be blank"] }
+        expect(json_response).to include(errors_data)
+      end
+    end
+
+    context 'with unauthenticated user' do
+      it 'returns a 401 status' do
+        post :create, params: valid_params
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context 'with unauthorized user' do
+      it 'returns a 401 status' do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'editor')
+        end
+        expect { post :create, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+  end
 end

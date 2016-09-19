@@ -1,4 +1,6 @@
 class AuthorsController < ApplicationController
+  before_action :authenticate_user, only: :create
+
   def index
     authorize Author
     render json: authors.all if stale? etag: index_etag
@@ -7,6 +9,19 @@ class AuthorsController < ApplicationController
   def show
     authorize author
     render json: author if stale? etag: show_etag
+  end
+
+  def create
+    author = Author.new author_params
+    author.user = current_user
+    authorize author
+    expires_now
+
+    if author.save
+      render json: author, status: :created
+    else
+      render json: author.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -33,5 +48,11 @@ class AuthorsController < ApplicationController
 
   def author
     @author ||= scope.find(params[:id])
+  end
+
+  def author_params
+    params.require(:author).permit(
+      :pen_name, :real_name, :description, :born_on, :passed_away_on
+    )
   end
 end
