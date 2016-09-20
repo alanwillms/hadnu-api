@@ -8,7 +8,9 @@ class AuthorsController < ApplicationController
 
   def show
     authorize author
-    render json: author if stale? etag: show_etag
+    if stale? etag: show_etag
+      render json: author, serializer: Authors::ShowSerializer
+    end
   end
 
   def create
