@@ -1,5 +1,5 @@
 class AuthorsController < ApplicationController
-  before_action :authenticate_user, only: :create
+  before_action :authenticate_user, only: [:create, :update]
 
   def index
     authorize Author
@@ -21,6 +21,17 @@ class AuthorsController < ApplicationController
 
     if author.save
       render json: author, status: :created
+    else
+      render json: author.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize author
+    expires_now
+
+    if author.update_attributes author_params
+      render json: author
     else
       render json: author.errors, status: :unprocessable_entity
     end

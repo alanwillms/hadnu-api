@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :featured_publications, only: :index
   resources :recent_sections, only: :index
 
-  resources :authors, only: [:index, :show, :create] do
+  resources :authors, only: [:index, :show, :create, :update] do
     resources :publications, only: :index
   end
 
