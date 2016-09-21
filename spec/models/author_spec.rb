@@ -26,4 +26,26 @@ describe Author do
         .rejecting('text/plain', 'text/xml')
     end
   end
+
+  describe '#photo_base64=' do
+    let(:author) { build(:author) }
+
+    it 'does nothing if the value is empty' do
+      expect(author).not_to receive(:photo=)
+      author.photo_base64 = ''
+    end
+
+    it 'does nothing if the value is wrong' do
+      expect(author).not_to receive(:photo=)
+      author.photo_base64 = { 'nope' => 'nope' }
+    end
+
+    it 'sets the attachment as the received file' do
+      expect(author).to receive(:photo=)
+      author.photo_base64 = {
+        'base64' => 'data:image/jpeg;base64,/9j/4TI9RX',
+        'name' => 'file.jpg'
+      }
+    end
+  end
 end
