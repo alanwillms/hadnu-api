@@ -1,5 +1,7 @@
 # Hadnu
 
+![Codeship Build Status](https://codeship.com/projects/a0e7c3a0-6f75-0134-9a46-3a51310aa3ef/status?branch=master)
+
 Hadnu is a library and discussion forum application.
 
 This is the 5th major refactoring of Hadnu.
