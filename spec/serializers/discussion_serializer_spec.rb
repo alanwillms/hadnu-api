@@ -16,25 +16,9 @@ describe DiscussionSerializer do
       'comments_counter' => record.comments_counter,
       'commented_at' => record.commented_at.to_json[1..-2],
       'closed' => record.closed,
-      'user' => {
-        'id' => record.user.id,
-        'login' => record.user.login,
-        'gravatar' => gravatar_url(record.user)
-      },
-      'last_user' => {
-        'id' => record.last_user.id,
-        'login' => record.last_user.login,
-        'gravatar' => gravatar_url(record.last_user)
-      },
-      'subject' => {
-        'id' => record.subject.id,
-        'slug' => "#{record.subject.id}-subject",
-        'name' => record.subject.name,
-        'label_background_color' => record.subject.label_background_color,
-        'label_text_color' => record.subject.label_text_color,
-        'discussions_counter' => 1,
-        'comments_counter' => 0
-      }
+      'user' => serializer_to_hash(UserSerializer.new(record.user)),
+      'last_user' => serializer_to_hash(UserSerializer.new(record.last_user)),
+      'subject' => serializer_to_hash(SubjectSerializer.new(record.subject))
     )
   end
 end

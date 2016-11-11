@@ -13,11 +13,7 @@ describe CommentSerializer do
       'comment' => record.comment,
       'created_at' => record.created_at.to_json[1..-2],
       'updated_at' => record.updated_at.to_json[1..-2],
-      'user' => {
-        'id' => record.user.id,
-        'login' => record.user.login,
-        'gravatar' => gravatar_url
-      }
+      'user' => serializer_to_hash(UserSerializer.new(record.user)),
     )
   end
 end

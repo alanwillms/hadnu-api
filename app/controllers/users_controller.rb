@@ -9,7 +9,12 @@ class UsersController < ApplicationController
   private
 
   def show_etag
-    user.updated_at.to_s
+    [
+        user.updated_at.to_s,
+        user.comments.count,
+        user.discussions.count,
+        Discussion.includes('comments').where(comments: { user_id: user.id }).count
+    ].join('-')
   end
 
   def user

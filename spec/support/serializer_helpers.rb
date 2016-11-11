@@ -3,6 +3,12 @@ module SerializerHelpers
     JSON.parse(serialization(record).to_json)
   end
 
+  def serializer_to_hash(serializer)
+    JSON.parse(
+        ActiveModelSerializers::Adapter.create(serializer).to_json
+    )
+  end
+
   def serialization(record)
     serializer = described_class.new(
       record,
