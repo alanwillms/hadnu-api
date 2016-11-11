@@ -51,7 +51,7 @@ describe Publication do
         publication: publication,
         published_at: 10.days.ago
       )
-      expect(publication.published_at).to eq(section.published_at)
+      expect(publication.published_at.to_s).to eq(section.published_at.to_s)
     end
 
     it 'returns publication created_at value if section published_at is nil' do
