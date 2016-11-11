@@ -59,4 +59,11 @@ Rails.application.configure do
 
   # Assets path
   config.action_controller.asset_host = 'http://localhost:3000/'
+
+  # Bullet (detect N+1 queries)
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.rails_logger = true
+  end
 end

@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
   end
 
   def comments
-    policy_scope(discussion.comments)
+    policy_scope(discussion.comments).includes([:user])
   end
 
   def comment_params

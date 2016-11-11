@@ -17,6 +17,6 @@ class RecentSectionsController < ApplicationController
   end
 
   def recent_sections
-    policy_scope(Section).recent
+    policy_scope(Section).includes([:publication]).recent
   end
 end

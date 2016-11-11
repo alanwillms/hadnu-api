@@ -44,4 +44,11 @@ Rails.application.configure do
 
   # Routes default host and port
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+
+  # Bullet (detect N+1 queries)
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.rails_logger = true
+  end
 end

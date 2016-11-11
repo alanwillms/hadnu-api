@@ -56,6 +56,9 @@ class PublicationsController < ApplicationController
   end
 
   def publication
-    @publication ||= Publication.find(params[:id])
+    @publication ||= Publication.where(id: params[:id]).includes({
+        publications_categories: [:category],
+        categories: []
+    }).first
   end
 end

@@ -41,11 +41,12 @@ class DiscussionsController < ApplicationController
   end
 
   def discussions
-    if params[:subject_id]
+    scope = if params[:subject_id]
       policy_scope(Subject.find(params[:subject_id]).discussions)
     else
       policy_scope(Discussion)
     end
+    scope.includes([:subject, :user, :last_user])
   end
 
   def discussion
