@@ -22,6 +22,7 @@ class CommentsController < ApplicationController
 
   def index_etag
     [
+      User.maximum(:updated_at).to_s,
       comments.maximum(:updated_at).to_s,
       comments.count.to_s,
       request[:page].to_s

@@ -55,6 +55,13 @@ describe User do
     it { should_not allow_value('93john').for(:login) }
     it { should_not allow_value(' john').for(:login) }
     it { should_not allow_value('john ').for(:login) }
+    it { should have_attached_file(:photo) }
+    it { should validate_attachment_size(:photo).less_than(2.megabytes) }
+    it do
+      should validate_attachment_content_type(:photo)
+        .allowing('image/png', 'image/gif', 'image/jpg')
+        .rejecting('text/plain', 'text/xml')
+    end
   end
 
   describe '#downcase_fields' do
@@ -198,6 +205,28 @@ describe User do
     it 'returns nil with invalid JWT payload' do
       create(:user)
       expect(User.from_token_payload({})).to be_nil
+    end
+  end
+
+  describe '#photo_base64=' do
+    let(:user) { build(:user) }
+
+    it 'does nothing if the value is empty' do
+      expect(user).not_to receive(:photo=)
+      user.photo_base64 = ''
+    end
+
+    it 'does nothing if the value is wrong' do
+      expect(user).not_to receive(:photo=)
+      user.photo_base64 = { 'nope' => 'nope' }
+    end
+
+    it 'sets the attachment as the received file' do
+      expect(user).to receive(:photo=)
+      user.photo_base64 = {
+        'base64' => 'data:image/jpeg;base64,/9j/4TI9RX',
+        'name' => 'file.jpg'
+      }
     end
   end
 end

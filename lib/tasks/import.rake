@@ -1,5 +1,8 @@
+require 'open-uri'
+
 # rails import:categories:banners FILES_PATH=yyy
 # rails paperclip:refresh:missing_styles
+
 namespace :import do
   def upload_path
     upload_path = ENV.fetch('FILES_PATH', '').chomp('/')
@@ -21,6 +24,38 @@ namespace :import do
         puts "Importing: #{file_path}"
         author.photo = open(file_path)
         puts author.errors.inspect unless author.save
+      end
+    end
+  end
+
+  namespace :users do
+    task photos: :environment do
+      desc 'Import user photos from Gravatar or create a beautiful image from Unsplash'
+
+      User.order(:id).each do |user|
+        url = [
+          'https://www.gravatar.com/avatar/',
+          Digest::MD5.hexdigest(user.email),
+          '?s=200&d=404'
+        ].join
+
+        url_loaded = false
+
+        begin
+          user.photo = open(url)
+          url_loaded = true
+        rescue OpenURI::HTTPError
+          begin
+            url = "https://unsplash.it/200/200/?random"
+            user.photo = open(url)
+            url_loaded = true
+          rescue OpenURI::HTTPError
+            url = "<NOT FOUND>"
+          end
+        end
+
+        user.save if url_loaded
+        puts "#{user.login}:\t\t#{url}"
       end
     end
   end

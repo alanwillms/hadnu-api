@@ -30,6 +30,7 @@ class DiscussionsController < ApplicationController
 
   def index_etag
     [
+      User.maximum(:updated_at).to_s,
       discussions.maximum(:updated_at).to_s,
       discussions.count.to_s,
       request[:page].to_s

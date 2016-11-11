@@ -10,6 +10,9 @@ class User < ApplicationRecord
   has_many :publications
   has_many :sections
   has_many :roles, class_name: 'RoleUser'
+  has_attached_file :photo,
+                    styles: { mini: '18x18#', thumb: '70x70#', profile: '200x200#' },
+                    default_url: '/images/missing/user/:style.jpg'
 
   validates :name, presence: true, length: { maximum: 255 }
   validates :salt, presence: true, length: { maximum: 36 }
@@ -44,6 +47,8 @@ class User < ApplicationRecord
             ipaddr: { ipv4: true, ipv6: true, allow_nil: true },
             length: { maximum: 255 }
   validates :last_login_at, date: { allow_nil: true }
+  validates_attachment_content_type :photo, content_type: %r{\Aimage\/.*\Z}
+  validates_attachment_size :photo, less_than: 2.megabytes
 
   before_save :downcase_fields
 
@@ -76,6 +81,15 @@ class User < ApplicationRecord
 
   def self.active
     where(blocked: false, email_confirmed: true)
+  end
+
+  # Base64 file upload
+  def photo_base64=(data)
+    return unless data.is_a? Hash
+    return unless data['base64'] && data['name']
+    image = Paperclip.io_adapters.for(data['base64'])
+    image.original_filename = data['name']
+    self.photo = image
   end
 
   private

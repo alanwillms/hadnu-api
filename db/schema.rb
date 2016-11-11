@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722003459) do
+ActiveRecord::Schema.define(version: 20161111185310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -297,6 +297,10 @@ ActiveRecord::Schema.define(version: 20160722003459) do
     t.string   "registration_ip",        limit: 255,                          null: false
     t.string   "google_id",              limit: 255
     t.string   "facebook_id",            limit: 255
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   add_foreign_key "accessed_discussions", "discussions", name: "accessed_discussions_discussion_id_fkey", on_update: :cascade, on_delete: :cascade
