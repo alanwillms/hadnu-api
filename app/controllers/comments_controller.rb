@@ -33,8 +33,18 @@ class CommentsController < ApplicationController
     @discussion ||= Discussion.find(params[:discussion_id])
   end
 
+  def user
+    @user ||= User.find(params[:user_id])
+  end
+
   def comments
-    policy_scope(discussion.comments).includes([:user])
+    scope = if params[:discussion_id]
+      discussion.comments
+    else
+      user.comments.order(created_at: :desc)
+    end
+
+    policy_scope(scope).includes([:user])
   end
 
   def comment_params

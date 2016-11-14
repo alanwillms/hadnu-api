@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resource :omniauth_registrations, only: :create
   resource :omniauth_sessions, only: :create
   post 'user_token' => 'user_token#create'
-  resources :users, only: [:show, :update]
+
+  resources :users, only: [:show, :update] do
+    resources :comments, only: :index
+  end
+
   resources :user_registrations, only: :create
   resource :user_password, only: [:create, :update]
   resource :user_confirmation, only: :create
