@@ -3,7 +3,9 @@ class CommentsController < ApplicationController
 
   def index
     authorize Comment
-    paginate json: comments.old_first if stale? etag: index_etag
+    if stale? etag: index_etag
+      paginate json: comments.old_first, each_serializer: serializer
+    end
   end
 
   def create
@@ -44,7 +46,15 @@ class CommentsController < ApplicationController
       user.comments.order(created_at: :desc)
     end
 
-    policy_scope(scope).includes([:user])
+    policy_scope(scope).includes([:user, :discussion])
+  end
+
+  def serializer
+    if params[:discussion_id]
+      CommentSerializer
+    else
+      Comments::ShowSerializer
+    end
   end
 
   def comment_params
