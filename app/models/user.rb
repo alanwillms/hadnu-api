@@ -83,13 +83,8 @@ class User < ApplicationRecord
     where(blocked: false, email_confirmed: true)
   end
 
-  # Base64 file upload
   def photo_base64=(data)
-    return unless data.is_a? Hash
-    return unless data['base64'] && data['name']
-    image = Paperclip.io_adapters.for(data['base64'])
-    image.original_filename = data['name']
-    self.photo = image
+    set_file_from_base64(:photo, data)
   end
 
   private

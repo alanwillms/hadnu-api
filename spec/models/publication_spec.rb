@@ -6,7 +6,7 @@ describe Publication do
 
     it { should have_and_belong_to_many(:categories) }
     it { should have_and_belong_to_many(:authors) }
-    it { should have_and_belong_to_many(:pseudonyms) }
+    it { should have_many(:pseudonyms).through(:author_pseudonym_publications) }
     it { should belong_to(:user) }
     it { should have_many(:sections) }
 
@@ -110,6 +110,50 @@ describe Publication do
     it 'increments the hit counter' do
       publication = create(:publication, hits: 99)
       expect { publication.hit! }.to change { publication.hits }.to(100)
+    end
+  end
+
+  describe '#banner_base64=' do
+    let(:publication) { build(:publication) }
+
+    it 'does nothing if the value is empty' do
+      expect(publication).not_to receive(:banner=)
+      publication.banner_base64 = ''
+    end
+
+    it 'does nothing if the value is wrong' do
+      expect(publication).not_to receive(:banner=)
+      publication.banner_base64 = { 'nope' => 'nope' }
+    end
+
+    it 'sets the attachment as the received file' do
+      expect(publication).to receive(:banner=)
+      publication.banner_base64 = {
+        'base64' => 'data:image/jpeg;base64,/9j/4TI9RX',
+        'name' => 'file.jpg'
+      }
+    end
+  end
+
+  describe '#pdf_base64=' do
+    let(:publication) { build(:publication) }
+
+    it 'does nothing if the value is empty' do
+      expect(publication).not_to receive(:pdf=)
+      publication.pdf_base64 = ''
+    end
+
+    it 'does nothing if the value is wrong' do
+      expect(publication).not_to receive(:pdf=)
+      publication.pdf_base64 = { 'nope' => 'nope' }
+    end
+
+    it 'sets the attachment as the received file' do
+      expect(publication).to receive(:pdf=)
+      publication.pdf_base64 = {
+        'base64' => 'data:image/jpeg;base64,/9j/4TI9RX',
+        'name' => 'file.jpg'
+      }
     end
   end
 end

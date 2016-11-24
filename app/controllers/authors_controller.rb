@@ -30,7 +30,7 @@ class AuthorsController < ApplicationController
     authorize author
     expires_now
 
-    if author.update_attributes author_params
+    if author.update author_params
       render json: author
     else
       render json: author.errors, status: :unprocessable_entity

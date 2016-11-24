@@ -1,10 +1,11 @@
 class Publications::ShowSerializer < PublicationSerializer
   attributes :original_title, :hits, :copyright_notice, :pdf_url,
-             :root_section_id, :related
+             :root_section_id, :related, :featured, :blocked, :published
 
   has_many :authors
   has_many :sections
   has_many :categories
+  has_many :pseudonyms
 
   def root_section_id
     object.root_section.id if object.root_section

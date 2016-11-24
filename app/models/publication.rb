@@ -1,8 +1,8 @@
 class Publication < ApplicationRecord
   belongs_to :user
+  has_many :author_pseudonym_publications
+  has_many :pseudonyms, through: :author_pseudonym_publications
   has_and_belongs_to_many :authors, join_table: :authors_pseudonyms_publications
-  has_and_belongs_to_many :pseudonyms,
-                          join_table: :authors_pseudonyms_publications
   has_and_belongs_to_many :categories
   has_many :sections
   has_attached_file :banner,
@@ -40,6 +40,14 @@ class Publication < ApplicationRecord
     self.class.where(id: id).update_all('hits = hits + 1')
     self.hits += 1
     self
+  end
+
+  def banner_base64=(data)
+    set_file_from_base64(:banner, data)
+  end
+
+  def pdf_base64=(data)
+    set_file_from_base64(:pdf, data)
   end
 
   def self.recent_first

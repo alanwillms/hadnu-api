@@ -21,7 +21,11 @@ describe Publications::ShowSerializer do
       'authors' => [],
       'sections' => [],
       'categories' => [],
-      'related' => []
+      'pseudonyms' => [],
+      'related' => [],
+      'featured' => record.featured,
+      'blocked' => record.blocked,
+      'published' => record.published
     )
   end
 

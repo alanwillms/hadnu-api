@@ -143,4 +143,163 @@ describe PublicationsController do
       end
     end
   end
+
+  describe '#create' do
+    let(:valid_params) do
+      {
+        publication: {
+          title: 'The Dark Tower'
+        }
+      }
+    end
+
+    context 'with valid data' do
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        post :create, params: valid_params
+      end
+
+      it 'returns a 201 status' do
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates a new publication' do
+        expect(Publication.count).to eq(1)
+      end
+
+      it 'outputs publication data' do
+        expect(json_response).to include(
+          'title' => valid_params[:publication][:title]
+        )
+      end
+    end
+
+    context 'with invalid data' do
+      let(:invalid_params) do
+        params = valid_params
+        params[:publication][:title] = nil
+        params
+      end
+
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        post :create, params: invalid_params
+      end
+
+      it 'returns a 422 status' do
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not create an publication' do
+        expect(Publication.count).to eq(0)
+      end
+
+      it 'outputs errors' do
+        errors_data = { 'title' => ["can't be blank"] }
+        expect(json_response).to include(errors_data)
+      end
+    end
+
+    context 'with unauthenticated user' do
+      it 'returns a 401 status' do
+        post :create, params: valid_params
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context 'with unauthorized user' do
+      it 'returns a 401 status' do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'editor')
+        end
+        expect { post :create, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:publication) { create(:publication) }
+
+    let(:valid_params) do
+      {
+        id: publication.id,
+        publication: {
+          title: publication.title + ' Changed'
+        }
+      }
+    end
+
+    context 'with valid data' do
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        patch :update, params: valid_params
+      end
+
+      it 'returns a 200 status' do
+        expect(response.status).to eq(200)
+      end
+
+      it 'updates the publication' do
+        publication.reload
+        expect(publication.title).to eq(valid_params[:publication][:title])
+      end
+
+      it 'outputs publication data' do
+        expect(json_response).to include(
+          'title' => valid_params[:publication][:title]
+        )
+      end
+    end
+
+    context 'with invalid data' do
+      let(:invalid_params) do
+        params = valid_params
+        params[:publication][:title] = nil
+        params
+      end
+
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        patch :update, params: invalid_params
+      end
+
+      it 'returns a 422 status' do
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not update the publication' do
+        publication.reload
+        expect(publication.title).not_to eq(valid_params[:publication][:title])
+      end
+
+      it 'outputs errors' do
+        errors_data = { 'title' => ["can't be blank"] }
+        expect(json_response).to include(errors_data)
+      end
+    end
+
+    context 'with unauthenticated user' do
+      it 'returns a 401 status' do
+        patch :update, params: valid_params
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context 'with unauthorized user' do
+      it 'returns a 401 status' do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'editor')
+        end
+        expect { patch :update, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+  end
 end

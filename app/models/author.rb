@@ -21,12 +21,7 @@ class Author < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{\Aimage\/.*\Z}
   validates_attachment_size :photo, less_than: 2.megabytes
 
-  # Base64 file upload
   def photo_base64=(data)
-    return unless data.is_a? Hash
-    return unless data['base64'] && data['name']
-    image = Paperclip.io_adapters.for(data['base64'])
-    image.original_filename = data['name']
-    self.photo = image
+    set_file_from_base64(:photo, data)
   end
 end

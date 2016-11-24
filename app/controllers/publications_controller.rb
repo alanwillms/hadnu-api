@@ -1,4 +1,6 @@
 class PublicationsController < ApplicationController
+  before_action :authenticate_user, only: [:create, :update]
+
   def index
     authorize Publication
     paginate json: publications.recent_first.all if stale? etag: index_etag
@@ -9,6 +11,30 @@ class PublicationsController < ApplicationController
     if stale? etag: show_etag
       publication.hit!
       render json: publication, serializer: Publications::ShowSerializer
+    end
+  end
+
+  def create
+    publication = Publication.new publication_params
+    publication.user = current_user
+    authorize publication
+    expires_now
+
+    if publication.save
+      render json: publication, status: :created
+    else
+      render json: publication.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize publication
+    expires_now
+
+    if publication.update publication_params
+      render json: publication
+    else
+      render json: publication.errors, status: :unprocessable_entity
     end
   end
 
@@ -28,7 +54,11 @@ class PublicationsController < ApplicationController
     [
       publication.updated_at.to_s,
       publication.sections.count.to_s,
-      publication.sections.maximum(:updated_at).to_s
+      publication.sections.maximum(:updated_at).to_s,
+      publication.categories.count.to_s,
+      publication.categories.sum(:id).to_s,
+      publication.pseudonyms.count.to_s,
+      publication.pseudonyms.sum(:id).to_s
     ].join(',')
   end
 
@@ -57,8 +87,17 @@ class PublicationsController < ApplicationController
 
   def publication
     @publication ||= Publication.where(id: params[:id]).includes({
-        publications_categories: [:category],
-        categories: []
+      publications_categories: [:category],
+      categories: []
     }).first
+  end
+
+  def publication_params
+    params.require(:publication).permit(
+      :title, :original_title, :description, :copyright_notice,
+      :featured, :blocked, :published, category_ids: [], pseudonym_ids: [],
+      banner_base64: [:base64, :name],
+      pdf_base64: [:base64, :name]
+    )
   end
 end

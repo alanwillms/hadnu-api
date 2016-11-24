@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     authorize user
     expires_now
 
-    if user.update_attributes user_params
+    if user.update user_params
       render json: user
     else
       render json: user.errors, status: :unprocessable_entity
