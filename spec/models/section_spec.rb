@@ -74,6 +74,37 @@ describe Section do
     end
   end
 
+  describe '#save' do
+    context 'when it is not publication first section' do
+      it 'requires parent section' do
+        publication = create(:publication_with_section)
+        section = build(:section, publication: publication)
+        expect(section.save).to be false
+        expect(section.errors).to have_key(:parent_id)
+      end
+
+      it 'sets root section' do
+        publication = create(:publication)
+        root = create(:section, publication: publication)
+        section = build(:section, publication: publication)
+        section.parent = root
+        expect(section.save).to be true
+        expect(section.root_id).to eq(root.id)
+      end
+    end
+
+    context 'when it is publication first section' do
+      it 'requires empty parent section' do
+        publication = create(:publication)
+        other_section = create(:section)
+        section = build(:section, publication: publication)
+        section.parent_id = other_section.id
+        expect(section.save).to be false
+        expect(section.errors).to have_key(:parent_id)
+      end
+    end
+  end
+
   def create_sections_tree
     create_tree_item sections_tree_data
   end

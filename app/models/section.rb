@@ -1,4 +1,6 @@
 class Section < ApplicationRecord
+  before_save :set_root
+
   belongs_to :publication
   belongs_to :user
   belongs_to :parent, optional: true, class_name: 'Section'
@@ -22,6 +24,13 @@ class Section < ApplicationRecord
             presence: true,
             uniqueness: { scope: [:parent_id, :publication_id] },
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  with_options if: Proc.new { |section| section.publication && section.publication.sections.count > 0 } do |non_first_section|
+    non_first_section.validates :parent_id, presence: true
+    non_first_section.validates :position, presence: true
+  end
+
+  validates :parent_id, absence: true, unless: Proc.new { |section| section.publication && section.publication.sections.count > 0 }
 
   def next
     # First child if any
@@ -57,5 +66,11 @@ class Section < ApplicationRecord
 
   def self.recent
     Section.where.not(published_at: nil).order(published_at: :desc)
+  end
+
+  private
+
+  def set_root
+    self.root = publication.root_section
   end
 end
