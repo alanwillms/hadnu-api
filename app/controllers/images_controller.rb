@@ -4,7 +4,8 @@ class ImagesController < ApplicationController
 
   def show
     skip_authorization
-    file_name = params[:id].split('/').last.split('\\').last + '.' + params[:format]
+    extension = (params[:format] || params[:extension]).to_s
+    file_name = params[:id].to_s.split('/').last.split('\\').last + '.' + extension
     file_path = ENV['HADNU_SECTIONS_IMAGES_DIRECTORY'] + "#{@publication.id}/#{@section.id}/#{file_name}"
     begin
       mime_type = MIME::Types.type_for(file_name).first.content_type
