@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111185310) do
+ActiveRecord::Schema.define(version: 20161207151244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,17 @@ ActiveRecord::Schema.define(version: 20161111185310) do
     t.text     "referer_url"
   end
 
+  create_table "images", force: :cascade do |t|
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.integer  "section_id"
+    t.integer  "publication_id"
+    t.index ["publication_id"], name: "index_images_on_publication_id", using: :btree
+    t.index ["section_id"], name: "index_images_on_section_id", using: :btree
+  end
+
   create_table "lessons", force: :cascade do |t|
     t.datetime "created_at",             default: -> { "now()" }, null: false
     t.datetime "updated_at"
@@ -327,6 +338,8 @@ ActiveRecord::Schema.define(version: 20161111185310) do
   add_foreign_key "enrollments", "courses", name: "enrollments_course_id_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "enrollments", "users", name: "enrollments_user_id_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "feedbacks", "users", name: "feedbacks_user_id_fkey", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "images", "publications"
+  add_foreign_key "images", "sections"
   add_foreign_key "lessons", "courses", name: "lessons_course_id_fkey", on_update: :cascade, on_delete: :restrict
   add_foreign_key "pseudonyms", "authors", name: "pseudonyms_author_id_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "pseudonyms", "users", name: "pseudonyms_user_id_fkey", on_update: :cascade, on_delete: :restrict

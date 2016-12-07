@@ -25,7 +25,7 @@ class Section < ApplicationRecord
             uniqueness: { scope: [:parent_id, :publication_id] },
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  with_options if: Proc.new { |section| section.publication && section.publication.sections.count > 0 } do |non_first_section|
+  with_options if: Proc.new { |section| section.publication && section.publication.root_section && section.publication.root_section.id != section.id } do |non_first_section|
     non_first_section.validates :parent_id, presence: true
     non_first_section.validates :position, presence: true
   end
