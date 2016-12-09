@@ -22,6 +22,7 @@ describe Publication do
     it { should validate_inclusion_of(:blocked).in_array([true, false]) }
     it { should validate_inclusion_of(:published).in_array([true, false]) }
     it { should validate_inclusion_of(:featured).in_array([true, false]) }
+    it { should validate_inclusion_of(:signed_reader_only).in_array([true, false]) }
     it { should have_attached_file(:banner) }
     it { should have_attached_file(:pdf) }
     it { should validate_attachment_size(:banner).less_than(2.megabytes) }

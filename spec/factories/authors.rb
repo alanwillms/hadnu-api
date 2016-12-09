@@ -37,5 +37,17 @@ FactoryGirl.define do
         )
       end
     end
+
+    factory :author_with_signed_reader_only_publications do
+      after(:create) do |author, _|
+        pseudonym = create(:pseudonym, author: author)
+        create(
+          :author_pseudonym_publication,
+          author: author,
+          publication: create(:publication, signed_reader_only: true),
+          pseudonym: pseudonym
+        )
+      end
+    end
   end
 end

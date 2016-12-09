@@ -95,7 +95,9 @@ class PublicationsController < ApplicationController
   def publication_params
     params.require(:publication).permit(
       :title, :original_title, :description, :copyright_notice,
-      :featured, :blocked, :published, category_ids: [], pseudonym_ids: [],
+      :featured, :blocked, :published, :signed_reader_only,
+      category_ids: [],
+      pseudonym_ids: [],
       banner_base64: [:base64, :name],
       pdf_base64: [:base64, :name]
     )

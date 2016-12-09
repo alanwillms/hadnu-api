@@ -35,20 +35,29 @@ describe PseudonymPolicy do
 
   describe '.scope' do
     let(:pseudonym_with_publications) { create(:pseudonym_with_publications) }
+    let(:pseudonym_with_signed_reader_only_publications) { create(:pseudonym_with_signed_reader_only_publications) }
 
     before(:each) do
       pseudonym_with_publications
       create(:pseudonym)
       create(:pseudonym_with_blocked_publications)
       create(:pseudonym_with_unpublished_publications)
+      pseudonym_with_signed_reader_only_publications
     end
 
     it 'lists all to admin user' do
-      expect(Pundit.policy_scope(admin_user, Pseudonym).count).to be(4)
+      expect(Pundit.policy_scope(admin_user, Pseudonym).count).to be(5)
     end
 
-    it 'lists only with unblocked & published publications to normal user' do
+    it 'lists only unblocked & published + signed reader only publications to normal user' do
       scoped = Pundit.policy_scope(normal_user, Pseudonym)
+      expect(scoped.count).to be(2)
+      expect(scoped.first).to eq(pseudonym_with_publications)
+      expect(scoped.last).to eq(pseudonym_with_signed_reader_only_publications)
+    end
+
+    it 'lists only unblocked & published publications to normal user' do
+      scoped = Pundit.policy_scope(nil, Pseudonym)
       expect(scoped.count).to be(1)
       expect(scoped.first).to eq(pseudonym_with_publications)
     end

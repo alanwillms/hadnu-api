@@ -55,6 +55,10 @@ class ApplicationPolicy
     def admin_user?
       user && user.admin?
     end
+
+    def authenticated_user?
+      !user.nil?
+    end
   end
 
   protected

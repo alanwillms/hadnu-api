@@ -12,6 +12,10 @@ FactoryGirl.define do
       publication { create(:publication, published: false) }
     end
 
+    factory :signed_reader_only_section do
+      publication { create(:publication, signed_reader_only: true) }
+    end
+
     factory :root_section do
       root_id nil
       parent_id nil

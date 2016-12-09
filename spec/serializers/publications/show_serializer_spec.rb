@@ -25,7 +25,8 @@ describe Publications::ShowSerializer do
       'related' => [],
       'featured' => record.featured,
       'blocked' => record.blocked,
-      'published' => record.published
+      'published' => record.published,
+      'signed_reader_only' => record.signed_reader_only
     )
   end
 

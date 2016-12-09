@@ -23,8 +23,10 @@ class PublicationPolicy < ApplicationPolicy
     def resolve
       if admin_user?
         scope.all
-      else
+      elsif authenticated_user?
         scope.where(published: true, blocked: false)
+      else
+        scope.where(published: true, blocked: false, signed_reader_only: false)
       end
     end
   end

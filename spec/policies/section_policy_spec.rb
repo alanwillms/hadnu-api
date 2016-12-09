@@ -8,6 +8,7 @@ describe SectionPolicy do
   let(:published_section) { create(:section) }
   let(:blocked_section) { create(:blocked_section) }
   let(:unpublished_section) { create(:unpublished_section) }
+  let(:signed_reader_only_section) { create(:signed_reader_only_section) }
 
   permissions :index? do
     it 'allow access to guest, normal user and admin user' do
@@ -59,14 +60,22 @@ describe SectionPolicy do
       published_section
       blocked_section
       unpublished_section
+      signed_reader_only_section
     end
 
     it 'lists all to admin user' do
-      expect(Pundit.policy_scope(admin_user, Section).count).to be(3)
+      expect(Pundit.policy_scope(admin_user, Section).count).to be(4)
     end
 
-    it 'lists only with unblocked & published sections to normal user' do
+    it 'lists only unblocked & published + signed reader only sections to normal user' do
       scoped = Pundit.policy_scope(normal_user, Section)
+      expect(scoped.count).to be(2)
+      expect(scoped.first).to eq(published_section)
+      expect(scoped.last).to eq(signed_reader_only_section)
+    end
+
+    it 'lists only unblocked & published sections to normal user' do
+      scoped = Pundit.policy_scope(nil, Section)
       expect(scoped.count).to be(1)
       expect(scoped.first).to eq(published_section)
     end

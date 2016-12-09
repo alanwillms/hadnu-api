@@ -35,20 +35,29 @@ describe AuthorPolicy do
 
   describe '.scope' do
     let(:author_with_publications) { create(:author_with_publications) }
+    let(:author_with_signed_reader_only_publications) { create(:author_with_signed_reader_only_publications) }
 
     before(:each) do
       author_with_publications
       create(:author)
       create(:author_with_blocked_publications)
       create(:author_with_unpublished_publications)
+      author_with_signed_reader_only_publications
     end
 
     it 'lists all to admin user' do
-      expect(Pundit.policy_scope(admin_user, Author).count).to be(4)
+      expect(Pundit.policy_scope(admin_user, Author).count).to be(5)
     end
 
-    it 'lists only with unblocked & published publications to normal user' do
+    it 'lists only unblocked & published + signed reader only publications to normal user' do
       scoped = Pundit.policy_scope(normal_user, Author)
+      expect(scoped.count).to be(2)
+      expect(scoped.first).to eq(author_with_publications)
+      expect(scoped.last).to eq(author_with_signed_reader_only_publications)
+    end
+
+    it 'lists only unblocked & published publications to normal user' do
+      scoped = Pundit.policy_scope(nil, Author)
       expect(scoped.count).to be(1)
       expect(scoped.first).to eq(author_with_publications)
     end

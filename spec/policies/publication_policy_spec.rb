@@ -59,14 +59,22 @@ describe PublicationPolicy do
       published_publication
       create(:publication, blocked: true)
       create(:publication, published: false)
+      create(:publication, signed_reader_only: true)
     end
 
     it 'lists all to admin user' do
-      expect(Pundit.policy_scope(admin_user, Publication).count).to be(3)
+      expect(Pundit.policy_scope(admin_user, Publication).count).to be(4)
     end
 
-    it 'lists only with unblocked & published publications to normal user' do
+    it 'lists only unblocked & published + for signed users only to normal user' do
       scoped = Pundit.policy_scope(normal_user, Publication)
+      expect(scoped.count).to be(2)
+      expect(scoped.first).to eq(published_publication)
+      expect(scoped.last.signed_reader_only).to be true
+    end
+
+    it 'lists only unblocked & published for normal user' do
+      scoped = Pundit.policy_scope(nil, Publication)
       expect(scoped.count).to be(1)
       expect(scoped.first).to eq(published_publication)
     end

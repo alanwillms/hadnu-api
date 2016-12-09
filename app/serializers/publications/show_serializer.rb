@@ -1,6 +1,7 @@
 class Publications::ShowSerializer < PublicationSerializer
   attributes :original_title, :hits, :copyright_notice, :pdf_url,
-             :root_section_id, :related, :featured, :blocked, :published
+             :root_section_id, :related, :featured, :blocked, :published,
+             :signed_reader_only
 
   has_many :authors
   has_many :sections

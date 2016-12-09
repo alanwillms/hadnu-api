@@ -23,6 +23,14 @@ class SectionPolicy < ApplicationPolicy
     def resolve
       if admin_user?
         scope.all
+      elsif authenticated_user?
+        scope.where("publication_id IN (
+          SELECT id
+          FROM publications
+          WHERE
+            published = TRUE
+            AND blocked = FALSE
+        )")
       else
         scope.where("publication_id IN (
           SELECT id
@@ -30,6 +38,7 @@ class SectionPolicy < ApplicationPolicy
           WHERE
             published = TRUE
             AND blocked = FALSE
+            AND signed_reader_only = FALSE
         )")
       end
     end

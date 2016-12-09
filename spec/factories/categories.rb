@@ -30,5 +30,15 @@ FactoryGirl.define do
         )
       end
     end
+
+    factory :category_with_signed_reader_only_publications do
+      after(:create) do |category, _|
+        create(
+          :category_publication,
+          category: category,
+          publication: create(:publication, signed_reader_only: true)
+        )
+      end
+    end
   end
 end
