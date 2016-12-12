@@ -91,6 +91,7 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'email_spec'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
