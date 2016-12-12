@@ -1,6 +1,7 @@
 # Hadnu
 
 ![Codeship Build Status](https://codeship.com/projects/a0e7c3a0-6f75-0134-9a46-3a51310aa3ef/status?branch=master)
+[![Code Climate](https://codeclimate.com/github/alanwillms/hadnu-ruby/badges/gpa.svg)](https://codeclimate.com/github/alanwillms/hadnu-ruby)
 [![Test Coverage](https://codeclimate.com/github/alanwillms/hadnu-ruby/badges/coverage.svg)](https://codeclimate.com/github/alanwillms/hadnu-ruby/coverage)
 
 Hadnu is a library and discussion forum application.
