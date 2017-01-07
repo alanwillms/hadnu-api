@@ -8,6 +8,6 @@ class Subject < ApplicationRecord
   validates :label_text_color, presence: true, format: { with: COLOR_FORMAT }
   validates :label_background_color,
             presence: true,
-            uniqueness: true,
+            uniqueness: { case_sensitive: false },
             format: { with: COLOR_FORMAT }
 end

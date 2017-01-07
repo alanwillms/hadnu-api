@@ -14,6 +14,7 @@ describe Comment do
     it do
       should validate_uniqueness_of(:comment)
         .scoped_to(:discussion_id)
+        .case_insensitive
     end
   end
 
