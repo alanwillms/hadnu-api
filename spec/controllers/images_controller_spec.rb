@@ -15,14 +15,16 @@ describe ImagesController do
     context 'with invalid publication' do
       it 'raise a ActiveRecord::RecordNotFound exception' do
         params[:publication_id] = 123
-        expect { get :show, params: params }.to raise_error(ActiveRecord::RecordNotFound)
+        get :show, params: params
+        expect(response.status).to be(404)
       end
     end
 
     context 'with invalid section' do
       it 'raise a ActiveRecord::RecordNotFound exception' do
         params[:section_id] = 123
-        expect { get :show, params: params }.to raise_error(ActiveRecord::RecordNotFound)
+        get :show, params: params
+        expect(response.status).to be(404)
       end
     end
 
@@ -123,7 +125,8 @@ describe ImagesController do
         authenticate do |user|
           create(:role_user, user: user, role_name: 'editor')
         end
-        expect { post :create, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+        post :create, params: valid_params
+        expect(response.status).to eq(401)
       end
     end
   end

@@ -115,7 +115,8 @@ describe UsersController do
     context 'with unauthorized user' do
       it 'returns a 401 status' do
         authenticate
-        expect { patch :update, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+        patch :update, params: valid_params
+        expect(response.status).to eq(401)
       end
     end
   end

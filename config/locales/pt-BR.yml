@@ -1,4 +1,8 @@
 pt-BR:
+  actionpack:
+    errors:
+      record_not_found: 'Registro não encontrado'
+      unauthorized: 'Você não está autorizado'
   recaptcha:
     errors:
       verification_failed: 'A verificação do reCAPTCHA falhou, por favor tente novamente.'

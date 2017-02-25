@@ -81,6 +81,13 @@ describe AuthorsController do
       expect(response.status).to be(200)
     end
 
+    context 'with non existent record' do
+      it 'returns a 404 status' do
+        get :show, params: { id: 0 }
+        expect(response.status).to be(404)
+      end
+    end
+
     context 'cache' do
       before(:each) do
         get :show, params: { id: author.id }
@@ -195,7 +202,8 @@ describe AuthorsController do
         authenticate do |user|
           create(:role_user, user: user, role_name: 'editor')
         end
-        expect { post :create, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+        post :create, params: valid_params
+        expect(response.status).to eq(401)
       end
     end
   end
@@ -280,7 +288,8 @@ describe AuthorsController do
         authenticate do |user|
           create(:role_user, user: user, role_name: 'editor')
         end
-        expect { patch :update, params: valid_params }.to raise_error(Pundit::NotAuthorizedError)
+        patch :update, params: valid_params
+        expect(response.status).to eq(401)
       end
     end
   end
