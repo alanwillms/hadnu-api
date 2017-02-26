@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DiscussionForm do
+describe CreateDiscussionService do
   let(:subject) { create(:subject) }
   let(:user) { create(:user) }
   let(:valid_params) do
@@ -10,11 +10,11 @@ describe DiscussionForm do
       subject_id: subject.id
     }
   end
-  let(:discussion_form) { DiscussionForm.new(user, valid_params) }
+  let(:discussion_form) { CreateDiscussionService.new(user, valid_params) }
 
   describe '#save' do
     context 'with valid data' do
-      let(:discussion_form) { DiscussionForm.new(user, valid_params) }
+      let(:discussion_form) { CreateDiscussionService.new(user, valid_params) }
 
       it 'creates a new discussion' do
         expect { discussion_form.save }.to change { Discussion.count }.by(1)
@@ -71,7 +71,7 @@ describe DiscussionForm do
       let(:discussion_form) do
         params = valid_params
         params[:title] = nil
-        DiscussionForm.new(user, params)
+        CreateDiscussionService.new(user, params)
       end
 
       it 'does not create a discussion' do
@@ -92,7 +92,7 @@ describe DiscussionForm do
     let(:discussion_form) do
       params = valid_params
       params[:comment] = nil
-      DiscussionForm.new(user, params)
+      CreateDiscussionService.new(user, params)
     end
 
     it 'does not create a discussion' do
@@ -112,7 +112,7 @@ describe DiscussionForm do
     it 'returns discussion errors' do
       params = valid_params
       params[:title] = nil
-      discussion_form = DiscussionForm.new(user, params)
+      discussion_form = CreateDiscussionService.new(user, params)
       discussion_form.save
       expect(discussion_form.errors).to include(:title)
     end
@@ -120,7 +120,7 @@ describe DiscussionForm do
     it 'returns comment errors' do
       params = valid_params
       params[:comment] = nil
-      discussion_form = DiscussionForm.new(user, params)
+      discussion_form = CreateDiscussionService.new(user, params)
       discussion_form.save
       expect(discussion_form.errors).to include(:comment)
     end

@@ -15,7 +15,7 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    form = DiscussionForm.new(current_user, new_discussion_params)
+    form = CreateDiscussionService.new(current_user, discussion_params)
     authorize form.discussion
     expires_now
 
@@ -29,11 +29,12 @@ class DiscussionsController < ApplicationController
   def update
     authorize discussion
     expires_now
+    form = UpdateDiscussionService.new(discussion, discussion_params)
 
-    if discussion.update edit_discussion_params
-      render json: discussion
+    if form.save
+      render json: form.discussion
     else
-      render json: discussion.errors, status: :unprocessable_entity
+      render json: form.errors, status: :unprocessable_entity
     end
   end
 
@@ -65,12 +66,8 @@ class DiscussionsController < ApplicationController
     @discussion ||= policy_scope(Discussion).find(params[:id])
   end
 
-  def new_discussion_params
-    params.require(:discussion).permit(:title, :comment, :subject_id)
-  end
-
-  def edit_discussion_params
-    permitted = [:title, :subject_id]
+  def discussion_params
+    permitted = [:title, :subject_id, :comment]
     permitted.push(:closed) if current_user.admin?
     params.require(:discussion).permit(*permitted)
   end

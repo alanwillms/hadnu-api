@@ -167,7 +167,7 @@ describe DiscussionsController do
 
   describe '#update' do
     let(:discussion) do
-      create(:discussion, title: 'Original title')
+      create(:discussion_with_comment, title: 'Original title')
     end
 
     def valid_params
@@ -175,7 +175,8 @@ describe DiscussionsController do
         id: discussion.id,
         discussion: {
           title: 'New Title',
-          subject_id: discussion.subject_id
+          subject_id: discussion.subject_id,
+          comment: 'New Comment'
         }
       }
     end
@@ -230,6 +231,10 @@ describe DiscussionsController do
         expect(discussion.title).to eq('New Title')
         expect(discussion.closed).to eq(true)
       end
+
+      it 'updates discussion first comment' do
+        expect(discussion.comments.first.comment).to eq('New Comment')
+      end
     end
 
     context 'with creator user' do
@@ -246,6 +251,10 @@ describe DiscussionsController do
 
         it 'updates the discussion' do
           expect(discussion.title).to eq('New Title')
+        end
+
+        it 'updates discussion first comment' do
+          expect(discussion.comments.first.comment).to eq('New Comment')
         end
       end
 
@@ -269,7 +278,7 @@ describe DiscussionsController do
 
       context 'after 24 hours' do
         let(:discussion) do
-          create(:discussion, title: 'Original title', created_at: 2.days.ago)
+          create(:discussion_with_comment, title: 'Original title', created_at: 2.days.ago)
         end
 
         before(:each) do
@@ -284,6 +293,10 @@ describe DiscussionsController do
 
         it 'does not update the discussion' do
           expect(discussion.title).not_to eq('New Title')
+        end
+
+        it 'does not update discussion first comment' do
+          expect(discussion.comments.first.comment).not_to eq('New Comment')
         end
       end
     end
@@ -303,6 +316,10 @@ describe DiscussionsController do
 
       it 'does not update the discussion' do
         expect(discussion.title).to eq('Original title')
+      end
+
+      it 'does not update discussion first comment' do
+        expect(discussion.comments.first.comment).not_to eq('New Comment')
       end
     end
   end

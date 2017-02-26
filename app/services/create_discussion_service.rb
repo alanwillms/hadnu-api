@@ -1,4 +1,4 @@
-class DiscussionForm
+class CreateDiscussionService
   attr_reader :discussion
 
   def initialize(user, params)

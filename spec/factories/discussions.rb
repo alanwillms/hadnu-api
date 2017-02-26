@@ -8,5 +8,11 @@ FactoryGirl.define do
     last_user { user }
     subject
     commented_at { Time.now }
+
+    factory :discussion_with_comment do
+      after(:create) do |discussion, _|
+        create(:comment, discussion: discussion)
+      end
+    end
   end
 end
