@@ -14,6 +14,7 @@ describe DiscussionSerializer do
       'title' => record.title,
       'hits' => record.hits,
       'comments_counter' => record.comments_counter,
+      'created_at' => record.created_at.to_json[1..-2],
       'commented_at' => record.commented_at.to_json[1..-2],
       'closed' => record.closed,
       'user' => serializer_to_hash(UserSerializer.new(record.user)),
