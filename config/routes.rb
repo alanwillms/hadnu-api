@@ -37,6 +37,6 @@ Rails.application.routes.draw do
   end
 
   resources :discussions, only: [:index, :show, :create, :update] do
-    resources :comments, only: [:index, :create]
+    resources :comments, only: [:index, :create, :update]
   end
 end

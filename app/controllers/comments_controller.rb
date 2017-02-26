@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user, only: :create
+  before_action :authenticate_user, only: [:create, :update]
 
   def index
     authorize Comment
@@ -17,6 +17,17 @@ class CommentsController < ApplicationController
       render json: form.comment, status: :created
     else
       render json: form.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize comment
+    expires_now
+
+    if comment.update_attributes comment_params
+      render json: comment
+    else
+      render json: comment.errors, status: :unprocessable_entity
     end
   end
 
@@ -39,6 +50,10 @@ class CommentsController < ApplicationController
     @user ||= User.find(params[:user_id])
   end
 
+  def comment
+    @comment ||= policy_scope(discussion.comments).find(params[:id])
+  end
+
   def comments
     scope = if params[:discussion_id]
       discussion.comments
@@ -58,6 +73,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:comment, :discussion_id)
+    params.require(:comment).permit(:comment)
   end
 end

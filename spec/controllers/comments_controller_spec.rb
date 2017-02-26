@@ -183,4 +183,123 @@ describe CommentsController do
       end
     end
   end
+
+  describe '#update' do
+    let(:comment) { create(:comment, comment: 'Original comment') }
+
+    def valid_params
+      {
+        discussion_id: comment.discussion.id,
+        id: comment.id,
+        comment: {
+          comment: 'New comment'
+        }
+      }
+    end
+
+    context 'with guest user' do
+      before(:each) do
+        patch :update, params: valid_params
+        comment.reload
+      end
+
+      it 'returns a 401 status' do
+        expect(response.status).to eq(401)
+      end
+
+      it 'does not update the discussion' do
+        expect(comment.comment).to eq('Original comment')
+      end
+    end
+
+    context 'with a different user' do
+      before(:each) do
+        authenticate
+        patch :update, params: valid_params
+        comment.reload
+      end
+
+      it 'returns a 401 status' do
+        expect(response.status).to eq(401)
+      end
+
+      it 'does not update the comment' do
+        expect(comment.comment).to eq('Original comment')
+      end
+    end
+
+    context 'with an admin user' do
+      before(:each) do
+        authenticate do |user|
+          create(:role_user, user: user, role_name: 'owner')
+        end
+        patch :update, params: valid_params
+        comment.reload
+      end
+
+      it 'returns a 200 status' do
+        expect(response.status).to eq(200)
+      end
+
+      it 'updates the comment' do
+        expect(comment.comment).to eq('New comment')
+      end
+    end
+
+    context 'with creator user' do
+      context 'with valid data and within 24 hours of posting' do
+        before(:each) do
+          authenticate comment.user
+          patch :update, params: valid_params
+          comment.reload
+        end
+
+        it 'returns a 200 status' do
+          expect(response.status).to eq(200)
+        end
+
+        it 'updates the comment' do
+          expect(comment.comment).to eq('New comment')
+        end
+      end
+
+      context 'after 24 hours' do
+        let(:comment) do
+          create(:comment, comment: 'Original comment', created_at: 2.days.ago)
+        end
+
+        before(:each) do
+          authenticate comment.user
+          patch :update, params: valid_params
+          comment.reload
+        end
+
+        it 'returns a 401 status' do
+          expect(response.status).to eq(401)
+        end
+
+        it 'does not update the comment' do
+          expect(comment.comment).not_to eq('New comment')
+        end
+      end
+    end
+
+    context 'with invalid data' do
+      before(:each) do
+        authenticate comment.user
+        invalid_params = valid_params
+        invalid_params[:comment][:comment] = nil
+        patch :update, params: invalid_params
+        comment.reload
+      end
+
+      it 'returns a 422 status' do
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not update the discussion' do
+        expect(comment.comment).to eq('Original comment')
+      end
+    end
+  end
 end
