@@ -12,7 +12,9 @@ class DiscussionPolicy < ApplicationPolicy
   end
 
   def update?
-    admin_user?
+    return false unless authenticated_user?
+    return true if admin_user?
+    record.user == user && record.created_at >= 1.day.ago
   end
 
   def destroy?

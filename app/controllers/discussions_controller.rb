@@ -1,5 +1,5 @@
 class DiscussionsController < ApplicationController
-  before_action :authenticate_user, only: :create
+  before_action :authenticate_user, only: [:create, :update]
 
   def index
     authorize Discussion
@@ -23,6 +23,17 @@ class DiscussionsController < ApplicationController
       render json: form.discussion, status: :created, location: form.discussion
     else
       render json: form.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize discussion
+    expires_now
+
+    if discussion.update edit_discussion_params
+      render json: discussion
+    else
+      render json: discussion.errors, status: :unprocessable_entity
     end
   end
 
@@ -56,5 +67,11 @@ class DiscussionsController < ApplicationController
 
   def new_discussion_params
     params.require(:discussion).permit(:title, :comment, :subject_id)
+  end
+
+  def edit_discussion_params
+    permitted = [:title, :subject_id]
+    permitted.push(:closed) if current_user.admin?
+    params.require(:discussion).permit(*permitted)
   end
 end

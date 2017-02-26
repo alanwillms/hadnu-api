@@ -5,6 +5,7 @@ describe DiscussionPolicy do
   let(:admin_user) { create(:admin_user) }
   let(:policy) { described_class }
   let(:discussion) { create(:discussion) }
+  let(:old_discussion) { create(:discussion, created_at: 2.days.ago) }
 
   permissions :index? do
     it 'allow access to guest, normal user and admin user' do
@@ -33,7 +34,26 @@ describe DiscussionPolicy do
     end
   end
 
-  permissions :edit?, :update?, :destroy? do
+  permissions :edit?, :update? do
+    it 'denies access to guest and other users' do
+      expect(policy).not_to permit(nil, discussion)
+      expect(policy).not_to permit(normal_user, discussion)
+    end
+
+    it 'allow access to admin user' do
+      expect(policy).to permit(admin_user, discussion)
+    end
+
+    it 'allow access to owner user of recent discussion' do
+      expect(policy).to permit(discussion.user, discussion)
+    end
+
+    it 'denies access to owner user discussion older than 24 hours' do
+      expect(policy).not_to permit(discussion.user, old_discussion)
+    end
+  end
+
+  permissions :destroy? do
     it 'denies access to guest and normal user' do
       expect(policy).not_to permit(nil, discussion)
       expect(policy).not_to permit(normal_user, discussion)
