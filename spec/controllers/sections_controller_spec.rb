@@ -158,7 +158,8 @@ describe SectionsController do
         id: section.id,
         publication_id: publication.id,
         section: {
-          title: section.title + ' Changed'
+          title: section.title + ' Changed',
+          published_at: '1989-03-07T22:50'
         }
       }
     end
@@ -178,6 +179,7 @@ describe SectionsController do
       it 'updates the publication' do
         section.reload
         expect(section.title).to eq(valid_params[:section][:title])
+        expect(section.published_at).to eq(valid_params[:section][:published_at])
       end
 
       it 'outputs publication data' do

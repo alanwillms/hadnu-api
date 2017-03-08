@@ -58,7 +58,7 @@ class SectionsController < ApplicationController
   def section_params
     params.require(:section).permit(
       :title, :source, :seo_description, :text,
-      :parent_id, :position
+      :parent_id, :position, :published_at
     )
   end
 end
