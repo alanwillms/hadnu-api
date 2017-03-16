@@ -93,6 +93,7 @@ GEM
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    graphql (1.4.4)
     htmlentities (4.3.4)
     i18n (0.8.1)
     json (2.1.0)
@@ -257,6 +258,7 @@ DEPENDENCIES
   email_validator
   factory_girl_rails
   faker
+  graphql
   kaminari
   knock
   koala
@@ -282,3 +284,4 @@ DEPENDENCIES
 
 BUNDLED WITH
    1.14.6
+   1.14.5

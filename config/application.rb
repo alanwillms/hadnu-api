@@ -33,6 +33,9 @@ module HadnuApi
     # Add services directory to the path
     config.autoload_paths += Dir[Rails.root.join('app', 'services', '{*/}')]
 
+    # Add graphql directory to the path
+    config.autoload_paths += Dir[Rails.root.join('app', 'graphql', '{*/}')]
+
     # Routes default host and port
     Rails.application.routes.default_url_options[:host] = ENV['HADNU_DEFAULT_URL_HOST']
 
