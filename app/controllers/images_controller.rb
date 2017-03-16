@@ -1,17 +1,18 @@
 class ImagesController < ApplicationController
-  before_action :authenticate_user, only: :create
+  before_action :authenticate_user, only: [:create, :index]
 
   def show
     skip_authorization
-    extension = (params[:format] || params[:extension]).to_s
-    file_name = params[:id].to_s.split('/').last.split('\\').last + '.' + extension
-    file_path = ENV['HADNU_SECTIONS_IMAGES_DIRECTORY'] + "#{publication.id}/#{section.id}/#{file_name}"
-    begin
-      mime_type = MIME::Types.type_for(file_name).first.content_type
-      send_file file_path, type: mime_type, disposition: 'inline'
-    rescue
-      head 404
-    end
+    image = section.images.find(params[:id])
+    file_path = image.file.path
+    mime_type = MIME::Types.type_for(file_path).first.content_type
+    send_file file_path, type: mime_type, disposition: 'inline'
+  end
+
+  def index
+    authorize Image
+    expires_now
+    render json: section.images
   end
 
   # CKEditor compatible
@@ -25,10 +26,11 @@ class ImagesController < ApplicationController
     expires_now
 
     if image.save
+      section_url = publication_section_url(section.publication, section)
       render json: {
         uploaded: 1,
         fileName: image.file_file_name,
-        url: "#{request.protocol}#{request.host_with_port}#{image.file.url}",
+        url: "#{section_url}/images/#{image.id}",
       }, status: :created
     else
       render json: {
@@ -47,6 +49,6 @@ class ImagesController < ApplicationController
   end
 
   def section
-    @section ||= policy_scope(Section).find(params[:section_id])
+    @section ||= policy_scope(publication.sections).find(params[:section_id])
   end
 end

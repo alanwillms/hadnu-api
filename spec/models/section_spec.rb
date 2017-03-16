@@ -9,6 +9,7 @@ describe Section do
     it { should belong_to(:parent) }
     it { should belong_to(:root) }
     it { should have_many(:children) }
+    it { should have_many(:images) }
 
     it { should validate_presence_of(:publication) }
     it { should validate_presence_of(:user) }
@@ -25,7 +26,7 @@ describe Section do
         .only_integer
         .is_greater_than_or_equal_to(0)
     end
-    it { should validate_uniqueness_of(:title).scoped_to(:publication_id) }
+    it { should validate_uniqueness_of(:title).scoped_to(:parent_id) }
     it do
       should validate_uniqueness_of(:position)
         .scoped_to([:parent_id, :publication_id])

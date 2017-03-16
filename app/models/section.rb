@@ -6,12 +6,13 @@ class Section < ApplicationRecord
   belongs_to :parent, optional: true, class_name: 'Section'
   belongs_to :root, optional: true, class_name: 'Section'
   has_many :children, class_name: 'Section', foreign_key: 'parent_id'
+  has_many :images
 
   validates :user, presence: true
   validates :publication, presence: true
   validates :title,
             presence: true,
-            uniqueness: { scope: :publication_id },
+            uniqueness: { scope: :parent_id },
             length: { maximum: 255 }
   validates :published_at, date: true, allow_nil: true
   validates :seo_description, length: { maximum: 255 }

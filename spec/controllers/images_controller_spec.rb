@@ -3,12 +3,11 @@ require 'rails_helper'
 describe ImagesController do
   describe '#show' do
     let(:params) do
-      section = create(:section)
+      image = create(:image)
       {
-        publication_id: section.publication_id,
-        section_id: section.id,
-        id: 'abc',
-        format: 'png'
+        publication_id: image.publication_id,
+        section_id: image.section_id,
+        id: image.id
       }
     end
 
@@ -28,20 +27,71 @@ describe ImagesController do
       end
     end
 
-    context 'with invalid file' do
+    context 'with invalid image' do
       it 'has a 404 status' do
+        params[:section_id] = 123
         get :show, params: params
         expect(response.status).to be(404)
       end
     end
 
-    context 'with valid file' do
+    context 'with valid image' do
       it 'sends the file' do
-        stub = instance_double(MIME::Type)
-        allow(stub).to receive(:content_type).and_return('image/png')
-        allow(MIME::Types).to receive(:type_for).and_return([stub])
+        image_params = params
+        mime_type = instance_double(MIME::Type)
+        allow(mime_type).to receive(:content_type).and_return('image/jpg')
+        allow(mime_type).to receive(:media_type).and_return('image/jpg')
+        allow(MIME::Types).to receive(:type_for).and_return([mime_type])
         expect(controller).to receive(:send_file).once
-        get :show, params: params
+        get :show, params: image_params
+      end
+    end
+  end
+
+  describe '#index' do
+    let(:image) { create(:image) }
+
+    let(:params) do
+      {
+        publication_id: image.publication_id,
+        section_id: image.section_id
+      }
+    end
+
+    before(:each) do
+      authenticate do |user|
+        create(:role_user, user: user, role_name: 'owner')
+      end
+    end
+
+    context 'with invalid publication' do
+      it 'raise a ActiveRecord::RecordNotFound exception' do
+        params[:publication_id] = 123
+        get :index, params: params
+        expect(response.status).to be(404)
+      end
+    end
+
+    context 'with invalid section' do
+      it 'raise a ActiveRecord::RecordNotFound exception' do
+        params[:section_id] = 123
+        get :index, params: params
+        expect(response.status).to be(404)
+      end
+    end
+
+    context 'with valid params' do
+      it 'has a 200 status' do
+        get :index, params: params
+        expect(response.status).to be(200)
+      end
+
+      it 'lists images' do
+        get :index, params: params
+        expect(json_response.first).to include(
+          'id' => image.id,
+          'file_file_name' => image.file_file_name
+        )
       end
     end
   end
@@ -77,7 +127,7 @@ describe ImagesController do
         expect(json_response).to include(
           'fileName' => 'image.jpg',
           'uploaded' => 1,
-          'url' => "http://test.host#{image.file.url}"
+          'url' => "http://test.host/publications/#{image.publication_id}/sections/#{image.section_id}/images/#{image.id}"
         )
       end
     end

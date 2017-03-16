@@ -9,6 +9,7 @@ describe Publication do
     it { should have_many(:pseudonyms).through(:author_pseudonym_publications) }
     it { should belong_to(:user) }
     it { should have_many(:sections) }
+    it { should have_many(:images) }
 
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:title) }

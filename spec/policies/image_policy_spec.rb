@@ -7,10 +7,13 @@ describe ImagePolicy do
   let(:image) { Image.new }
 
   permissions :index? do
-    it 'allow access to guest, normal user and admin user' do
-      expect(policy).to permit(nil, Image)
-      expect(policy).to permit(normal_user, Image)
+    it 'allow access to admin user' do
       expect(policy).to permit(admin_user, Image)
+    end
+
+    it 'denies access to guest, normal user and admin user' do
+      expect(policy).not_to permit(nil, Image)
+      expect(policy).not_to permit(normal_user, Image)
     end
   end
 

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :publications, only: [:index, :show, :create, :update] do
     resources :sections, only: [:show, :create, :update] do
-      resources :images, only: [:show, :create]
+      resources :images, only: [:show, :index, :create]
     end
   end
 

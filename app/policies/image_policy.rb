@@ -1,6 +1,6 @@
 class ImagePolicy < ApplicationPolicy
   def index?
-    true
+    admin_user?
   end
 
   def show?
