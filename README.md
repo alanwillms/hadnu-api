@@ -16,8 +16,9 @@ This is the 5th major refactoring of Hadnu.
 
 ## Requirements
 
-* Ruby 2.3+
-* PostgreSQL
+* Ruby 2.4+
+* PostgreSQL 9.4+
+* ImageMagick
 
 ## Deployment
 
