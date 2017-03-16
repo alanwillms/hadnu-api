@@ -229,4 +229,11 @@ describe User do
       }
     end
   end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      user = build(:user, id: 123, login: 'Açaí')
+      expect(user.slug).to eq('123-acai')
+    end
+  end
 end

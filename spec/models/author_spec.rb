@@ -48,4 +48,11 @@ describe Author do
       }
     end
   end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      author = build(:author, id: 123, pen_name: 'Açaí')
+      expect(author.slug).to eq('123-acai')
+    end
+  end
 end

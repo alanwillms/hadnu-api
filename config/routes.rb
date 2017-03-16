@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # GraphQL
+  resources :graphql, only: :create
+
   # Common
   resource :omniauth_registrations, only: :create
   resource :omniauth_sessions, only: :create

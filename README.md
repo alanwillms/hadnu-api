@@ -11,8 +11,9 @@ This is the 5th major refactoring of Hadnu.
 * Version 1: vanilla HTML
 * Version 2: Zend Framework 1
 * Version 3: Yii Framework 1.1
-* Version 4: Yii Framework 2
-* Version 5: Ruby on Rails (back-end) + Vue.js (front-end)
+* Version 4: Yii Framework 2 + Bootstrap 3
+* Version 5: Ruby on Rails (REST API) + Vue.js (with Bootstrap 4)
+* Version 6: Ruby on Rails (with GraphQL) + Vue.js (with Vuex + Server Side Rendering + Bulma 0 + Object Storage) 
 
 ## Requirements
 

@@ -23,6 +23,10 @@ class Discussion < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :closed, inclusion: { in: [true, false] }
 
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{title}")
+  end
+
   def hit!
     self.class.where(id: id).update_all('hits = hits + 1')
     self.hits += 1

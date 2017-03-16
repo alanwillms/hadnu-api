@@ -158,4 +158,11 @@ describe Publication do
       }
     end
   end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      publication = build(:publication, id: 123, title: 'Açaí')
+      expect(publication.slug).to eq('123-acai')
+    end
+  end
 end

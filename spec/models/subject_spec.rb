@@ -22,4 +22,11 @@ describe Subject do
     it { should_not allow_value('foo').for(:label_background_color) }
     it { should_not allow_value('bar').for(:label_text_color) }
   end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      discussion_subject = build(:subject, id: 123, name: 'Açaí')
+      expect(discussion_subject.slug).to eq('123-acai')
+    end
+  end
 end
