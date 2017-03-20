@@ -7,7 +7,11 @@ class Author < ApplicationRecord
   has_many :pseudonyms
   has_attached_file :photo,
                     styles: { card: '630x354#', thumb: '100x100#' },
-                    default_url: '/images/missing/author/:style.jpg'
+                    default_url: '/images/missing/author/:style.jpg',
+                    convert_options: {
+                      card: '-quality 85 -strip',
+                      thumb: '-quality 85 -strip'
+                    }
 
   validates :user, presence: true
   validates :pen_name,

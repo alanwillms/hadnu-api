@@ -13,7 +13,13 @@ class Publication < ApplicationRecord
                       google: '180x120#',
                       twitter: '280x150#'
                     },
-                    default_url: '/images/:style/missing.png'
+                    default_url: '/images/:style/missing.png',
+                    convert_options: {
+                      card: '-quality 85 -strip',
+                      facebook: '-quality 85 -strip',
+                      google: '-quality 85 -strip',
+                      twitter: '-quality 85 -strip'
+                    }
   has_attached_file :pdf
 
   validates :user, presence: true

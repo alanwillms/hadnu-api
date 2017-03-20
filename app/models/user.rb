@@ -12,7 +12,12 @@ class User < ApplicationRecord
   has_many :roles, class_name: 'RoleUser'
   has_attached_file :photo,
                     styles: { mini: '18x18#', thumb: '70x70#', profile: '200x200#' },
-                    default_url: '/images/missing/user/:style.jpg'
+                    default_url: '/images/missing/user/:style.jpg',
+                    convert_options: {
+                      mini: '-quality 85 -strip',
+                      thumb: '-quality 85 -strip',
+                      profile: '-quality 85 -strip'
+                    }
 
   validates :name, presence: true, length: { maximum: 255 }
   validates :salt, presence: true, length: { maximum: 36 }

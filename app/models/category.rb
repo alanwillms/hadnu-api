@@ -2,7 +2,10 @@ class Category < ApplicationRecord
   has_and_belongs_to_many :publications
   has_attached_file :banner,
                     styles: { card: '630x354#' },
-                    default_url: '/images/:style/missing.png'
+                    default_url: '/images/:style/missing.png',
+                    convert_options: {
+                      card: '-quality 85 -strip'
+                    }
 
   validates :name,
             presence: true,
