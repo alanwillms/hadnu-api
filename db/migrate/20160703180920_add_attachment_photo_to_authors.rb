@@ -1,4 +1,4 @@
-class AddAttachmentPhotoToAuthors < ActiveRecord::Migration
+class AddAttachmentPhotoToAuthors < ActiveRecord::Migration[5.0]
   def self.up
     change_table :authors do |t|
       t.attachment :photo

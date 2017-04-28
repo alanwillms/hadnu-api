@@ -1,4 +1,4 @@
-class AddAttachmentBannerPdfToPublications < ActiveRecord::Migration
+class AddAttachmentBannerPdfToPublications < ActiveRecord::Migration[5.0]
   def self.up
     change_table :publications do |t|
       t.attachment :banner
