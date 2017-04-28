@@ -16,7 +16,7 @@ describe Publications::ShowSerializer do
       'facebook_preview_url' => nil,
       'google_preview_url' => nil,
       'twitter_preview_url' => nil,
-      'pdf_url' => nil,
+      'downloadable' => false,
       'root_section_id' => nil,
       'authors' => [],
       'sections' => [],

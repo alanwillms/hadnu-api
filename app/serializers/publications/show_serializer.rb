@@ -1,5 +1,5 @@
 class Publications::ShowSerializer < PublicationSerializer
-  attributes :original_title, :hits, :copyright_notice, :pdf_url,
+  attributes :original_title, :hits, :copyright_notice, :downloadable,
              :root_section_id, :related, :featured, :blocked, :published,
              :signed_reader_only
 
@@ -12,8 +12,8 @@ class Publications::ShowSerializer < PublicationSerializer
     object.root_section.id if object.root_section
   end
 
-  def pdf_url
-    object.pdf.url if object.pdf.exists?
+  def downloadable
+    object.pdf.exists?
   end
 
   def related

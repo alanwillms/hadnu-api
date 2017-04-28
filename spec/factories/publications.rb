@@ -13,5 +13,9 @@ FactoryGirl.define do
         )
       end
     end
+
+    factory :publication_with_pdf do
+      pdf { File.new("#{Rails.root}/spec/support/files/document.pdf") }
+    end
   end
 end

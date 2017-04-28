@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     resources :sections, only: [:show, :create, :update] do
       resources :images, only: [:show, :index, :create]
     end
+
+    resource :download, only: [:show]
   end
 
   resources :categories, only: [:index, :show] do
