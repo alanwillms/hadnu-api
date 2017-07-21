@@ -37,6 +37,13 @@ describe Section do
     it { should validate_length_of(:source).is_at_most(255) }
     it { should allow_value('1989-07-03 22:50:00').for(:published_at) }
     it { should_not allow_value('foo').for(:published_at) }
+    it { should have_attached_file(:banner) }
+    it { should validate_attachment_size(:banner).less_than(2.megabytes) }
+    it do
+      should validate_attachment_content_type(:banner)
+        .allowing('image/png', 'image/gif', 'image/jpg')
+        .rejecting('text/plain', 'text/xml')
+    end
   end
 
   describe '#next' do
@@ -103,6 +110,28 @@ describe Section do
         expect(section.save).to be false
         expect(section.errors).to have_key(:parent_id)
       end
+    end
+  end
+
+  describe '#banner_base64=' do
+    let(:section) { build(:section) }
+
+    it 'does nothing if the value is empty' do
+      expect(section).not_to receive(:banner=)
+      section.banner_base64 = ''
+    end
+
+    it 'does nothing if the value is wrong' do
+      expect(section).not_to receive(:banner=)
+      section.banner_base64 = { 'nope' => 'nope' }
+    end
+
+    it 'sets the attachment as the received file' do
+      expect(section).to receive(:banner=)
+      section.banner_base64 = {
+        'base64' => 'data:image/jpeg;base64,/9j/4TI9RX',
+        'name' => 'file.jpg'
+      }
     end
   end
 

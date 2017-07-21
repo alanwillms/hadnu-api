@@ -8,6 +8,21 @@ class Section < ApplicationRecord
   has_many :children, class_name: 'Section', foreign_key: 'parent_id'
   has_many :images
 
+  has_attached_file :banner,
+                    styles: {
+                      card: '630x354#',
+                      facebook: '1200x630#',
+                      google: '180x120#',
+                      twitter: '280x150#'
+                    },
+                    default_url: '/images/:style/missing.png',
+                    convert_options: {
+                      card: '-quality 85 -strip',
+                      facebook: '-quality 85 -strip',
+                      google: '-quality 85 -strip',
+                      twitter: '-quality 85 -strip'
+                    }
+
   validates :user, presence: true
   validates :publication, presence: true
   validates :title,
@@ -32,6 +47,12 @@ class Section < ApplicationRecord
   end
 
   validates :parent_id, absence: true, unless: Proc.new { |section| section.publication && section.publication.sections.count > 0 }
+  validates_attachment_content_type :banner, content_type: /\Aimage\/.*\Z/
+  validates_attachment_size :banner, less_than: 2.megabytes
+
+  def banner_base64=(data)
+    set_file_from_base64(:banner, data)
+  end
 
   def next
     # First child if any

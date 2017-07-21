@@ -14,6 +14,7 @@ class RecentSectionSerializer < ActiveModel::Serializer
   end
 
   def banner_url
+    return object.banner.url(:card) if object.banner.exists?
     object.publication.banner.url(:card) if object.publication.banner.exists?
   end
 end
