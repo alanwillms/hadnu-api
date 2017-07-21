@@ -46,7 +46,7 @@ describe CreateDiscussionService do
 
       it 'sets discussion comments counter to 1' do
         discussion_form.save
-        expect(discussion_form.discussion.comments_counter).to be 1
+        expect(discussion_form.discussion.comments_count).to be 1
       end
 
       it 'returns true' do

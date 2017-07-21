@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :discussion do
     title { Faker::Hipster.sentence(3) }
     hits 0
-    comments_counter 0
+    comments_count 0
     closed false
     user
     last_user { user }

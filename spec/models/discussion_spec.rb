@@ -13,7 +13,7 @@ describe Discussion do
     it { should validate_presence_of(:last_user) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:hits) }
-    it { should validate_presence_of(:comments_counter) }
+    it { should validate_presence_of(:comments_count) }
     it { should validate_presence_of(:commented_at) }
     it { should validate_uniqueness_of(:title).case_insensitive }
     it { should validate_length_of(:title).is_at_most(255) }
@@ -26,7 +26,7 @@ describe Discussion do
         .is_greater_than_or_equal_to(0)
     end
     it do
-      should validate_numericality_of(:comments_counter)
+      should validate_numericality_of(:comments_count)
         .only_integer
         .is_greater_than_or_equal_to(0)
     end
@@ -47,6 +47,20 @@ describe Discussion do
     it 'increments the hit counter' do
       discussion = create(:discussion, hits: 99)
       expect { discussion.hit! }.to change { discussion.hits }.to(100)
+    end
+  end
+
+  describe '.save' do
+    it 'updates user discussions count' do
+      user = create(:user)
+      3.times { create(:discussion, user: user) }
+      expect(user.reload.discussions_count).to eq(3)
+    end
+
+    it 'updates subject discussions count' do
+      discussion_subject = create(:subject)
+      3.times { create(:discussion, subject: discussion_subject) }
+      expect(discussion_subject.reload.discussions_count).to eq(3)
     end
   end
 end

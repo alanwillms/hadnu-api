@@ -8,4 +8,8 @@ class DiscussionSerializer < ActiveModel::Serializer
   def slug
     ActiveSupport::Inflector.parameterize("#{object.id}-#{object.title}")
   end
+
+  def comments_counter
+    object.comments_count
+  end
 end

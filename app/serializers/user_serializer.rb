@@ -1,5 +1,3 @@
-require 'digest/md5'
-
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :login, :created_at, :comments_counter, :slug,
              :created_discussions_counter, :commented_discussions_counter,
@@ -10,15 +8,15 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def comments_counter
-    object.comments.count
+    object.comments_count
   end
 
   def created_discussions_counter
-    object.discussions.count
+    object.discussions_count
   end
 
   def commented_discussions_counter
-    Discussion.includes('comments').where(comments: { user_id: object.id }).count
+    object.commented_discussions_count
   end
 
   def photo_mini_url

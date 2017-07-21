@@ -5,6 +5,7 @@ describe SubjectSerializer do
     record = create(:subject, name: 'Açafrão')
     discussion = create(:discussion, subject: record)
     5.times { create(:comment, discussion: discussion) }
+    record.reload
     expect(serialize(record)).to eq(
       'id' => record.id,
       'slug' => "#{record.id}-acafrao",

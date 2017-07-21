@@ -30,7 +30,6 @@ class CommentForm
       comment.save!
       comment.discussion.last_user = comment.user
       comment.discussion.commented_at = comment.created_at
-      comment.discussion.comments_counter = comment.discussion.comments.count
       comment.discussion.save!
     end
   end

@@ -4,6 +4,9 @@ class Discussion < ApplicationRecord
   belongs_to :last_user, class_name: 'User'
   has_many :comments
 
+  after_save :update_subject_discussions_count
+  after_save :update_user_discussions_count
+
   validates :title,
             presence: true,
             length: { maximum: 255 },
@@ -15,7 +18,7 @@ class Discussion < ApplicationRecord
   validates :hits,
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :comments_counter,
+  validates :comments_count,
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :closed, inclusion: { in: [true, false] }
@@ -28,5 +31,21 @@ class Discussion < ApplicationRecord
 
   def self.recent_first
     order('commented_at desc')
+  end
+
+  def update_subject_discussions_count
+    Subject.unscoped.where(id: subject.id).update_all("discussions_count = (
+      SELECT COUNT(1)
+      FROM discussions
+      WHERE discussions.subject_id = subjects.id
+    )")
+  end
+
+  def update_user_discussions_count
+    User.unscoped.where(id: user.id).update_all("discussions_count = (
+      SELECT COUNT(1)
+      FROM discussions
+      WHERE discussions.user_id = users.id
+    )")
   end
 end

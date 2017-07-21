@@ -27,4 +27,34 @@ describe Comment do
       expect(Comment.old_first.all.map(&:comment)).to eq(%w(first second third))
     end
   end
+
+  describe '.save' do
+    it 'updates user comments count' do
+      user = create(:user)
+      3.times { create(:comment, user: user) }
+      expect(user.reload.comments_count).to eq(3)
+    end
+
+    it 'updates user commented discussions count' do
+      user = create(:user)
+      discussion = create(:discussion)
+      create(:comment, user: user)
+      create(:comment, user: user, discussion: discussion)
+      create(:comment, user: user, discussion: discussion)
+      expect(user.reload.commented_discussions_count).to eq(2)
+    end
+
+    it 'updates discussion comments count' do
+      discussion = create(:discussion)
+      3.times { create(:comment, discussion: discussion) }
+      expect(discussion.reload.comments_count).to eq(3)
+    end
+
+    it 'updates subject comments count' do
+      discussion_subject = create(:subject)
+      discussion = create(:discussion, subject: discussion_subject)
+      3.times { create(:comment, discussion: discussion) }
+      expect(discussion_subject.reload.comments_count).to eq(3)
+    end
+  end
 end

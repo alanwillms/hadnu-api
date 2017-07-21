@@ -6,6 +6,7 @@ describe UserSerializer do
     create(:comment, user: record)
     create(:comment, user: record)
     create(:discussion, user: record)
+    record.reload
     expect(serialize(record)).to eq(
       'id' => record.id,
       'login' => record.login,

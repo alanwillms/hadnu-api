@@ -19,15 +19,15 @@ describe CommentForm do
       end
 
       it 'sets discussion last user as the comment user' do
-        expect { comment_form.save }.to change { discussion.last_user }.to(user)
+        expect { comment_form.save }.to change { discussion.reload.last_user }.to(user)
       end
 
       it 'updates discussion commented at' do
-        expect { comment_form.save }.to change { discussion.commented_at }
+        expect { comment_form.save }.to change { discussion.reload.commented_at }
       end
 
       it 'increment discussion comments counter' do
-        expect { comment_form.save }.to change { discussion.comments_counter }.by(1)
+        expect { comment_form.save }.to change { discussion.reload.comments_count }.by(1)
       end
 
       it 'returns true' do

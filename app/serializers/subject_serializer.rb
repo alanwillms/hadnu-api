@@ -7,10 +7,10 @@ class SubjectSerializer < ActiveModel::Serializer
   end
 
   def discussions_counter
-    object.discussions.count
+    object.discussions_count
   end
 
   def comments_counter
-    object.comments.count
+    object.comments_count
   end
 end

@@ -54,6 +54,12 @@ class User < ApplicationRecord
   validates :last_login_at, date: { allow_nil: true }
   validates_attachment_content_type :photo, content_type: %r{\Aimage\/.*\Z}
   validates_attachment_size :photo, less_than: 2.megabytes
+  validates :comments_count,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :discussions_count,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   before_save :downcase_fields
 
