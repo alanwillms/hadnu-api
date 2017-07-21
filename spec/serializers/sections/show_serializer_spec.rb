@@ -9,6 +9,7 @@ describe Sections::ShowSerializer do
       'title' => record.title,
       'parent_id' => record.parent_id,
       'position' => record.position,
+      'banner_url' => nil,
       'has_text' => false,
       'next' => nil,
       'previous' => nil,

@@ -10,6 +10,7 @@ describe RecentSectionSerializer do
       'title' => record.title,
       'seo_description' => record.seo_description,
       'published_at' => nil,
+      'banner_url' => nil,
       'has_parent_section' => false,
       'publication' => {
         'id' => record.publication.id,

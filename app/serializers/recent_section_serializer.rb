@@ -2,7 +2,7 @@ class RecentSectionSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
   attributes :id, :slug, :title, :seo_description, :published_at,
-             :has_parent_section
+             :has_parent_section, :banner_url
   belongs_to :publication
 
   def slug
@@ -11,5 +11,9 @@ class RecentSectionSerializer < ActiveModel::Serializer
 
   def has_parent_section
     !object.parent_id.nil?
+  end
+
+  def banner_url
+    object.publication.banner.url(:card) if object.publication.banner.exists?
   end
 end
