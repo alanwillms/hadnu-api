@@ -1,4 +1,7 @@
 class Section < ApplicationRecord
+  include PgSearch
+  multisearchable against: [:title, :plain_text]
+
   before_save :set_root
 
   belongs_to :publication
@@ -84,6 +87,10 @@ class Section < ApplicationRecord
 
     # Parent otherwise
     previous || parent
+  end
+
+  def plain_text
+    ActionController::Base.helpers.strip_tags(text)
   end
 
   def self.recent

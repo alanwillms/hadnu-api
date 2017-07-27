@@ -1,4 +1,7 @@
 class Comment < ApplicationRecord
+  include PgSearch
+  multisearchable against: [:plain_comment]
+
   belongs_to :discussion
   belongs_to :user
 
@@ -16,6 +19,10 @@ class Comment < ApplicationRecord
 
   def self.old_first
     order('created_at asc')
+  end
+
+  def plain_comment
+    ActionController::Base.helpers.strip_tags(comment)
   end
 
   private

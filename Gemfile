@@ -58,6 +58,9 @@ gem 'skylight'
 # Log tracking
 gem 'airbrake', '~> 5.6'
 
+# Postgres TSearch2
+gem 'pg_search'
+
 group :development, :test do
   # Call 'byebug' in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

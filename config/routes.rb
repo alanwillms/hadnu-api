@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resource :user_password, only: [:create, :update]
   resource :user_confirmation, only: :create
 
+  resources :search_results, only: :index
+
   # Library
   resources :featured_publications, only: :index
   resources :recent_sections, only: :index
