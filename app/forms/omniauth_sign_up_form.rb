@@ -14,10 +14,10 @@ class OmniauthSignUpForm
   def save
     if valid_profile? && form.save
       if provider == 'facebook'
-        form.user.facebook_id = profile['id']
+        form.user.facebook_id = profile[:id]
         form.user.save
       elsif provider == 'google'
-        form.user.google_id = profile['sub']
+        form.user.google_id = profile[:id]
         form.user.save
       end
       return true
@@ -103,6 +103,8 @@ class OmniauthSignUpForm
       verified: profile['verified'],
       email: profile['email']
     }
+  rescue
+    { id: nil, verified: nil, email: nil }
   end
 
   def from_google

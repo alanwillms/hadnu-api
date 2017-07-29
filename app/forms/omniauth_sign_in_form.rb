@@ -40,14 +40,12 @@ class OmniauthSignInForm
     )
 
     if profile['id'].nil?
-      message = I18n.t('omniauth.errors.invalid_token')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.invalid_token')
       return
     end
 
     unless profile['verified']
-      message = I18n.t('omniauth.errors.unverified_omniauth')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.unverified_omniauth')
       return
     end
 
@@ -56,27 +54,12 @@ class OmniauthSignInForm
            .or(User.where(email: profile['email']))
            .first_or_initialize
 
-    if user.blocked
-      message = I18n.t('omniauth.errors.blocked_user')
-      errors.add(:token, message)
-      return
-    end
-
-    if !user.new_record? && !user.email_confirmed
-      message = I18n.t('omniauth.errors.unverified_user')
-      errors.add(:token, message)
-      return
-    end
-
-    if user.new_record?
-      user.name = profile['name']
-      user.email = profile['email']
-    else
-      user.facebook_id = profile['id']
-      user.save
-    end
-
-    user
+    import_user_from_profile(
+      user,
+      profile,
+      :facebook_id,
+      :id
+    )
   end
 
   def from_google
@@ -85,14 +68,12 @@ class OmniauthSignInForm
     profile = JSON.parse(Net::HTTP.get(uri))
 
     if profile['sub'].nil?
-      message = I18n.t('omniauth.errors.invalid_token')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.invalid_token')
       return
     end
 
     unless profile['email_verified']
-      message = I18n.t('omniauth.errors.unverified_omniauth')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.unverified_omniauth')
       return
     end
 
@@ -101,15 +82,22 @@ class OmniauthSignInForm
            .or(User.where(email: profile['email']))
            .first_or_initialize
 
+    import_user_from_profile(
+      user,
+      profile,
+      :google_id,
+      :sub
+    )
+  end
+
+  def import_user_from_profile(user, profile, omniauth_attr, profile_id_key)
     if user.blocked
-      message = I18n.t('omniauth.errors.blocked_user')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.blocked_user')
       return
     end
 
     if !user.new_record? && !user.email_confirmed
-      message = I18n.t('omniauth.errors.unverified_user')
-      errors.add(:token, message)
+      errors.add :token, I18n.t('omniauth.errors.unverified_user')
       return
     end
 
@@ -117,7 +105,7 @@ class OmniauthSignInForm
       user.name = profile['name']
       user.email = profile['email']
     else
-      user.google_id = profile['sub']
+      user.send "#{omniauth_attr}=", profile[profile_id_key]
       user.save
     end
 
