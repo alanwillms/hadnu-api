@@ -4,7 +4,8 @@ CommentType = GraphQL::ObjectType.define do
   field :id, !types.ID
   field :comment, !types.String
   field :created_at, !types.String
-  field :updated_at, !types.String
+  field :updated_at, types.String
 
   field :user, !UserType
+  field :discussion, !DiscussionType
 end
