@@ -38,15 +38,18 @@ PublicationType = GraphQL::ObjectType.define do
     )
   end
 
-  field :root_section_id, types.String do
+  field :root_section_slug, types.String do
     resolve(
       lambda do |obj, _args, _ctx|
-        obj.root_section&.id
+        return nil unless obj.root_section
+        ActiveSupport::Inflector.parameterize(
+          "#{obj.root_section.id}-#{obj.root_section.title}"
+        )
       end
     )
   end
 
-  field :downloadable, types.String do
+  field :downloadable, !types.Boolean do
     resolve(
       lambda do |obj, _args, _ctx|
         obj.pdf.exists?
@@ -56,8 +59,9 @@ PublicationType = GraphQL::ObjectType.define do
 
   field :related, types[!PublicationType] do
     resolve(
-      lambda do |obj, _args, _ctx|
-        Publication
+      lambda do |obj, _args, context|
+        context[:pundit].authorize Publication, :index?
+        context[:pundit].policy_scope(Publication)
           .where('id <> ?', obj.id)
           .random_order
           .limit(6)

@@ -30,10 +30,21 @@ SectionType = GraphQL::ObjectType.define do
     )
   end
 
-  field :has_text, !types.String do
+  field :has_text, !types.Boolean do
     resolve(
       lambda do |obj, _args, _ctx|
-        obj.text.to_s.strip != ''
+        obj.text.to_s.strip.gsub(/\s/, '') != ''
+      end
+    )
+  end
+
+  field :parent_slug, types.String do
+    resolve(
+      lambda do |obj, _args, _ctx|
+        return nil unless obj.parent
+        ActiveSupport::Inflector.parameterize(
+          "#{obj.parent.id}-#{obj.parent.title}"
+        )
       end
     )
   end
