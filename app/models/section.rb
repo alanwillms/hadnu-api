@@ -57,6 +57,10 @@ class Section < ApplicationRecord
     set_file_from_base64(:banner, data)
   end
 
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{title}")
+  end
+
   def next
     # First child if any
     return children.order(:position).first if children.count > 0

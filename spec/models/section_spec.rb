@@ -246,6 +246,13 @@ describe Section do
     }
   end
 
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      section = build(:section, id: 123, title: 'Açaí')
+      expect(section.slug).to eq('123-acai')
+    end
+  end
+
   def sections_tree_titles
     @sections_tree_titles ||= get_titles(sections_tree_data)
   end

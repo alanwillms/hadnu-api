@@ -67,6 +67,10 @@ class User < ApplicationRecord
     roles.any? { |role| role.role_name == 'owner' }
   end
 
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{login}")
+  end
+
   def password=(value)
     generate_salt unless salt
     self.encrypted_password = value ? Digest::SHA1.hexdigest(value + salt) : nil

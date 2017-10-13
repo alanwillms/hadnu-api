@@ -64,4 +64,8 @@ class Publication < ApplicationRecord
   def self.featured
     where(featured: true)
   end
+
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{title}")
+  end
 end

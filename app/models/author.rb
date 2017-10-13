@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # An author owns Publications which are written under one or more
 # of his Pseudonyms
 class Author < ApplicationRecord
@@ -27,5 +29,9 @@ class Author < ApplicationRecord
 
   def photo_base64=(data)
     set_file_from_base64(:photo, data)
+  end
+
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{pen_name}")
   end
 end

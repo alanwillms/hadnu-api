@@ -50,7 +50,7 @@ describe Discussion do
     end
   end
 
-  describe '.save' do
+  describe '#save' do
     it 'updates user discussions count' do
       user = create(:user)
       3.times { create(:discussion, user: user) }
@@ -61,6 +61,13 @@ describe Discussion do
       discussion_subject = create(:subject)
       3.times { create(:discussion, subject: discussion_subject) }
       expect(discussion_subject.reload.discussions_count).to eq(3)
+    end
+  end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      discussion = build(:discussion, id: 123, title: 'Açaí')
+      expect(discussion.slug).to eq('123-acai')
     end
   end
 end

@@ -17,4 +17,8 @@ class Category < ApplicationRecord
   validates :description, presence: true, length: { maximum: 2000 }
   validates_attachment_content_type :banner, content_type: %r{\Aimage\/.*\Z}
   validates_attachment_size :banner, less_than: 2.megabytes
+
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{name}")
+  end
 end

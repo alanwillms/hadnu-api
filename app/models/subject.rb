@@ -16,4 +16,8 @@ class Subject < ApplicationRecord
   validates :discussions_count,
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  def slug
+    ActiveSupport::Inflector.parameterize("#{id}-#{name}")
+  end
 end

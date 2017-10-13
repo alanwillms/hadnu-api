@@ -25,4 +25,11 @@ describe Category do
         .is_greater_than_or_equal_to(0)
     end
   end
+
+  describe '#slug' do
+    it 'returns a slug representation of the object' do
+      category = build(:category, id: 123, name: 'Açaí')
+      expect(category.slug).to eq('123-acai')
+    end
+  end
 end
