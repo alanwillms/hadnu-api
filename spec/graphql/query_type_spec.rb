@@ -19,9 +19,10 @@ describe QueryType do
       create(:author)
       author = create(:author)
       create(:author)
+      params = { slug: author.slug }
       value = query_type.fields['author'].resolve(
         nil,
-        { slug: author.slug },
+        params,
         context
       )
       expect(value).to eq(author)
