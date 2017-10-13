@@ -35,6 +35,7 @@ module HadnuApi
 
     # Add graphql directory to the path
     config.autoload_paths += Dir[Rails.root.join('app', 'graphql', '{*/}')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'graphql', 'functions', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'graphql', 'types', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'graphql', 'mutations', '{*/}')]
 
