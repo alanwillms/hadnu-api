@@ -1,11 +1,13 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_user, only: [:create, :update]
 
+  # @deprecated in favor of GraphQL
   def index
     authorize Author
     render json: authors.all if stale? etag: index_etag
   end
 
+  # @deprecated in favor of GraphQL
   def show
     authorize author
     if stale? etag: show_etag

@@ -1,9 +1,11 @@
 class CategoriesController < ApplicationController
+  # @deprecated in favor of GraphQL
   def index
     authorize Category
     paginate json: scope.order(:name).all if stale? etag: index_etag
   end
 
+  # @deprecated in favor of GraphQL
   def show
     authorize category
     render json: category if stale? etag: show_etag

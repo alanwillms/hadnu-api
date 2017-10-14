@@ -11,6 +11,9 @@ en:
         wait_15_minutes: 'please wait 15 minutes before posting another discussion'
         unused_email: 'email not registered'
         discussion_closed: 'you cannot post a new comment in a closed discussion'
+  user_token:
+    errors:
+      invalid_login_or_password: 'invalid username and/or password'
   omniauth:
     errors:
       blocked_user: 'something went wrong, please try again later'

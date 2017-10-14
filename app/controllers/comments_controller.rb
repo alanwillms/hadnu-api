@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user, only: [:create, :update]
 
+  # @deprecated in favor of GraphQL
   def index
     authorize Comment
     if stale? etag: index_etag

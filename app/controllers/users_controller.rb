@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user
 
+  # @deprecated in favor of GraphQL
   def show
     authorize user
     render json: user if stale? etag: show_etag
