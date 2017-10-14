@@ -1,6 +1,7 @@
 class SectionsController < ApplicationController
   before_action :authenticate_user, only: [:create, :update]
 
+  # @deprecated in favor of GraphQL
   def show
     authorize section
     if stale? etag: show_etag

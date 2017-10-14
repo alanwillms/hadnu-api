@@ -86,7 +86,10 @@ class User < ApplicationRecord
 
   def self.from_token_request(request)
     return nil unless request.params['auth'] && request.params['auth']['login']
-    credential = request.params['auth']['login'].downcase
+    find_by_login_or_email request.params['auth']['login'].downcase
+  end
+
+  def self.find_by_login_or_email(credential)
     active.where(['login = ? OR email = ?', credential, credential]).first
   end
 

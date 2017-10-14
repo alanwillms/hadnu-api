@@ -1,11 +1,13 @@
 class DiscussionsController < ApplicationController
   before_action :authenticate_user, only: [:create, :update]
 
+  # @deprecated in favor of GraphQL
   def index
     authorize Discussion
     paginate json: discussions.recent_first.all if stale? etag: index_etag
   end
 
+  # @deprecated in favor of GraphQL
   def show
     authorize discussion
     if stale? etag: show_etag

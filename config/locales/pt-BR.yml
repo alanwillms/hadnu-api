@@ -19,6 +19,9 @@ pt-BR:
         unused_email: 'não há uma conta com este endereço de e-mail'
         discussion_closed: 'você não pode postar um novo comentário em uma discussão encerrada'
         duplicated_user: 'já existe uma conta vinculada a essa rede social ou a este e-mail'
+  user_token:
+    errors:
+      invalid_login_or_password: 'usuário e/ou senha inválida'
   omniauth:
     errors:
       blocked_user: 'ocorreu um erro, por favor tente novamente'

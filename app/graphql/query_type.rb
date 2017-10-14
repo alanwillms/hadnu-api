@@ -1,5 +1,3 @@
-require 'ostruct'
-
 def create_pagination_type(model_class, items_field)
   GraphQL::ObjectType.define do
     name("Paginated#{model_class.name}")

@@ -1,11 +1,13 @@
 class PublicationsController < ApplicationController
   before_action :authenticate_user, only: [:create, :update]
 
+  # @deprecated in favor of GraphQL
   def index
     authorize Publication
     paginate json: publications.recent_first.all if stale? etag: index_etag
   end
 
+  # @deprecated in favor of GraphQL
   def show
     authorize publication
     if stale? etag: show_etag

@@ -1,4 +1,5 @@
 class PseudonymsController < ApplicationController
+  # @deprecated in favor of GraphQL
   def index
     authorize Pseudonym
     render json: pseudonyms.all if stale? etag: index_etag

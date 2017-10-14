@@ -1,9 +1,11 @@
 class SubjectsController < ApplicationController
+  # @deprecated in favor of GraphQL
   def index
     authorize Subject
     paginate json: subjects.all if stale? etag: index_etag
   end
 
+  # @deprecated in favor of GraphQL
   def show
     authorize subject
     render json: subject if stale? etag: show_etag
