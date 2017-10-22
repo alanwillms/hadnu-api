@@ -30,14 +30,17 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def photo_mini_url
+    return nil if object.blocked
     object.photo.url(:mini) if object.photo.exists?
   end
 
   def photo_thumb_url
+    return nil if object.blocked
     object.photo.url(:thumb) if object.photo.exists?
   end
 
   def photo_url
+    return nil if object.blocked
     object.photo.url(:profile) if object.photo.exists?
   end
 end
