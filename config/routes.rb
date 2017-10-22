@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :user_registrations, only: :create
+  resource :user_deactivation, only: :create
   resource :user_password, only: [:create, :update]
   resource :user_confirmation, only: :create
 
